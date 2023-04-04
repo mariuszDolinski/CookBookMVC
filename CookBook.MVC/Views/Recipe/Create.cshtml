@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Dodaj przepis";
+}
+<h4 style="font-weight:normal">Dodaj nowy przepis</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form action="/Recipe/Create" method="post">
+            <div class="form-group mb-3">
+                <label class="control-label" for="name">Nazwa</label>
+                <input class="form-control" type="text" id="name" name="Name" placeholder="Wpisz nazwę (max. 100 znaków)">   
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" for="desc">Opis przygotowania</label>
+                <textarea class="form-control" type="text" id="desc" name="Description" placeholder="Opcjonalnie (możesz dodać później)"></textarea>  
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" for="adult">Tylko dla osób pełnoletnich?</label>
+                <select class="form-select" aria-label="Default select example" id="adult" name="OnlyForAdults">
+                    <option value="True">Tak</option>
+                    <option selected value="False">Nie</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Dodaj przepis" class="btn btn-primary">
+        </form>
+    </div>
+</div>
