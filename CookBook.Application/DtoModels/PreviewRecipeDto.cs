@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CookBook.Application.DtoModels
 {
-    public class RecipeDto
+    public class PreviewRecipeDto
     {
         public string Name { get; set; } = default!;
-        public string? Description { get; set; }
         public bool OnlyForAdults { get; set; } = false;
-        public IFormFile? ImageFile { get; set; }
         public string? ImageName { get; set; }
     }
 }

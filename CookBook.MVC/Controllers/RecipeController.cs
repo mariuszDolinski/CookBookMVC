@@ -1,5 +1,6 @@
 ﻿using CookBook.Application.DtoModels;
 using CookBook.Application.Services;
+using CookBook.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookBook.MVC.Controllers
@@ -13,11 +14,21 @@ namespace CookBook.MVC.Controllers
             _recipeService = recipeService;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var recipes = await _recipeService.GetAllRecipes();
+            return View(recipes);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(RecipeDto dto)
         {
-            await _recipeService.CreateRecipe(dto);
-            return RedirectToAction(nameof(Create));
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+            await _recipeService.CreateRecipe(dto);       
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult Create()

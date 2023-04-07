@@ -1,6 +1,7 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Domain.Interfaces;
 using CookBook.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Infrastructure.Repositories
 {
@@ -17,5 +18,8 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Add(recipe);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Recipe>> GetAllRecipes()
+            => await _dbContext.Recipes.ToListAsync();
     }
 }

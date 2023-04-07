@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CookBook.Application.DtoModels.PreviewRecipeDto>
+
+@{
+    ViewData["Title"] = "Przepisy";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Dodaj przepis</a>
+</p>
+
+<div class="album py-2 bg-body-tertiary">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        @foreach(var item in Model)
+        {
+            <div class="col">
+                <div class="card shadow-sm m-3" style="width: auto">
+                    @if(item.ImageName is null)
+                    {
+                        <img class="bd-placeholder-img card-img-top" src="~/images/placeholder.jpg" asp-append-version="true"/>
+                    }
+                    else
+                    {
+                        <img class="bd-place    holder-img card-img-top" src="@("~/images/"+item.ImageName)" asp-append-version="true"/>
+                    }
+                    <div class="card-body">
+                        @if (item.OnlyForAdults)
+                        {
+                            <h6 class="card-subtitle mb-2">@item.Name  <span class="badge bg-warning">18+</span></h6>
+                        }else
+                        {
+                            <h6 class="card-subtitle mb-2">@item.Name</h6>
+                        }
+                        <a href="#" class="btn btn-primary">Zobacz</a>
+                        <a href="#" class="btn btn-outline-secondary">Edytuj</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

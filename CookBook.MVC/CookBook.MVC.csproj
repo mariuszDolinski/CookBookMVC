@@ -12,11 +12,16 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
 	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CookBook.Application\CookBook.Application.csproj" />
     <ProjectReference Include="..\CookBook.Infrastructure\CookBook.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

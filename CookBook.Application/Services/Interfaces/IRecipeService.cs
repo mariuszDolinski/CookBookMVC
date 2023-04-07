@@ -5,5 +5,6 @@ namespace CookBook.Application.Services
     public interface IRecipeService
     {
         Task CreateRecipe(RecipeDto dto);
+        Task<IEnumerable<PreviewRecipeDto>> GetAllRecipes();
     }
 }

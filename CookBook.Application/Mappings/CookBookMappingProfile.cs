@@ -9,6 +9,7 @@ namespace CookBook.Application.Mappings
         public CookBookMappingProfile() 
         {
             CreateMap<RecipeDto, Recipe>();
+            CreateMap<Recipe, PreviewRecipeDto>();
         }
     }
 }
