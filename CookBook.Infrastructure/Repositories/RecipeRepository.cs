@@ -21,5 +21,8 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<IEnumerable<Recipe>> GetAllRecipes()
             => await _dbContext.Recipes.ToListAsync();
+
+        public async Task<Recipe> GetRecipeById(int id)
+            => await _dbContext.Recipes.FirstAsync(r => r.Id == id);
     }
 }

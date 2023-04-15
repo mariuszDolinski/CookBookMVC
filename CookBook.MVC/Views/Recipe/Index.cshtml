@@ -1,12 +1,15 @@
-﻿@model IEnumerable<CookBook.Application.DtoModels.PreviewRecipeDto>
+﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
 
 @{
     ViewData["Title"] = "Przepisy";
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-outline-primary">Dodaj przepis</a>
-</p>
+    @*<div class="input-group mb-3">*@
+        <a asp-action="Create" class="btn btn-outline-primary">Dodaj przepis</a>
+        @*<input type="text" class="form-control" placeholder="Wyszukaj przepis" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Szukaj</button>
+    </div>*@
+
 
 <div class="album py-2 bg-body-tertiary">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -30,7 +33,7 @@
                         {
                             <h6 class="card-subtitle mb-2">@item.Name</h6>
                         }
-                        <a href="#" class="btn btn-primary">Zobacz</a>
+                        <a class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id.ToString()">Zobacz</a>
                         <a href="#" class="btn btn-outline-secondary">Edytuj</a>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
-﻿using CookBook.Application.DtoModels.Validators;
-using CookBook.Application.Mappings;
+﻿using CookBook.Application.Mappings;
+using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.Services;
 using CookBook.Application.Services.Interfaces;
 using FluentValidation;
@@ -12,10 +12,11 @@ namespace CookBook.Application.Extensions
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
+            services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssemblyContaining(typeof(CreateRecipeCommand)));
             services.AddAutoMapper(typeof(CookBookMappingProfile));
-            services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IFileService, FileService>();
-            services.AddValidatorsFromAssemblyContaining<RecipeDtoValidator>()
+            services.AddValidatorsFromAssemblyContaining<CreateRecipeCommandValidator>()
                 .AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
         }

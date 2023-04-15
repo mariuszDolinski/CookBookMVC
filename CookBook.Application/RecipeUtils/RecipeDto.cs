@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 
-namespace CookBook.Application.DtoModels
+namespace CookBook.Application.RecipeUtils
 {
     public class RecipeDto
     {

@@ -6,5 +6,6 @@ namespace CookBook.Domain.Interfaces
     {
         Task CreateRecipe(Recipe recipe);
         Task<IEnumerable<Recipe>> GetAllRecipes();
+        Task<Recipe> GetRecipeById(int id);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace CookBook.Application.DtoModels.Validators
+namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
 {
-    public class RecipeDtoValidator : AbstractValidator<RecipeDto>
+    internal class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
     {
-        public RecipeDtoValidator() 
+        public CreateRecipeCommandValidator() 
         {
             RuleFor(r => r.Name)
                 .NotEmpty().WithMessage("Podaj nazwę przepisu")
@@ -15,12 +14,10 @@ namespace CookBook.Application.DtoModels.Validators
                 .Custom((value, context) =>
                 {
                     if (value != null && !value.ContentType.Contains("image"))
-                    { 
+                    {
                         context.AddFailure("Przesłany plik nie jest zdjęciem");
                     }
                 });
-                
         }
-
     }
 }

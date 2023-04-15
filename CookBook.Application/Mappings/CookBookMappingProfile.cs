@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CookBook.Application.DtoModels;
+using CookBook.Application.RecipeUtils;
 using CookBook.Domain.Entities;
 
 namespace CookBook.Application.Mappings
@@ -9,6 +9,7 @@ namespace CookBook.Application.Mappings
         public CookBookMappingProfile() 
         {
             CreateMap<RecipeDto, Recipe>();
+            CreateMap<Recipe, RecipeDto>();
             CreateMap<Recipe, PreviewRecipeDto>();
         }
     }

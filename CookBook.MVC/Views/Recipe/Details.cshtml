@@ -1,0 +1,27 @@
+﻿@model CookBook.Application.RecipeUtils.RecipeDto
+
+@{
+    ViewData["Title"] = @Model.Name;
+}
+<div class="container d-flex justify-content-center">
+<div  class = "col-sm-8">
+    <h3>@Model.Name @if (Model.OnlyForAdults)
+    {
+        <span class="badge bg-warning">18+</span>
+    }
+    </h3>
+    <hr />
+    <div class="mb-3">
+        @if(Model.ImageName is not null)
+        {
+            <img class="img-fluid"  src="@("~/images/"+Model.ImageName)" asp-append-version="true"/>
+        }
+    </div>
+    <div class = "fw-bold">Opis przygotowania</div> 
+    <div class="mb-3">@Model.Description</div> 
+    <div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })   
+    <a asp-action="Index" class="btn btn-outline-secondary">Wróc</a>
+</div>
+</div>
+</div>

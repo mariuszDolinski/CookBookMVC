@@ -1,5 +1,4 @@
-﻿using CookBook.Application.DtoModels;
-using Microsoft.AspNetCore.Http;
+﻿using CookBook.Application.RecipeUtils;
 
 namespace CookBook.Application.Services.Interfaces
 {
