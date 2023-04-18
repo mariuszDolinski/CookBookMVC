@@ -1,0 +1,29 @@
+﻿@model CookBook.Application.RecipeUtils.Commands.EditImage.EditImageCommand
+
+@{
+    ViewData["Title"] = "Edycja obrazu";
+}
+
+<h3>@Model.Name - Edycja zdjęcia</h3>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="EditImage" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="ImageFile" class="control-label">Wgraj zdjęcie (preferowana proporcja 4:3)</label>
+                <label>Jeśli chcesz jedynie usunąć bieżące zdjęcie, pozostaw pole wyboru puste</label>
+                <input asp-for="ImageFile" class="form-control" type="file" accept="image/*"/>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
+                <a class="btn btn-outline-secondary" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@Model.Id.ToString()">Anuluj</a>    
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

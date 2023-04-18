@@ -2,13 +2,13 @@
 
 namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
 {
-    internal class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
+    public class CreateRecipeCommandValidator : AbstractValidator<CreateRecipeCommand>
     {
         public CreateRecipeCommandValidator() 
         {
             RuleFor(r => r.Name)
                 .NotEmpty().WithMessage("Podaj nazwę przepisu")
-                .MinimumLength(3).WithMessage("Nazwa powinna mieć minimum 3 znaki")
+                .MinimumLength(5).WithMessage("Nazwa powinna mieć minimum 5 znaków")
                 .MaximumLength(100).WithMessage("Nazwa powinna mieć maksimum 100 znaków");
             RuleFor(r => r.ImageFile)
                 .Custom((value, context) =>

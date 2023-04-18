@@ -18,6 +18,7 @@ namespace CookBook.Infrastructure.Extensions
 
             services.AddScoped<CookBookSeeder>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<IIngridientRepository, IngridientRepository>();
         }
     }
 }

@@ -21,19 +21,12 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
         }
         public async Task Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
         {
-            if (request.ImageFile != null)
-            {
-                string filename = Path.GetFileNameWithoutExtension(request.ImageFile.FileName);
-                string extension = Path.GetExtension(request.ImageFile.FileName);
-                request.ImageName = filename + DateTime.Now.ToString("yyMMddHHmmssfff") + extension;
-            }
-            else
-            {
-                request.ImageName = null;
-            }
             try
             {
-                await _fileService.UploadImageFile(request);
+                if(request.ImageFile != null)
+                {
+                    await _fileService.UploadImageFile(request.ImageFile);
+                }               
             }
             catch (Exception)
             {

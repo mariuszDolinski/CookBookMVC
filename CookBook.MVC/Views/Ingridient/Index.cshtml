@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CookBook.Application.IngridientUtils.IngridientDto>
+
+@{
+    ViewData["Title"] = "Składniki";
+}
+
+<h3>Lista wszystkich dostępnych składników</h3>
+
+<p>
+    <a asp-action="Create">Dodaj nowy składnik</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Szczegóły", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Usuń", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

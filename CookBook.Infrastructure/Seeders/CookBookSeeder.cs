@@ -43,6 +43,7 @@ namespace CookBook.Infrastructure.Seeders
             foreach (var unit in Enum.GetNames(typeof(UnitsEnum)))
             {
                 units.Add(new Unit() { Name = unit });
+                units.Last().SetEncodedName();
             }
 
             return units;
@@ -56,6 +57,7 @@ namespace CookBook.Infrastructure.Seeders
             {
                 replaceString = ing.Replace('_', ' ');
                 ingridients.Add(new Ingridient() { Name = replaceString });
+                ingridients.Last().SetEncodedName();
             }
 
             return ingridients;

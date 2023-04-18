@@ -24,5 +24,8 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<Recipe> GetRecipeById(int id)
             => await _dbContext.Recipes.FirstAsync(r => r.Id == id);
+
+        public async Task SaveChangesToDb()
+            => await _dbContext.SaveChangesAsync();
     }
 }
