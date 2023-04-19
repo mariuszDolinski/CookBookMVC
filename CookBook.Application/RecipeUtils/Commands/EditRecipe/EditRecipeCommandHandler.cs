@@ -17,7 +17,7 @@ namespace CookBook.Application.RecipeUtils.Commands.EditRecipe
         {
             var recipe = await _recipeRepository.GetRecipeById(request.Id);
 
-            recipe.Name = request.Name;
+            recipe.Name = request.Name!;
             recipe.Description = request.Description;
             recipe.OnlyForAdults = request.OnlyForAdults;
             await _recipeRepository.SaveChangesToDb();

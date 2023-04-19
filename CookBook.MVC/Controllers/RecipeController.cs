@@ -74,6 +74,7 @@ namespace CookBook.MVC.Controllers
         {
             var dto = await _mediator.Send(new GetRecipeByIdQuery(id));
             var result = _mapper.Map<EditImageCommand>(dto);
+            result.Id = id;
             return View(result);
         }
         [HttpPost]

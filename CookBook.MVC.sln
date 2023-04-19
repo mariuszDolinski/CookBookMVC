@@ -5,11 +5,11 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBook.MVC", "CookBook.MVC\CookBook.MVC.csproj", "{45D7D79C-D331-419A-AA57-34B7B3761BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Domain", "CookBook.Domain\CookBook.Domain.csproj", "{F580F0F6-FE66-43DA-8622-D0C5E067F914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBook.Domain", "CookBook.Domain\CookBook.Domain.csproj", "{F580F0F6-FE66-43DA-8622-D0C5E067F914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Application", "CookBook.Application\CookBook.Application.csproj", "{E5917FCA-0F9F-4F5E-B7E6-AE7C2191990B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBook.Application", "CookBook.Application\CookBook.Application.csproj", "{E5917FCA-0F9F-4F5E-B7E6-AE7C2191990B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookBook.Infrastructure", "CookBook.Infrastructure\CookBook.Infrastructure.csproj", "{9A20BDC2-4D97-4676-9396-BBCB7051DABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBook.Infrastructure", "CookBook.Infrastructure\CookBook.Infrastructure.csproj", "{9A20BDC2-4D97-4676-9396-BBCB7051DABF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

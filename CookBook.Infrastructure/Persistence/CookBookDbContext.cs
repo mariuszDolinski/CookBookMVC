@@ -1,9 +1,10 @@
 ﻿using CookBook.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Infrastructure.Persistence
 {
-    public class CookBookDbContext : DbContext
+    public class CookBookDbContext : IdentityDbContext
     {
         public CookBookDbContext(DbContextOptions<CookBookDbContext> options) : base(options) { }
         
@@ -14,6 +15,7 @@ namespace CookBook.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Recipe>()
                 .Property(r => r.Name)
                 .IsRequired()
@@ -37,24 +39,6 @@ namespace CookBook.Infrastructure.Persistence
             modelBuilder.Entity<RecipeIngridient>()
                 .Property(a => a.Description)
                 .IsRequired();
-
-            //modelBuilder.Entity<User>()
-            //    .Property(u => u.Email)
-            //    .IsRequired();
-
-            //modelBuilder.Entity<User>()
-            //    .Property(u => u.UserName)
-            //    .IsRequired()
-            //    .HasMaxLength(30);
-
-            //modelBuilder.Entity<User>()
-            //    .Property(u => u.DateOfBirth)
-            //    .HasColumnType("date");
-
-            //modelBuilder.Entity<Role>()
-            //    .Property(r => r.Name)
-            //    .IsRequired();
-
         }
     }
 }
