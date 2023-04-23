@@ -6,6 +6,7 @@ using CookBook.Application.RecipeUtils.Commands.EditRecipe;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -37,6 +38,7 @@ namespace CookBook.MVC.Controllers
 
         #region Create Action
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateRecipeCommand command)
         {
             if(!ModelState.IsValid)
@@ -46,6 +48,7 @@ namespace CookBook.MVC.Controllers
             await _mediator.Send(command);  
             return RedirectToAction(nameof(Index));
         }
+        [Authorize]
         public ActionResult Create()
         {
             return View();

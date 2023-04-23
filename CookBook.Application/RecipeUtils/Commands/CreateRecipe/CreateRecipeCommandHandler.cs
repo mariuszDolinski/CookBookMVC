@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookBook.Application.ApplicationUser;
 using CookBook.Application.Services.Interfaces;
 using CookBook.Domain.Entities;
 using CookBook.Domain.Interfaces;
@@ -11,13 +12,15 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
         private readonly IMapper _mapper;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IFileService _fileService;
+        private readonly IUserContext _userContext;
 
         public CreateRecipeCommandHandler(IMapper mapper, IRecipeRepository recipeRepository, 
-            IFileService fileService)
+            IFileService fileService, IUserContext userContext)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
             _fileService = fileService;
+            _userContext = userContext;
         }
         public async Task Handle(CreateRecipeCommand request, CancellationToken cancellationToken)
         {
@@ -25,7 +28,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
             {
                 if(request.ImageFile != null)
                 {
-                    await _fileService.UploadImageFile(request.ImageFile);
+                    request.ImageName = await _fileService.UploadImageFile(request.ImageFile);
                 }               
             }
             catch (Exception)
@@ -33,6 +36,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
                 throw new Exception("Couldn't upload the image");
             }
             var recipe = _mapper.Map<Recipe>(request);
+            recipe.AuthorId = _userContext.GetCurrentUser().Id;
             await _recipeRepository.CreateRecipe(recipe);
         }
     }

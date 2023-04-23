@@ -10,11 +10,9 @@
                                               title="Manage">Witaj @User.Identity!.Name!</a>
     </li>
     <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" 
-                                  asp-route-returnUrl="@Url.Page("/", new { area = "" })" 
-                                  method="post" >
-            <button  type="submit" class="nav-link btn btn-link text-dark">Wyloguj</button>
-        </form>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout" method="post" >
+            Wyloguj
+        </a>
     </li>
 }
 else

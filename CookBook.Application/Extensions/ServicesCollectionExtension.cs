@@ -1,4 +1,5 @@
-﻿using CookBook.Application.Mappings;
+﻿using CookBook.Application.ApplicationUser;
+using CookBook.Application.Mappings;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.Services;
 using CookBook.Application.Services.Interfaces;
@@ -16,6 +17,7 @@ namespace CookBook.Application.Extensions
                 cfg.RegisterServicesFromAssemblyContaining(typeof(CreateRecipeCommand)));
             services.AddAutoMapper(typeof(CookBookMappingProfile));
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IUserContext, UserContext>();
             services.AddValidatorsFromAssemblyContaining<CreateRecipeCommandValidator>()
                 .AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();

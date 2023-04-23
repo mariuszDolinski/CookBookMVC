@@ -20,6 +20,7 @@ namespace CookBook.Infrastructure.Extensions
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
+                options.Stores.MaxLengthForKeys = 450;
             })
                 .AddEntityFrameworkStores<CookBookDbContext>()
                 .AddErrorDescriber<CustomIdentityErrorMessages>();
