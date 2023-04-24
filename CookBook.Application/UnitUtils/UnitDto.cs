@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 
-namespace CookBook.Application.IngridientUtils
+namespace CookBook.Application.UnitUtils
 {
-    public class IngridientDto
+    public class UnitDto
     {
         public string Name { get; set; } = default!;
         public string EncodedName { get; private set; } = default!;

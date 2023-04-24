@@ -1,5 +1,4 @@
-﻿using AutoMapper.Internal.Mappers;
-using MediatR;
+﻿using MediatR;
 
 namespace CookBook.Application.IngridientUtils.Queries.GetAllIngridients
 {

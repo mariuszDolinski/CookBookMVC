@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
@@ -8,7 +7,6 @@ using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CookBook.MVC.Controllers
 {

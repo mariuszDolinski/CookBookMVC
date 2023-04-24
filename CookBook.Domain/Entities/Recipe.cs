@@ -10,8 +10,8 @@ public partial class Recipe
     public string? ImageName { get; set; }
     public bool OnlyForAdults { get; set; } = false;
 
-    public string? AuthorId { get; set; }
-    public IdentityUser? Author { get; set; }
+    public string AuthorId { get; set; } = default!;
+    public IdentityUser Author { get; set; } = default!;
     public DateTime CreatedTime { get; set; } = DateTime.UtcNow;
 
     public virtual List<RecipeIngridient> RecipeIngridients { get; } = new List<RecipeIngridient>();

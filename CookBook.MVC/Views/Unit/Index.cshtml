@@ -1,13 +1,14 @@
-﻿@model IEnumerable<CookBook.Application.IngridientUtils.IngridientDto>
+﻿@model IEnumerable<CookBook.Application.UnitUtils.UnitDto>
 
 @{
-    ViewData["Title"] = "Składniki";
+    ViewData["Title"] = "Jednostki";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Lista wszystkich dostępnych składników</h3>
+<h3>Lista wszystkich dostępnych jednostek</h3>
 
 <p>
-    <a asp-action="Create">Dodaj nowy składnik</a>
+    <a asp-action="Create">Dodaj nową jednostkę</a>
 </p>
 <table class="table">
     <thead>
@@ -37,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.CreatedTime)
             </td>
             <td>
-                @Html.ActionLink("Edytuj", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Szczegóły", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Usuń", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

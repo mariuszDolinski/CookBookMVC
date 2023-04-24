@@ -34,6 +34,8 @@ namespace CookBook.Infrastructure.Seeders
                     _dbContext.Ingridients.AddRange(ingridients);
                     await _dbContext.SaveChangesAsync();
                 }
+
+                //SetUnitsDate();
             }
         }
 
@@ -61,6 +63,26 @@ namespace CookBook.Infrastructure.Seeders
             }
 
             return ingridients;
+        }
+
+        private async void SetIngridientsDate()
+        {
+            var ingridients = _dbContext.Ingridients.ToList();
+            foreach (var ing in ingridients)
+            {
+                    ing.CreatedTime = DateTime.Now;
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async void SetUnitsDate()
+        {
+            var units = _dbContext.Units.ToList();
+            foreach (var unit in units)
+            {
+                unit.CreatedTime = DateTime.Now;
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

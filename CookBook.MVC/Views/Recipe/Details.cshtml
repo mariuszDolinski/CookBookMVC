@@ -10,8 +10,14 @@
         <span class="badge bg-warning">18+</span>
     }
     </h3>
-    <hr />
-    <div class="mb-3">
+
+    <hr class="mb-0 mt-0"/>
+    <div class="d-flex justify-content-between">
+        <div>Autor: @Model.Author</div>
+        <div>Data uwtorzenia: @Model.CreatedTime</div>
+    </div>
+     
+    <div class="mb-3 mt-2">
         @if(Model.ImageName is not null)
         {
             <img class="img-fluid"  src="@("~/images/"+Model.ImageName)" asp-append-version="true"/>
