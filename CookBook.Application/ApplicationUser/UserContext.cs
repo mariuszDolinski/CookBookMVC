@@ -6,7 +6,7 @@ namespace CookBook.Application.ApplicationUser
 {
     public interface IUserContext
     {
-        CurrentUser GetCurrentUser();
+        CurrentUser? GetCurrentUser();
         Task<string?> GetUserNameById(string id);
     }
 
@@ -20,18 +20,24 @@ namespace CookBook.Application.ApplicationUser
             _httpContextAccessor = httpContext;
             _user = user;
         }
-        public CurrentUser GetCurrentUser()
+        public CurrentUser? GetCurrentUser()
         {
             var user = _httpContextAccessor?.HttpContext?.User;
             if (user == null)
             {
-                throw new InvalidOperationException("Context user doesn't exsists.");
+                throw new InvalidOperationException("User doesn't exists in current context.");
+            }
+
+            if (user.Identity == null || !user.Identity.IsAuthenticated) 
+            {
+                return null;
             }
 
             var id = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
             var userName = user.FindFirst(c => c.Type == ClaimTypes.Name)!.Value;
+            var roles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
 
-            return new CurrentUser(id, userName);
+            return new CurrentUser(id, userName, roles);
         }
 
         public async Task<string?> GetUserNameById(string id)

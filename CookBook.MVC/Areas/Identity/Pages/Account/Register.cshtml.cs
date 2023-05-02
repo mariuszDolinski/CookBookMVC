@@ -25,6 +25,7 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -32,12 +33,14 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -128,6 +131,13 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var userRole = _roleManager.FindByNameAsync("User").Result;
+                    if(userRole != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, userRole.Name);
+                    }
+
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",

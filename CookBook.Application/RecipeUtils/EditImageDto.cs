@@ -12,5 +12,6 @@ namespace CookBook.Application.RecipeUtils
         public string? Name { get; set; }
         public int Id { get; set; }
         public IFormFile? ImageFile { get; set; }
+        public bool IsEditable { get; set; }
     }
 }

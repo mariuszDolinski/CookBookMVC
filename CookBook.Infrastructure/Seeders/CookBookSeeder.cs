@@ -1,15 +1,17 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Infrastructure.Persistence;
-
+using Microsoft.AspNetCore.Identity;
 namespace CookBook.Infrastructure.Seeders
 {
     public class CookBookSeeder
     {
         private readonly CookBookDbContext _dbContext;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CookBookSeeder(CookBookDbContext dbContext) 
+        public CookBookSeeder(CookBookDbContext dbContext, RoleManager<IdentityRole> roleManager) 
         {
             _dbContext = dbContext;
+            _roleManager = roleManager;
         }
 
         public async Task Seed()
@@ -29,6 +31,9 @@ namespace CookBook.Infrastructure.Seeders
                     _dbContext.Ingridients.AddRange(ingridients);
                     await _dbContext.SaveChangesAsync();
                 }
+                
+                CreateDefaultRoles();
+
             }
         }
 
@@ -57,6 +62,18 @@ namespace CookBook.Infrastructure.Seeders
             }
 
             return ingridients;
+        }
+        private async void CreateDefaultRoles()
+        {
+            string[] roleNames = { "Admin", "Manager", "User" };
+            foreach (var role in roleNames)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
         }
     }
 }

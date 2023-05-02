@@ -58,6 +58,12 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var dto = await _mediator.Send(new GetRecipeByIdQuery(id));
+
+            if (!dto.IsEditable)
+            {
+                return RedirectToAction("NoAccess", "Home");
+            }
+
             var result = _mapper.Map<EditRecipeCommand>(dto);
             result.Id = id;
             return View(result);
@@ -80,6 +86,10 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> EditImage(int id)
         {
             var dto = await _mediator.Send(new GetRecipeByIdQuery(id));
+            if (!dto.IsEditable)
+            {
+                return RedirectToAction("NoAccess", "Home");
+            }
             var result = _mapper.Map<EditImageCommand>(dto);
             result.Id = id;
             return View(result);

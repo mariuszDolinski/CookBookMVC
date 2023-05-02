@@ -13,5 +13,6 @@ namespace CookBook.Application.RecipeUtils
         public string? ImageName { get; set; }
         public string? Author { get; set; }
         public string? CreatedTime { get; set; }
+        public bool IsEditable { get; set; }
     }
 }

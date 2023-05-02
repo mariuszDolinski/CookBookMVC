@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookBook.Application.ApplicationUser;
 using CookBook.Application.Services.Interfaces;
 using CookBook.Domain.Interfaces;
 using MediatR;
@@ -15,19 +16,29 @@ namespace CookBook.Application.RecipeUtils.Commands.EditImage
         private readonly IMapper _mapper;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IFileService _fileService;
+        private readonly IUserContext _userContext;
 
         public EditImageCommandHandler(IMapper mapper, IRecipeRepository recipeRepository,
-            IFileService fileService)
+            IFileService fileService, IUserContext userContext)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
             _fileService = fileService;
+            _userContext = userContext;
         }
 
         public async Task Handle(EditImageCommand request, CancellationToken cancellationToken)
         {
             var recipe = await _recipeRepository.GetRecipeById(request.Id);
             string? imageName = null;
+
+            var user = _userContext.GetCurrentUser();
+            var isEditable = user != null && (recipe.AuthorId == user.Id || user.Roles.Contains("Manager"));
+
+            if (!isEditable)
+            {
+                throw new InvalidOperationException("Access denied");
+            }
 
             if (recipe.ImageName != null)
             {

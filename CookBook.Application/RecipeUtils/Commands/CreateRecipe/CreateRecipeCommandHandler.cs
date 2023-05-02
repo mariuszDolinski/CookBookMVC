@@ -35,8 +35,9 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
             {
                 throw new Exception("Couldn't upload the image");
             }
+
             var recipe = _mapper.Map<Recipe>(request);
-            recipe.AuthorId = _userContext.GetCurrentUser().Id;
+            recipe.AuthorId = _userContext.GetCurrentUser()!.Id;
             recipe.CreatedTime = DateTime.UtcNow;
             await _recipeRepository.CreateRecipe(recipe);
         }

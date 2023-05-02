@@ -22,6 +22,7 @@ namespace CookBook.Infrastructure.Extensions
                 options.User.RequireUniqueEmail = true;
                 options.Stores.MaxLengthForKeys = 450;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CookBookDbContext>()
                 .AddErrorDescriber<CustomIdentityErrorMessages>();
 
