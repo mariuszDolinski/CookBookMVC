@@ -1,10 +1,5 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CookBook.Infrastructure.Seeders
 {
@@ -34,8 +29,6 @@ namespace CookBook.Infrastructure.Seeders
                     _dbContext.Ingridients.AddRange(ingridients);
                     await _dbContext.SaveChangesAsync();
                 }
-
-                //SetUnitsDate();
             }
         }
 
@@ -46,11 +39,11 @@ namespace CookBook.Infrastructure.Seeders
             {
                 units.Add(new Unit() { Name = unit });
                 units.Last().SetEncodedName();
+                units.Last().CreatedTime = DateTime.UtcNow;
             }
 
             return units;
         }
-
         private IEnumerable<Ingridient> GetIngridients()
         {
             var ingridients = new List<Ingridient>();
@@ -60,29 +53,10 @@ namespace CookBook.Infrastructure.Seeders
                 replaceString = ing.Replace('_', ' ');
                 ingridients.Add(new Ingridient() { Name = replaceString });
                 ingridients.Last().SetEncodedName();
+                ingridients.Last().CreatedTime = DateTime.UtcNow;
             }
 
             return ingridients;
-        }
-
-        private async void SetIngridientsDate()
-        {
-            var ingridients = _dbContext.Ingridients.ToList();
-            foreach (var ing in ingridients)
-            {
-                    ing.CreatedTime = DateTime.Now;
-            }
-            await _dbContext.SaveChangesAsync();
-        }
-
-        private async void SetUnitsDate()
-        {
-            var units = _dbContext.Units.ToList();
-            foreach (var unit in units)
-            {
-                unit.CreatedTime = DateTime.Now;
-            }
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

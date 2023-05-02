@@ -19,5 +19,7 @@ namespace CookBook.MVC.Controllers
             var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
             return View(ingridients);
         }
+
+
     }
 }

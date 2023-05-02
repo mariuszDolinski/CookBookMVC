@@ -6,10 +6,16 @@
 }
 
 <h3>Lista wszystkich dostępnych jednostek</h3>
-
-<p>
-    <a asp-action="Create">Dodaj nową jednostkę</a>
-</p>
+<div class="row">
+    <div class="col-4">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <a class="btn btn-primary" type="button" asp-action="Index">Dodaj jednostkę</a>
+            </div>
+        </div>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>

@@ -37,7 +37,7 @@
             <a asp-controller="Recipe" asp-action="EditImage" asp-route-Id="@Model.Id.ToString()" class="btn btn-secondary mb-3">Zmień zdjęcie</a>         
             <div class="form-group">
                 <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-outline-secondary">Anuluj</a>
+                <a class="btn btn-outline-secondary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@Model.Id.ToString()">Anuluj</a>
             </div>
         </form>
     </div>

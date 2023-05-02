@@ -14,7 +14,7 @@
     <hr class="mb-0 mt-0"/>
     <div class="d-flex justify-content-between">
         <div>Autor: @Model.Author</div>
-        <div>Data uwtorzenia: @Model.CreatedTime</div>
+        <div>Data dodania: @Model.CreatedTime</div>
     </div>
      
     <div class="mb-3 mt-2">
@@ -27,6 +27,7 @@
     <div class="mb-3">@Model.Description</div> 
     <div> 
     <a asp-action="Index" class="btn btn-outline-secondary">Wróc do listy przepisów</a>
+    <a class="btn btn-outline-primary" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@Model.Id.ToString()">Edytuj</a>
 </div>
 </div>
 </div>
