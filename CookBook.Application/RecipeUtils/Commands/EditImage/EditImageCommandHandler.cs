@@ -33,7 +33,7 @@ namespace CookBook.Application.RecipeUtils.Commands.EditImage
             string? imageName = null;
 
             var user = _userContext.GetCurrentUser();
-            var isEditable = user != null && (recipe.AuthorId == user.Id || user.Roles.Contains("Manager"));
+            var isEditable = user != null && (recipe.AuthorId == user.Id || user.IsInRole("Manager"));
 
             if (!isEditable)
             {

@@ -12,5 +12,8 @@
             UserName = name;
             Roles = roles;
         }
+
+        public bool IsInRole(string role)
+            => Roles.Contains(role);
     }
 }

@@ -22,7 +22,7 @@ namespace CookBook.Application.RecipeUtils.Commands.EditRecipe
             var recipe = await _recipeRepository.GetRecipeById(request.Id);
 
             var user = _userContext.GetCurrentUser();
-            var isEditable = user != null && (recipe.AuthorId == user.Id || user.Roles.Contains("Manager"));
+            var isEditable = user != null && (recipe.AuthorId == user.Id || user.IsInRole("Manager"));
 
             if(!isEditable)
             {

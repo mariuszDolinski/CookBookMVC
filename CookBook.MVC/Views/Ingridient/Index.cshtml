@@ -1,20 +1,16 @@
-﻿@model IEnumerable<CookBook.Application.IngridientUtils.IngridientDto>
+﻿@using CookBook.Application.IngridientUtils;
+@model IEnumerable<CookBook.Application.IngridientUtils.IngridientDto>
 
 @{
     ViewData["Title"] = "Składniki";
 }
 
 <h3>Lista wszystkich dostępnych składników</h3>
-<div class="row">
-    <div class="col-4">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <a class="btn btn-primary" type="button" asp-action="Index">Dodaj składnik</a>
-            </div>
-        </div>
-    </div>
+<div class="mb-3">
+    <partial name="_CreateIngridient" model="new IngridientDto()"/>
 </div>
+@*<a asp-action="Create" class="btn btn-outline-primary">Dodaj składnik</a>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -43,7 +39,7 @@
                 @Html.DisplayFor(modelItem => item.CreatedTime)
             </td>
             <td>
-                @Html.ActionLink("Edytuj", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Edytuj", "Edit", new { /* id=item.PrimaryKey */ }, new{@class="btn btn-primary"}) |
                 @Html.ActionLink("Szczegóły", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Usuń", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
@@ -51,3 +47,7 @@
 }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

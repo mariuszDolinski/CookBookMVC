@@ -16,5 +16,14 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<IEnumerable<Ingridient>> GetAllIngridients()
             => await _dbContext.Ingridients.ToListAsync();
+
+        public async Task CreateIngridient(Ingridient ingridient)
+        {
+            _dbContext.Add(ingridient);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Ingridient?> GetByName(string name)
+            => await _dbContext.Ingridients.FirstOrDefaultAsync(ing => ing.Name.ToLower() == name.ToLower());
     }
 }
