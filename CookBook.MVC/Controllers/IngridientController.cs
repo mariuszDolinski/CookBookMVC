@@ -1,5 +1,6 @@
 ﻿using CookBook.Application.IngridientUtils.Commands.CreateIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.MVC.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +23,22 @@ namespace CookBook.MVC.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create(CreateIngridientCommand command)
         {
+            if(User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                this.SetNotification("warning", "Zaloguj się aby dodać nowe składniki.");
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!ModelState.IsValid)
             {
                 var error = ModelState.Values.Where(e => e.Errors.Count() > 0)
                     .SelectMany(e => e.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
-                return BadRequest(error[0]);
+                var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
+                return View("Index", ingridients);
             }
 
             await _mediator.Send(command);

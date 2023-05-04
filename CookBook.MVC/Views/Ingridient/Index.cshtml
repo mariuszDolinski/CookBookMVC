@@ -5,48 +5,59 @@
     ViewData["Title"] = "Składniki";
 }
 
-<h3>Lista wszystkich dostępnych składników</h3>
-<div class="mb-3">
-    <partial name="_CreateIngridient" model="new IngridientDto()"/>
-</div>
-@*<a asp-action="Create" class="btn btn-outline-primary">Dodaj składnik</a>*@
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Nazwa
-            </th>
-            <th>
-                Utworzone przez
-            </th>
-            <th>
-                Data dodania
-            </th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedTime)
-            </td>
-            <td>
-                @Html.ActionLink("Edytuj", "Edit", new { /* id=item.PrimaryKey */ }, new{@class="btn btn-primary"}) |
-                @Html.ActionLink("Szczegóły", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Usuń", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+@if(TempData["abc"] != null)
+{
+    <script>
+            alert('Zaloguj się aby móc dodawać nowe składniki.');
+    </script>
 }
-    </tbody>
-</table>
+
+<h3>Lista wszystkich dostępnych składników</h3>
+<hr />
+<div class="row">
+    <div class="col-12 col-md-3">
+        <div class="mb-3">
+            <partial name="_Create" model="new IngridientDto()"/>
+        </div>
+    </div>
+    <div class="col-12 col-md-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nazwa
+                    </th>
+                    <th>
+                        Dodane przez
+                    </th>
+                    <th>
+                        Data dodania
+                    </th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.ActionLink("", "Edit", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-pencil-square"}) &nbsp;
+                        @Html.ActionLink("", "Delete", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-x-square link-danger"}) 
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

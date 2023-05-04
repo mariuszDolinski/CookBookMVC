@@ -12,7 +12,7 @@ public partial class Recipe
 
     public string AuthorId { get; set; } = default!;
     public IdentityUser Author { get; set; } = default!;
-    public DateTime CreatedTime { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedTime { get; set; } = DateTime.Now;
 
     public virtual List<RecipeIngridient> RecipeIngridients { get; } = new List<RecipeIngridient>();
 }

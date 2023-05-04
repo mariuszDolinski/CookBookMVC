@@ -26,7 +26,7 @@ namespace CookBook.Application.IngridientUtils.Commands.CreateIngridient
             var ingridient = _mapper.Map<Ingridient>(request);
             ingridient.SetEncodedName();
             ingridient.CreatedById = _userContext.GetCurrentUser()!.Id;
-            ingridient.CreatedTime = DateTime.UtcNow;
+            ingridient.CreatedTime = DateTime.Now;
             await _ingridientRepository.CreateIngridient(ingridient);
         }
     }

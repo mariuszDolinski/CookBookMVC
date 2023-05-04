@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json;
+@{
+    var notification = TempData["Notification"] != null
+        ? (Notification)JsonConvert.DeserializeObject<Notification>(TempData["Notification"]!.ToString()!)!
+        : null;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,6 +14,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CookBook.MVC.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.css" />
 </head>
 <body>
     <header>
@@ -49,6 +56,27 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+
+    @if(notification != null)
+    {
+        <script>
+            toastr.options.closeButton = true;
+        </script>
+        @if(notification.Title == "")
+        {
+            <script>
+                toastr["@notification.Type"]("@notification.Message");
+            </script>
+        }
+        else
+        {
+            <script>
+                toastr["@notification.Type"]("@notification.Message", "@notification.Title");
+            </script>
+        }
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
