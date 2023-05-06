@@ -4,8 +4,8 @@ namespace CookBook.Application.UnitUtils
 {
     public class UnitDto
     {
-        public string Name { get; set; } = default!;
-        public string EncodedName { get; private set; } = default!;
+        public string? Name { get; set; }
+        public string? EncodedName { get; private set; }
         public string? CreatedBy { get; set; }
         public string? CreatedTime { get; set; }
     }

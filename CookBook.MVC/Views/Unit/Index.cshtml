@@ -1,54 +1,53 @@
-﻿@model IEnumerable<CookBook.Application.UnitUtils.UnitDto>
+﻿@using CookBook.Application.UnitUtils;
+@model IEnumerable<CookBook.Application.UnitUtils.UnitDto>
 
 @{
     ViewData["Title"] = "Jednostki";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h3>Lista wszystkich dostępnych jednostek</h3>
 <div class="row">
-    <div class="col-4">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <a class="btn btn-primary" type="button" asp-action="Index">Dodaj jednostkę</a>
-            </div>
+    <div class="col-12 col-md-3">
+        <div class="mb-3">
+            <partial name="_Create" model="new UnitDto()"/>
         </div>
     </div>
+    <div class="col-12 col-md-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nazwa
+                    </th>
+                    <th>
+                        Utworzone przez
+                    </th>
+                    <th>
+                        Data dodania
+                    </th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.ActionLink("", "Edit", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-pencil-square"}) &nbsp;
+                        @Html.ActionLink("", "Delete", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-x-square link-danger"}) 
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Nazwa
-            </th>
-            <th>
-                Utworzone przez
-            </th>
-            <th>
-                Data dodania
-            </th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedTime)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+

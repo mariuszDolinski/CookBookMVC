@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
+using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
+using CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients;
+using CookBook.Application.UnitUtils.Queries.GetAllUnits;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -115,6 +120,30 @@ namespace CookBook.MVC.Controllers
         }
         #endregion
 
+        [HttpPost]
+        [Route("recipe/recipeIngridient")]
+        public async Task<IActionResult> EditRecipeIngridients(EditRecipeIngridientCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _mediator.Send(command);
 
+            return Ok();
+        }
+        [HttpGet]
+        [Route("recipe/getDatalists")]
+        public async Task<IActionResult> GetDatalists()
+        {
+            var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
+            var units = await _mediator.Send(new GetAllUnitsQuery());
+            DatalistsDto data = new ()
+            { 
+               Ingridients = ingridients.Select(x => x.Name!).ToList(),
+               Units = units.Select(x => x.Name!).ToList()
+            };
+            return Ok(data);
+        }
     }
 }

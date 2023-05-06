@@ -14,5 +14,5 @@ public partial class Recipe
     public IdentityUser Author { get; set; } = default!;
     public DateTime CreatedTime { get; set; } = DateTime.Now;
 
-    public virtual List<RecipeIngridient> RecipeIngridients { get; } = new List<RecipeIngridient>();
+    public List<RecipeIngridient> RecipeIngridients { get; set; } = new List<RecipeIngridient>();
 }

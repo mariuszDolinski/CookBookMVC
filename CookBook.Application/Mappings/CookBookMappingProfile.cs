@@ -22,7 +22,7 @@ namespace CookBook.Application.Mappings
                 .ForMember(r => r.Author, opt => opt.MapFrom(
                     src => userContext.GetUserNameById(src.AuthorId).Result))
                 .ForMember(r => r.IsEditable, opt => opt.MapFrom(src => 
-                user != null && (user.IsInRole("Manager") || src.AuthorId == user.Id)));
+                user != null && (user.IsInRole("Manager") || user.IsInRole("Admin") || src.AuthorId == user.Id)));
             CreateMap<Recipe, PreviewRecipeDto>();
             CreateMap<RecipeDto, EditRecipeCommand>();
             CreateMap<RecipeDto, EditImageCommand>();
@@ -39,6 +39,7 @@ namespace CookBook.Application.Mappings
                     src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "brak"))
                 .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")));
+            CreateMap<UnitDto, Unit>();
         }
     }
 }

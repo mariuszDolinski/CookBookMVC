@@ -33,10 +33,10 @@ namespace CookBook.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                var error = ModelState.Values.Where(e => e.Errors.Count() > 0)
-                    .SelectMany(e => e.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
+                //var error = ModelState.Values.Where(e => e.Errors.Count() > 0)
+                //    .SelectMany(e => e.Errors)
+                //    .Select(e => e.ErrorMessage)
+                //   .ToList();
                 var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
                 return View("Index", ingridients);
             }
@@ -46,7 +46,7 @@ namespace CookBook.MVC.Controllers
         }
         public ActionResult Create()
         {
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
