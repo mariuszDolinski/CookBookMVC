@@ -1,4 +1,4 @@
-﻿@using CookBook.Application.RecipeUtils
+﻿@using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
 @model CookBook.Application.RecipeUtils.Commands.EditRecipe.EditRecipeCommand
 
 @{
@@ -6,7 +6,8 @@
 }
 <div class="row">
     <div class="col-md-5">
-        <partial name="_EditRecipeIngridients" model="new RecipeIngridientDto()"/>
+        <partial name="_EditRecipeIngridients" model="new CreateRecipeIngridientCommand() {RecipeId = Model.Id}"/>
+        <div id="ingridientsList" class="row" data-recipe-id="@Model.Id"></div>
     </div>
     <div class="col-md-1 mb-3"></div>
     <div class="col-md-5">

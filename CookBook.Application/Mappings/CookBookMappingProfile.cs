@@ -40,6 +40,11 @@ namespace CookBook.Application.Mappings
                 .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")));
             CreateMap<UnitDto, Unit>();
+
+            CreateMap<RecipeIngridient, RecipeIngridientDto>()
+                .ForMember(ri => ri.Ingridient, opt => opt.Ignore())
+                .ForMember(ri => ri.Unit, opt => opt.Ignore());
+
         }
     }
 }

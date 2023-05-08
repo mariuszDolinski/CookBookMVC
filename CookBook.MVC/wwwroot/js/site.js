@@ -19,3 +19,33 @@ const FillData = () => {
         }
     })
 }
+
+const RenderRecipeIngridients = (data, container) => {
+    container.empty();
+    //container.append(`<ul>`)
+    for (const item of data) {
+        container.append(
+            `<i class="bi bi-basket">  ${item.description}</i>`)
+    }
+    //container.append(`</ul>`)
+}
+
+const LoadRecipeIngridients = () => {
+    const container = $("#ingridientsList");
+    const rrecipeId = container.data("recipeId");
+
+    $.ajax({
+        url: `/recipe/${rrecipeId}/recipeIngridients`,
+        type: 'get',
+        success: function (data) {
+            if (data.length > 0) {
+                RenderRecipeIngridients(data, container)
+            } else {
+                container.html("Brak składników")
+            }
+        },
+        error: function () {
+            toastr["error"]("Coś poszło nie tak")
+        }
+    })
+}

@@ -27,5 +27,16 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task SaveChangesToDb()
             => await _dbContext.SaveChangesAsync();
+
+        public async Task AddRecipeIngridient(RecipeIngridient recipeIng)
+        {
+            _dbContext.RecipeIngridients.Add(recipeIng);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<RecipeIngridient>> GetAllRecipeIngridients(int recipeId)
+            => await _dbContext.RecipeIngridients
+                .Where(ri => ri.RecipeId == recipeId)
+                .ToListAsync();
     }
 }

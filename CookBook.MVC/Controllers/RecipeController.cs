@@ -122,15 +122,26 @@ namespace CookBook.MVC.Controllers
 
         [HttpPost]
         [Route("recipe/recipeIngridient")]
-        public async Task<IActionResult> EditRecipeIngridients(EditRecipeIngridientCommand command)
+        public async Task<IActionResult> CreateRecipeIngridient(CreateRecipeIngridientCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                return BadRequest(errors[0]);
             }
-            await _mediator.Send(command);
+            var isAuthor = await _mediator.Send(command);
 
             return Ok();
+        }
+        [HttpGet]
+        [Route("recipe/{recipeId}/recipeIngridients")]
+        public async Task<IActionResult> GetRecipeIngridients(int recipeId)
+        {
+            var data = await _mediator.Send(new GetRecipeIngridientsQuery() { RecipeId = recipeId });
+            return Ok(data);    
         }
         [HttpGet]
         [Route("recipe/getDatalists")]

@@ -8,5 +8,7 @@ namespace CookBook.Domain.Interfaces
         Task<IEnumerable<Recipe>> GetAllRecipes();
         Task<Recipe> GetRecipeById(int id);
         Task SaveChangesToDb();
+        Task AddRecipeIngridient(RecipeIngridient recipeIng);
+        Task<IEnumerable<RecipeIngridient>> GetAllRecipeIngridients(int recipeId);
     }
 }

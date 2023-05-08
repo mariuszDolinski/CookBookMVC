@@ -1,28 +1,24 @@
-﻿using CookBook.Domain.Interfaces;
+﻿using AutoMapper;
+using CookBook.Domain.Interfaces;
 using MediatR;
 
 namespace CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients
 {
     public class GetRecipeIngridientsQueryHandler
-        : IRequestHandler<GetRecipeIngridientsQuery, RecipeIngridientDto>
+        : IRequestHandler<GetRecipeIngridientsQuery, IEnumerable<RecipeIngridientDto>>
     {
-        private readonly IIngridientRepository _ingridientRepository;
-        private readonly IUnitRepository _unitRepository;
+        private readonly IRecipeRepository _recipeRepository;
+        private readonly IMapper _mapper;
 
-        public GetRecipeIngridientsQueryHandler(IIngridientRepository ingridientRepository, 
-            IUnitRepository unitRepository)
+        public GetRecipeIngridientsQueryHandler(IRecipeRepository recipeRepository, IMapper mapper)
         {
-            _ingridientRepository = ingridientRepository;
-            _unitRepository = unitRepository;
+            _recipeRepository = recipeRepository;
+            _mapper = mapper;
         }
-        public async Task<RecipeIngridientDto> Handle(GetRecipeIngridientsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RecipeIngridientDto>> Handle(GetRecipeIngridientsQuery request, CancellationToken cancellationToken)
         {
-            RecipeIngridientDto dto = new RecipeIngridientDto();
-
-            var ingridients = await _ingridientRepository.GetAllIngridients();
-            var units = await _unitRepository.GetAllUnits();
-
-            return dto;
+            var recipeIngridients = await _recipeRepository.GetAllRecipeIngridients(request.RecipeId);
+            return _mapper.Map<IEnumerable<RecipeIngridientDto>>(recipeIngridients);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model CookBook.Application.RecipeUtils.RecipeIngridientDto
+﻿@model CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient.CreateRecipeIngridientCommand
 
 <h4>Edytuj składniki przepisu</h4>
 <hr />
@@ -16,33 +16,32 @@
                 <h1 class="modal-title fs-5" id="createRecipeIngridientModalLabel">Nowy składnik przepisu</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form asp-action="EditRecipeIngridients">
+              <form asp-action="CreateRecipeIngridient">
                    <div class="modal-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input asp-for="RecipeId" class="form-control" type="hidden"/>
+
                         <div class="form-group mb-2">
                             <label asp-for="Amount" class="control-label">Ilość</label>
-                            <input asp-for="Amount" class="form-control" placeholder="Wpisz liczbę lub ułamek..." />
-                            <span asp-validation-for="Amount" class="text-danger"></span>
+                            <input asp-for="Amount" id="amountId" class="form-control" placeholder="Wpisz liczbę lub ułamek..." />
                         </div>
                         <div class="form-group mb-2">
                             <label asp-for="Ingridient" class="control-label">Wybierz składnik</label>
-                            <input asp-for="Ingridient" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik...">
+                            <input asp-for="Ingridient" id="ingId" autocomplete="off" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik...">
                             <datalist id="datalistIngridients"></datalist>
-                            <span asp-validation-for="Ingridient" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-2">
                             <label asp-for="Unit" class="control-label">Wybierz jednostkę</label>
-                            <input asp-for="Unit" class="form-control" list="datalistUnits" placeholder="Znajdź jednostkę...">
+                            <input asp-for="Unit" id="unitId" autocomplete="off" class="form-control" list="datalistUnits" placeholder="Znajdź jednostkę...">
                             <datalist id="datalistUnits"></datalist>
-                            <span asp-validation-for="Unit" class="text-danger"></span>
                         </div>
                          <div class="form-group mb-2">
                             <label asp-for="Description" class="control-label">Opis</label>
                             <span><font size="2"><br />(Opis powinien odzwierciedlać podane dane. 
                                 Jeśli np. wybrany składnik to mleko, jednostka to szklanka a ilość to 2, 
                                 opis powinien brzmieć np. 2 szklanki mleka)</font></span>
-                            <input asp-for="Description" class="form-control" />
-                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <input asp-for="Description" id="descId" class="form-control" />
                         </div>
                     </div>
                     <div class="modal-footer">

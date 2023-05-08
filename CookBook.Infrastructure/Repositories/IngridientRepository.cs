@@ -25,5 +25,19 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<Ingridient?> GetByName(string name)
             => await _dbContext.Ingridients.FirstOrDefaultAsync(ing => ing.Name.ToLower() == name.ToLower());
+        
+        public async Task<string> GetName(string name)
+        {
+            var ing = await _dbContext.Ingridients.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+            if(ing == null)
+            {
+                return "";
+            }
+            else
+            {
+                return ing.Name;
+            }
+        }
+
     }
 }

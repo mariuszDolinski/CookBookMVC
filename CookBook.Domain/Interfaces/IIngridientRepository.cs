@@ -7,5 +7,6 @@ namespace CookBook.Domain.Interfaces
         Task<IEnumerable<Ingridient>> GetAllIngridients();
         Task CreateIngridient(Ingridient ingridient);
         Task<Ingridient?> GetByName(string name);
+        Task<string> GetName(string name);
     }
 }
