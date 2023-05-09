@@ -22,20 +22,34 @@ const FillData = () => {
 
 const RenderRecipeIngridients = (data, container) => {
     container.empty();
-    //container.append(`<ul>`)
-    for (const item of data) {
-        container.append(
-            `<i class="bi bi-basket">  ${item.description}</i>`)
+    if (container.attr('name') == "details") {
+        for (const item of data) {
+            container.append(
+                `<i class="bi bi-basket">  ${item.description}</i>`)
+        }
     }
-    //container.append(`</ul>`)
+    if (container.attr('name') == "edit") {
+        for (const item of data) {
+            container.append(
+                `<tr id="row-${item.id}">
+                    <td>${item.description}</td>
+                    <td>
+                        <a role="button" class="btn-outline-danger btn-sm" onclick="DeleteIng(${item.id})"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>`
+            )
+        }
+        //link do wyświetlania moadala
+        //<a role="button" class="btn-outline-primary btn-sm" onclick="ShowEditModal(${item.id})"><i class="bi bi-pencil-square"></i></a>
+    }
 }
 
 const LoadRecipeIngridients = () => {
     const container = $("#ingridientsList");
-    const rrecipeId = container.data("recipeId");
+    const recipeId = container.data("recipeId");
 
     $.ajax({
-        url: `/recipe/${rrecipeId}/recipeIngridients`,
+        url: `/recipe/${recipeId}/recipeIngridients`,
         type: 'get',
         success: function (data) {
             if (data.length > 0) {

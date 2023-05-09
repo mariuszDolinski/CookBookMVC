@@ -3,6 +3,7 @@ using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
+using CookBook.Application.RecipeUtils.Commands.DeleteRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
@@ -120,6 +121,7 @@ namespace CookBook.MVC.Controllers
         }
         #endregion
 
+        #region RecipeIngridients Actions
         [HttpPost]
         [Route("recipe/recipeIngridient")]
         public async Task<IActionResult> CreateRecipeIngridient(CreateRecipeIngridientCommand command)
@@ -133,9 +135,13 @@ namespace CookBook.MVC.Controllers
                 return BadRequest(errors[0]);
             }
             var isAuthor = await _mediator.Send(command);
-
+            if (!isAuthor) 
+            {
+                return BadRequest("Użytkownik nie jest autorem przepisu! Składnik nie został dodany.");
+            }
             return Ok();
         }
+
         [HttpGet]
         [Route("recipe/{recipeId}/recipeIngridients")]
         public async Task<IActionResult> GetRecipeIngridients(int recipeId)
@@ -143,6 +149,7 @@ namespace CookBook.MVC.Controllers
             var data = await _mediator.Send(new GetRecipeIngridientsQuery() { RecipeId = recipeId });
             return Ok(data);    
         }
+
         [HttpGet]
         [Route("recipe/getDatalists")]
         public async Task<IActionResult> GetDatalists()
@@ -156,5 +163,15 @@ namespace CookBook.MVC.Controllers
             };
             return Ok(data);
         }
+
+        [HttpDelete]
+        [Route("recipeIngridient/{ingId}")]
+        public async Task<IActionResult> DeleteIngridient(int ingId)
+        {
+            await _mediator.Send(new DeleteRecipeIngridientCommand() { recipeIngridientId = ingId});
+
+            return Ok();
+        }
+        #endregion
     }
 }

@@ -7,7 +7,31 @@
 <div class="row">
     <div class="col-md-5">
         <partial name="_EditRecipeIngridients" model="new CreateRecipeIngridientCommand() {RecipeId = Model.Id}"/>
-        <div id="ingridientsList" class="row" data-recipe-id="@Model.Id"></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nazwa
+                    </th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody id="ingridientsList" name="edit" data-recipe-id="@Model.Id">
+                @*@foreach (var item in Model.RecipeIngridients) {
+                    <tr id="row-@item.Id">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" onclick="DeleteIng(@item.Id)">
+                                <i class="bi bi-x-square"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }*@
+            </tbody>
+        </table>
+        @*<div id="ingridientsList" name="edit" class="row" data-recipe-id="@Model.Id"></div>*@
     </div>
     <div class="col-md-1 mb-3"></div>
     <div class="col-md-5">

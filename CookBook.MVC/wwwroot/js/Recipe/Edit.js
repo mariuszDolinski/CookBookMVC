@@ -19,8 +19,29 @@ $(document).ready(function () {
                 LoadRecipeIngridients()
             },
             error: function (xhr) {
-                toastr["warning"](xhr.responseText, "Z&#322;e dane!")
+                toastr.options = {
+                    "closeButton": true
+                }
+                toastr["warning"](xhr.responseText)
             }
         })
     });
 });
+
+const DeleteIng = (ingId) => {
+    $.ajax({
+        url: `/recipeIngridient/${ingId}`,
+        type: 'delete',
+        success: function () {
+            toastr["success"]("Sk&#322;adnik zosta&#322; usuni&#281;ty");
+            $("#row-" + ingId).remove();
+        },
+        error: function () {
+            toastr["error"]("Coœ posz³o nie tak. Operacja zakoñczona niepowodzeniem.")
+        }
+    })
+}
+
+const ShowEditModal = (ingId) => {
+    $("#createRecipeIngridientModal").modal('show');
+}

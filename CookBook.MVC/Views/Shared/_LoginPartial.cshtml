@@ -5,14 +5,20 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" 
-                                              title="Manage">Witaj @User.Identity!.Name!</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout" method="post" >
-            Wyloguj
-        </a>
+    <li class="nav-item dropdown">
+        <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">  Witaj @User.Identity!.Name  </a>
+        <ul class="dropdown-menu">
+			  <li>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    Ustawienia konta
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" method="post" >
+                    Wyloguj
+                </a>
+              </li>
+		</ul>
     </li>
 }
 else
@@ -24,4 +30,4 @@ else
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
     </li>
 }
-</ul>
+</ul>	

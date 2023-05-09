@@ -14,5 +14,6 @@ namespace CookBook.Application.RecipeUtils
         public string? Author { get; set; }
         public string? CreatedTime { get; set; }
         public bool IsEditable { get; set; }
+        public List<RecipeIngridientDto> RecipeIngridients { get; set; } = new List<RecipeIngridientDto>();
     }
 }
