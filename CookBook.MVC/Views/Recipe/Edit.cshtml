@@ -1,4 +1,5 @@
 ﻿@using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
+@using CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient;
 @model CookBook.Application.RecipeUtils.Commands.EditRecipe.EditRecipeCommand
 
 @{
@@ -6,7 +7,7 @@
 }
 <div class="row">
     <div class="col-md-5">
-        <partial name="_EditRecipeIngridients" model="new CreateRecipeIngridientCommand() {RecipeId = Model.Id}"/>
+        <partial name="_CreateRecipeIngridients" model="new CreateRecipeIngridientCommand() {RecipeId = Model.Id}"/>
         <table class="table">
             <thead>
                 <tr>
@@ -17,21 +18,8 @@
                 </tr>
             </thead>
             <tbody id="ingridientsList" name="edit" data-recipe-id="@Model.Id">
-                @*@foreach (var item in Model.RecipeIngridients) {
-                    <tr id="row-@item.Id">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" onclick="DeleteIng(@item.Id)">
-                                <i class="bi bi-x-square"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }*@
             </tbody>
         </table>
-        @*<div id="ingridientsList" name="edit" class="row" data-recipe-id="@Model.Id"></div>*@
     </div>
     <div class="col-md-1 mb-3"></div>
     <div class="col-md-5">
@@ -72,6 +60,9 @@
         </form>
     </div>
 </div>
+
+<partial name="_ConfirmDeleteRecipeIngridientModal"/>
+<partial name="_EditRecipeIngridients" model="new EditRecipeIngridientCommand() {RecipeId = Model.Id}"/>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

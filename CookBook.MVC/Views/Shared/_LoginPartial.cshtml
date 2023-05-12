@@ -7,7 +7,12 @@
 {
     <li class="nav-item dropdown">
         <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">  Witaj @User.Identity!.Name  </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu"> 
+              <li>
+                <a class="dropdown-item" asp-controller="Recipe" asp-action="Index" >
+                    Moje przepisy
+                </a>
+              </li>  
 			  <li>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
                     Ustawienia konta

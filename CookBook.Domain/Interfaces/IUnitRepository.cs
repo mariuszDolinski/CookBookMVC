@@ -7,5 +7,6 @@ namespace CookBook.Domain.Interfaces
         Task<IEnumerable<Unit>> GetAllUnits();
         Task CreateUnit(Unit unit);
         Task<Unit?> GetByName(string name);
+        Task<Unit?> GetById(int id);
     }
 }

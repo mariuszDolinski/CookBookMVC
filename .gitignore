@@ -59,7 +59,7 @@ dlldata.c
 BenchmarkDotNet.Artifacts/
 
 # images
-images/
+**/wwwroot/images
 
 # .NET Core
 project.lock.json

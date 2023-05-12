@@ -22,6 +22,9 @@ namespace CookBook.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
         public async Task<Unit?> GetByName(string name)
-            => await _dbContext.Units.FirstOrDefaultAsync(unit => unit.Name.ToLower() == name.ToLower());
+            => await _dbContext.Units.FirstOrDefaultAsync(u => u.Name.ToLower() == name.ToLower());
+
+        public async Task<Unit?> GetById(int id)
+            => await _dbContext.Units.FirstOrDefaultAsync(u => u.Id == id);
     }
 }

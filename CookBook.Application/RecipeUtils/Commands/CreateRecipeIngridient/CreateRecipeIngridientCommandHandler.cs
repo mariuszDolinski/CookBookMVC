@@ -11,14 +11,17 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
         private readonly IRecipeRepository _recipeRepository;
         private readonly IIngridientRepository _ingridientRepository;
         private readonly IUnitRepository _unitRepository;
+        private readonly IRecipeIngridientRepository _recipeIngridientRepository;
 
         public CreateRecipeIngridientCommandHandler(IUserContext userContext, IRecipeRepository recipeRepository,
-            IIngridientRepository ingridientRepository, IUnitRepository unitRepository) 
+            IIngridientRepository ingridientRepository, IUnitRepository unitRepository, 
+            IRecipeIngridientRepository recipeIngridientRepository) 
         {
             _userContext = userContext;
             _recipeRepository = recipeRepository;
             _ingridientRepository = ingridientRepository;
             _unitRepository = unitRepository;
+            _recipeIngridientRepository = recipeIngridientRepository;
         }
 
         public async Task<bool> Handle(CreateRecipeIngridientCommand request, CancellationToken cancellationToken)
@@ -44,7 +47,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
                 UnitId = unit!.Id
             };
 
-            await _recipeRepository.AddRecipeIngridient(recipeIngridient);
+            await _recipeIngridientRepository.AddRecipeIngridient(recipeIngridient);
 
             return true;
         }

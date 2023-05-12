@@ -6,6 +6,7 @@ using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.DeleteRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
+using CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients;
@@ -170,6 +171,27 @@ namespace CookBook.MVC.Controllers
         {
             await _mediator.Send(new DeleteRecipeIngridientCommand() { recipeIngridientId = ingId});
 
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("recipeIngridient/{ingId}")]
+        public async Task<IActionResult> EditRecipeIngridient(int ingId, EditRecipeIngridientCommand command)
+        {
+            if(!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                return BadRequest(errors[0]);
+            }
+            command.Id = ingId;
+            var isAuthor = await _mediator.Send(command);
+            if (!isAuthor)
+            {
+                return BadRequest("Użytkownik nie jest autorem przepisu! Składnik nie został zmieniony.");
+            }
             return Ok();
         }
         #endregion

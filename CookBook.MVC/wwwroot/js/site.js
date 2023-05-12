@@ -34,13 +34,12 @@ const RenderRecipeIngridients = (data, container) => {
                 `<tr id="row-${item.id}">
                     <td>${item.description}</td>
                     <td>
-                        <a role="button" class="btn-outline-danger btn-sm" onclick="DeleteIng(${item.id})"><i class="bi bi-trash"></i></a>
+                        <a role="button" class="btn-outline-primary btn-sm" onclick="ShowEditModal(${item.id},'${item.description}','${item.amount}','${item.ingridient}','${item.unit}')"><i class="bi bi-pencil-square"></i></a>
+                        <a role="button" class="btn-outline-danger btn-sm" onclick="ConfirmDeleteModal(${item.id},'${item.description}')"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>`
             )
         }
-        //link do wyświetlania moadala
-        //<a role="button" class="btn-outline-primary btn-sm" onclick="ShowEditModal(${item.id})"><i class="bi bi-pencil-square"></i></a>
     }
 }
 

@@ -1,11 +1,11 @@
 ﻿using CookBook.Domain.Interfaces;
 using FluentValidation;
 
-namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
+namespace CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient
 {
-    public class CreateRecipeIngridientCommandValidator : AbstractValidator<CreateRecipeIngridientCommand>
+    public class EditRecipeIngridientCommandValidator : AbstractValidator<EditRecipeIngridientCommand>
     {
-        public CreateRecipeIngridientCommandValidator(IIngridientRepository ingridientRepository, IUnitRepository unitRepository)
+        public EditRecipeIngridientCommandValidator(IIngridientRepository ingridientRepository, IUnitRepository unitRepository) 
         {
             RuleFor(ri => ri.Amount)
                 .NotEmpty().WithMessage("Podaj ilość (jako liczbę lub ułamek)")

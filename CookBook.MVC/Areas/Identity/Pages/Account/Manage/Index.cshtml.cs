@@ -30,6 +30,7 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+        public string Role { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -64,6 +65,24 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if(!roles.Any()) 
+            {
+                Role = "brak przypisanych ról";
+            }
+            else
+            {
+                Role = "";
+                foreach (var role in roles)
+                {
+                    Role += role;
+                    if(roles.IndexOf(role) != roles.Count - 1)
+                    {
+                        Role += ", ";
+                    }
+                }
+            }
 
             Username = userName;
 
