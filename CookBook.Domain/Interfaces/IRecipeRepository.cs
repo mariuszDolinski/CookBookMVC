@@ -8,5 +8,6 @@ namespace CookBook.Domain.Interfaces
         Task<IEnumerable<Recipe>> GetAllRecipes();
         Task<Recipe> GetRecipeById(int id);
         Task SaveChangesToDb();
+        Task DeleteById(int id);
     }
 }

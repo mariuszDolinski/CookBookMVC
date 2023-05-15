@@ -4,9 +4,9 @@
     ViewData["Title"] = "Przepisy";
 }
 
-    @*<div class="input-group mb-3">*@
+    @*<div class="input-group mb-3">
         <a asp-action="Create" class="btn btn-outline-primary">Dodaj składnik</a>
-        @*<input type="text" class="form-control" placeholder="Wyszukaj przepis" aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input type="text" class="form-control" placeholder="Wyszukaj przepis" aria-label="Recipient's username" aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" id="button-addon2">Szukaj</button>
     </div>*@
 
@@ -18,21 +18,19 @@
                 <div class="card shadow-sm m-3" style="width: auto">
                     @if(item.ImageName is null)
                     {
-                        <img class="bd-placeholder-img card-img-top" src="~/images/placeholder.jpg" asp-append-version="true"/>
+                        <img title="@item.Name" class="bd-placeholder-img card-img-top" src="~/images/placeholder.jpg" asp-append-version="true"/>
                     }
                     else
                     {
-                        <img class="bd-placeholder-img card-img-top" src="@("~/images/"+item.ImageName)" asp-append-version="true"/>
+                        <img  title="@item.Name" class="bd-placeholder-img card-img-top" src="@("~/images/"+item.ImageName)" asp-append-version="true"/>
                     }
                     <div class="card-body">
+                        <h5 class="card-subtitle mb-2">@item.GetShortName()</h5>                      
+                        <a title="@item.Name" class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id.ToString()">Szczegóły</a>
                         @if (item.OnlyForAdults)
                         {
-                            <h6 class="card-subtitle mb-2">@item.Name  <span class="badge bg-warning">18+</span></h6>
-                        }else
-                        {
-                            <h6 class="card-subtitle mb-2">@item.Name</h6>
-                        }
-                        <a class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id.ToString()">Szczegóły</a>
+                            <span class="badge bg-warning float-end">18+</span>
+                        }                        
                     </div>
                 </div>
             </div>

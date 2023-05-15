@@ -29,5 +29,14 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task SaveChangesToDb()
             => await _dbContext.SaveChangesAsync();
+
+        public async Task DeleteById(int id)
+        {
+            var recipe = await _dbContext.Recipes
+                .Include(r => r.RecipeIngridients)
+                .FirstAsync(r => r.Id == id);
+            _dbContext.Recipes.Remove(recipe);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
+
+@{
+    ViewData["Title"] = "Twoje przepisy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Lista dodanych przez Ciebie przepisów</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa przepisu</th>
+            <th>Tylko dla pełnoletnich</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr id="row-@item.Id">
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="align-middle">
+                @Html.DisplayFor(modelItem => item.OnlyForAdults)
+            </td>
+            <td>
+                <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a> 
+                <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil-square"></i></a> 
+                <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="DeleteRecipe(@item.Id)"><i class="bi bi-trash"></i></a>   
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/Recipe/Delete.js"></script>
+}

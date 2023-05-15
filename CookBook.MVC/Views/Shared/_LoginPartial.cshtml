@@ -6,10 +6,10 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item dropdown">
-        <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">  Witaj @User.Identity!.Name  </a>
+        <a class="me-5 nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">  Witaj @User.Identity!.Name  </a>
         <ul class="dropdown-menu"> 
               <li>
-                <a class="dropdown-item" asp-controller="Recipe" asp-action="Index" >
+                <a class="dropdown-item" asp-controller="User" asp-action="Index" >
                     Moje przepisy
                 </a>
               </li>  

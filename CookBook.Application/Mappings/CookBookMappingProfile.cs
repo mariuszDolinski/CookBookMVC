@@ -17,6 +17,8 @@ namespace CookBook.Application.Mappings
             var user = userContext.GetCurrentUser();
             CreateMap<RecipeDto, Recipe>();
             CreateMap<Recipe, RecipeDto>()
+                //.ForMember(r => r.Description, opt => opt.MapFrom(
+                  //  src => (src.Description != null) ? src.Description.Replace(Environment.NewLine, "&#13;") : null))
                 .ForMember(r => r.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
                 .ForMember(r => r.Author, opt => opt.MapFrom(

@@ -3,6 +3,7 @@ using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
+using CookBook.Application.RecipeUtils.Commands.DeleteRecipe;
 using CookBook.Application.RecipeUtils.Commands.DeleteRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CookBook.MVC.Controllers
 {
+    [Authorize]
     public class RecipeController : Controller
     {
         private readonly IMediator _mediator;
@@ -28,12 +30,16 @@ namespace CookBook.MVC.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var recipes = await _mediator.Send(new GetAllRecipesQuery());
             return View(recipes);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
         [Route("recipe/{recipeId}/details")]
         public async Task<IActionResult> Details(int recipeId)
         {
@@ -43,7 +49,6 @@ namespace CookBook.MVC.Controllers
 
         #region Create Action
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create(CreateRecipeCommand command)
         {
             if(!ModelState.IsValid)
@@ -53,7 +58,7 @@ namespace CookBook.MVC.Controllers
             await _mediator.Send(command);  
             return RedirectToAction(nameof(Index));
         }
-        [Authorize]
+
         public ActionResult Create()
         {
             return View();
@@ -122,8 +127,16 @@ namespace CookBook.MVC.Controllers
         }
         #endregion
 
-        #region RecipeIngridients Actions
-        [HttpPost]
+        [HttpDelete]
+        [Route("recipe/{recipeId}")]
+        public async Task<IActionResult> Delete(int recipeId)
+        {
+            await _mediator.Send(new DeleteRecipeCommand(recipeId));
+            return Ok();
+        }
+
+
+        #region Recipe Ingridients
         [Route("recipe/recipeIngridient")]
         public async Task<IActionResult> CreateRecipeIngridient(CreateRecipeIngridientCommand command)
         {
@@ -143,6 +156,7 @@ namespace CookBook.MVC.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("recipe/{recipeId}/recipeIngridients")]
         public async Task<IActionResult> GetRecipeIngridients(int recipeId)
@@ -151,6 +165,7 @@ namespace CookBook.MVC.Controllers
             return Ok(data);    
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("recipe/getDatalists")]
         public async Task<IActionResult> GetDatalists()
