@@ -15,7 +15,7 @@ namespace CookBook.MVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Recipe");
         }
 
         public IActionResult NoAccess()

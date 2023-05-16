@@ -1,18 +1,23 @@
-﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
+﻿@model CookBook.Application.RecipeUtils.RecipeIndexDto
 
 @{
     ViewData["Title"] = "Przepisy";
 }
 
-    @*<div class="input-group mb-3">
-        <a asp-action="Create" class="btn btn-outline-primary">Dodaj składnik</a>
-        <input type="text" class="form-control" placeholder="Wyszukaj przepis" aria-label="Recipient's username" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Szukaj</button>
-    </div>*@
+<form asp-controller="Recipe" asp-action="Index" method="get">
+<div class="input-group mb-3">
+    @*@if (Model.IsInSearchMode)
+    {*@
+        <a class="btn btn-outline-primary @(!Model.IsInSearchMode ? "disabled" : "")" asp-controller="Recipe" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
+    
+    <input type="text" name="searchPhrase" class="form-control" placeholder="Wyszukaj przepis" id="searchPhrase">
+    <input value="Szukaj" class="btn btn-outline-primary" type="submit">
+</div>
+</form>
 
 <div class="album py-2 bg-body-tertiary">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        @foreach(var item in Model)
+        @foreach(var item in Model.Recipes)
         {
             <div class="col">
                 <div class="card shadow-sm m-3" style="width: auto">
@@ -29,7 +34,7 @@
                         <a title="@item.Name" class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id.ToString()">Szczegóły</a>
                         @if (item.OnlyForAdults)
                         {
-                            <span class="badge bg-warning float-end">18+</span>
+                            <span class="badge bg-warning float-end pe-2 ps-2">18+</span>
                         }                        
                     </div>
                 </div>

@@ -32,10 +32,15 @@ namespace CookBook.MVC.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchPhrase)
         {
-            var recipes = await _mediator.Send(new GetAllRecipesQuery());
-            return View(recipes);
+            var recipes = await _mediator.Send(new GetAllRecipesQuery() { SearchPhrase = searchPhrase});
+            var dto = new RecipeIndexDto()
+            {
+                Recipes = recipes
+            };
+            dto.IsInSearchMode = (searchPhrase == null) ? false : true;
+            return View(dto);
         }
 
         [AllowAnonymous]

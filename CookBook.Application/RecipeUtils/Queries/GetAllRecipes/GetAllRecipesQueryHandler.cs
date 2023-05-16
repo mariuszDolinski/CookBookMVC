@@ -17,7 +17,7 @@ namespace CookBook.Application.RecipeUtils.Queries.GetAllRecipes
         }
         public async Task<IEnumerable<PreviewRecipeDto>> Handle(GetAllRecipesQuery request, CancellationToken cancellationToken)
         {
-            var recipes = await _recipeRepository.GetAllRecipes();
+            var recipes = await _recipeRepository.GetAllRecipes(request.SearchPhrase);
             return _mapper.Map<IEnumerable<PreviewRecipeDto>>(recipes);
         }
     }}

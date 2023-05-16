@@ -2,6 +2,7 @@
 using CookBook.Domain.Interfaces;
 using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CookBook.Infrastructure.Repositories
 {
@@ -19,8 +20,18 @@ namespace CookBook.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllRecipes()
-            => await _dbContext.Recipes.ToListAsync();
+        public async Task<IEnumerable<Recipe>> GetAllRecipes(string? searchPhrase)
+        {
+            var recipes = await _dbContext.Recipes.ToListAsync();
+            if(searchPhrase == null || searchPhrase == "")
+            {
+                return recipes;
+            }
+            else
+            {
+                return recipes.Where(r => r.Name.ToLower().Contains(searchPhrase.ToLower())).ToList();
+            }
+        }
 
         public async Task<Recipe> GetRecipeById(int id)
             => await _dbContext.Recipes
