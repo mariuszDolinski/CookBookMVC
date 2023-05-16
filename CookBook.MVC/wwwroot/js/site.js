@@ -34,7 +34,7 @@ const RenderRecipeIngridients = (data, container) => {
                 `<tr id="row-${item.id}">
                     <td class="align-middle">${item.description}</td>
                     <td>
-                        <a class="btn btn-outline-primary btn-sm" onclick="ShowEditModal(${item.id},'${item.description}','${item.amount}','${item.ingridient}','${item.unit}')"><i class="bi bi-pencil-square"></i></a>
+                        <a class="btn btn-outline-primary btn-sm" onclick="ShowEditModal(${item.id},'${item.description}','${item.amount}','${item.ingridient}','${item.unit}')"><i class="bi bi-pencil"></i></a>
                         <a class="btn btn-outline-danger btn-sm" onclick="ConfirmDeleteModal(${item.id},'${item.description}')"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>`

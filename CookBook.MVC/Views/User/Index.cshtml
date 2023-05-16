@@ -26,7 +26,7 @@
             </td>
             <td>
                 <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a> 
-                <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil-square"></i></a> 
+                <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a> 
                 <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.Name')"><i class="bi bi-trash"></i></a>   
             </td>
         </tr>

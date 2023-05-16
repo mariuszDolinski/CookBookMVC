@@ -24,7 +24,7 @@ namespace CookBook.Infrastructure.Repositories
         {
             var recipes = await _dbContext.Recipes.ToListAsync();
             if(searchPhrase == null || searchPhrase == "")
-            {
+            {   
                 return recipes;
             }
             else

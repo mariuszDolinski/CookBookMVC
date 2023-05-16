@@ -33,14 +33,18 @@ namespace CookBook.Application.Mappings
                 .ForMember(ing => ing.CreatedBy, opt => opt.MapFrom(
                     src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "brak"))
                 .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
-                    src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")));
+                    src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
+                .ForMember(ing => ing.IsEditable, opt => opt.MapFrom(src =>
+                    user != null && user.IsInRole("Admin")));
             CreateMap<IngridientDto, Ingridient>();
 
             CreateMap<Unit, UnitDto>()
-                .ForMember(ing => ing.CreatedBy, opt => opt.MapFrom(
+                .ForMember(u => u.CreatedBy, opt => opt.MapFrom(
                     src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "brak"))
-                .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
-                    src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")));
+                .ForMember(u => u.CreatedTime, opt => opt.MapFrom(
+                    src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
+                .ForMember(u => u.IsEditable, opt => opt.MapFrom(src =>
+                    user != null && user.IsInRole("Admin")));
             CreateMap<UnitDto, Unit>();
 
             CreateMap<RecipeIngridient, RecipeIngridientDto>()

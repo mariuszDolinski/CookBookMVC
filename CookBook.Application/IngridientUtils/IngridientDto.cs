@@ -9,5 +9,6 @@ namespace CookBook.Application.IngridientUtils
         public string? EncodedName { get; private set; }
         public string? CreatedBy { get; set; }
         public string? CreatedTime { get; set; }
+        public bool IsEditable { get; set; }
     }
 }

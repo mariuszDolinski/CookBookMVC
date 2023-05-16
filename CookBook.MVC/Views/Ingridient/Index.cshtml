@@ -26,7 +26,14 @@
                     <th>
                         Data dodania
                     </th>
-                    <th>Akcje</th>
+                    @foreach(var item in Model)
+                    {
+                        @if (item.IsEditable)
+                        {
+                            <th>Akcje</th>
+                        }
+                        break;
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -41,10 +48,13 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.CreatedTime)
                     </td>
-                    <td>
-                        @Html.ActionLink("", "Edit", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-pencil-square"}) &nbsp;
-                        @Html.ActionLink("", "Delete", new { /* id=item.PrimaryKey */ }, new{@class="bi bi-x-square link-danger"}) 
-                    </td>
+                    @if(item.IsEditable)
+                    {
+                        <td>
+                            <a title="to do" class="btn btn-outline-primary btn-sm" asp-controller="Ingridient" asp-action="Index"><i class="bi bi-pencil"></i></a> 
+                            <a title="to do" class="btn btn-outline-danger btn-sm" asp-controller="Ingridient" asp-action="Index"><i class="bi bi-trash"></i></a> 
+                        </td>
+                    }
                 </tr>
                 }
             </tbody>
