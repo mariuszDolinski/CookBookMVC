@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using CookBook.Domain.Pagination;
+using MediatR;
 
 namespace CookBook.Application.UnitUtils.Queries.GetAllUnits
 {
-    public class GetAllUnitsQuery : IRequest<IEnumerable<UnitDto>>
+    public class GetAllUnitsQuery : IRequest<PaginatedResult<UnitDto>>
     {
         public GetAllUnitsQuery()
         {

@@ -1,13 +1,9 @@
 ﻿using CookBook.Application.IngridientUtils.Commands.CreateIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
-using CookBook.Application.IngridientUtils.Queries.IngridientsCount;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using System.Globalization;
-using System.Net.Sockets;
 
 namespace CookBook.MVC.Controllers
 {
@@ -26,8 +22,10 @@ namespace CookBook.MVC.Controllers
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
 
-            var ingridientsCount = await _mediator.Send(new IngridientsCountQuery(search));
-            var pages = new Pagination(ingridientsCount, page, pageSize);
+            var ingridientsDto = await _mediator.Send(new GetAllIngridientsQuery
+                (search, sortOrder, page, pageSize));
+
+            var pages = new Pagination(ingridientsDto.TotalItems, page, pageSize);
             pages.SortOrder = sortOrder;
             pages.SearchPhrase = search;
             ViewBag.Pages = pages;
@@ -35,8 +33,7 @@ namespace CookBook.MVC.Controllers
             var query = new ParamsQuery(sortOrder, page, pageSize);
             this.SetTempData(query);
 
-            var ingridients = await _mediator.Send(new GetAllIngridientsQuery(search, sortOrder, page, pageSize));
-            return View(ingridients);
+            return View(ingridientsDto.Items);
         }
 
         [HttpPost]

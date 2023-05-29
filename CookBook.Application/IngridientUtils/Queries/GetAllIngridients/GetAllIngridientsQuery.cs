@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using CookBook.Domain.Pagination;
+using MediatR;
 
 namespace CookBook.Application.IngridientUtils.Queries.GetAllIngridients
 {
-    public class GetAllIngridientsQuery : IRequest<IEnumerable<IngridientDto>>
+    public class GetAllIngridientsQuery : IRequest<PaginatedResult<IngridientDto>>
     {
         public GetAllIngridientsQuery() 
         {

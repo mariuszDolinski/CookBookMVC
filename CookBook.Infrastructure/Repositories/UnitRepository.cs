@@ -1,5 +1,6 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Domain.Interfaces;
+using CookBook.Domain.Pagination;
 using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -15,7 +16,7 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Unit>> GetAllUnits(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
+        public async Task<PaginatedResult<Unit>> GetAllUnits(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
         {
             var baseQuery = _dbContext.Units
                 .Include(ing => ing.CreatedBy)
@@ -43,14 +44,17 @@ namespace CookBook.Infrastructure.Repositories
                 baseQuery = baseQuery
                     .OrderBy(columnSelector[selectedColumn]);
 
+            List<Unit> items;
             if (pageNumber == 0)
             {
-                return await baseQuery.ToListAsync();
+                items = await baseQuery.ToListAsync();
             }
             else
             {
-                return await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                items = await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             }
+
+            return new PaginatedResult<Unit>(items, baseQuery.Count());
         }
 
         public async Task CreateUnit(Unit unit)
@@ -63,10 +67,5 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<Unit?> GetById(int id)
             => await _dbContext.Units.FirstOrDefaultAsync(u => u.Id == id);
-
-        public async Task<int> GetCount(string searchPhrase)
-            => await _dbContext.Units
-            .Where(ing => string.IsNullOrEmpty(searchPhrase) ? true : ing.Name.Contains(searchPhrase))
-            .CountAsync();
     }
 }

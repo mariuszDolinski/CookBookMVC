@@ -1,8 +1,5 @@
-﻿using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
-using CookBook.Application.IngridientUtils.Queries.IngridientsCount;
-using CookBook.Application.UnitUtils.Commands.CreateUnit;
+﻿using CookBook.Application.UnitUtils.Commands.CreateUnit;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
-using CookBook.Application.UnitUtils.Queries.UnitsCount;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
@@ -19,13 +16,14 @@ namespace CookBook.MVC.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string search = "", string sortOrder = "", int page = 1, int pageSize = 5)
         {
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
 
-            var unitCount = await _mediator.Send(new UnitsCountQuery(search));
-            var pages = new Pagination(unitCount, page, pageSize);
+            var paginatedUnits = await _mediator.Send(new GetAllUnitsQuery(search, sortOrder, page, pageSize));
+            var pages = new Pagination(paginatedUnits.TotalItems, page, pageSize);
             pages.SortOrder = sortOrder;
             pages.SearchPhrase = search;
             ViewBag.Pages = pages;
@@ -33,8 +31,7 @@ namespace CookBook.MVC.Controllers
             var query = new ParamsQuery(sortOrder, page, pageSize);
             this.SetTempData(query);
 
-            var units = await _mediator.Send(new GetAllUnitsQuery(search, sortOrder, page, pageSize));
-            return View(units);
+            return View(paginatedUnits.Items);
         }
 
         [HttpPost]

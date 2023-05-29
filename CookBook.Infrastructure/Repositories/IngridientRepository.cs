@@ -1,5 +1,6 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Domain.Interfaces;
+using CookBook.Domain.Pagination;
 using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -15,7 +16,7 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Ingridient>> GetAllIngridients(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
+        public async Task<PaginatedResult<Ingridient>> GetAllIngridients(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
         {
             var baseQuery = _dbContext.Ingridients
                 .Include(ing => ing.CreatedBy)
@@ -43,15 +44,17 @@ namespace CookBook.Infrastructure.Repositories
                 baseQuery = baseQuery
                     .OrderBy(columnSelector[selectedColumn]);
 
+            List<Ingridient> items;
             if(pageNumber == 0)
             {
-                return await baseQuery.ToListAsync();
+                items = await baseQuery.ToListAsync();
             }
             else
             {
-                return await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                items = await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
             }
-            
+
+            return new PaginatedResult<Ingridient>(items, baseQuery.Count());
         }
 
         public async Task CreateIngridient(Ingridient ingridient)
@@ -65,10 +68,5 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<Ingridient?> GetById(int id)
             => await _dbContext.Ingridients.FirstOrDefaultAsync(ing => ing.Id == id);
-
-        public async Task<int> GetCount(string searchPhrase)
-            => await _dbContext.Ingridients
-            .Where(ing => string.IsNullOrEmpty(searchPhrase) ? true : ing.Name.Contains(searchPhrase))
-            .CountAsync();
     }
 }
