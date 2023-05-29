@@ -9,7 +9,7 @@
         <p>@Model.From - @Model.To / @Model.TotalItems</p>
     </div>
 
-    <div class="col-5 btn-group justify-content-end">
+    <div class="col-4 btn-group justify-content-end">
         <span class="col-4 p-1 btn-group" style="width:60px">
             <select class="form-select form-select-sm" id="pageSizeSelector"
                 asp-items="@Model.GetPageSizes()" 
@@ -21,7 +21,7 @@
         </span>
     </div>
 
-    <div class="col-3 btn-group justify-content-end mt-2 pe-3">
+    <div class="col-4 btn-group justify-content-end mt-2 pe-3">
         <p>Strona @Model.CurrentPage / @Model.TotalPages</p>
     </div>
 </div>

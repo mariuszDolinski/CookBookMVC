@@ -15,7 +15,7 @@ namespace CookBook.Infrastructure.Extensions
             IConfiguration configuration)
         {
             services.AddDbContext<CookBookDbContext>(options => options.UseSqlServer(
-                configuration.GetConnectionString("CookBookDbLocal")));
+                configuration.GetConnectionString("CookBook")));
 
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
