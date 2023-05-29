@@ -30,14 +30,12 @@ namespace CookBook.MVC.Controllers
             var pages = new Pagination(ingridientsCount, page, pageSize);
             pages.SortOrder = sortOrder;
             pages.SearchPhrase = search;
+            ViewBag.Pages = pages;
 
             var query = new ParamsQuery(sortOrder, page, pageSize);
             this.SetTempData(query);
 
-            ViewBag.Pages = pages;
-
             var ingridients = await _mediator.Send(new GetAllIngridientsQuery(search, sortOrder, page, pageSize));
-
             return View(ingridients);
         }
 

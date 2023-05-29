@@ -1,7 +1,10 @@
 ﻿using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.Application.IngridientUtils.Queries.IngridientsCount;
 using CookBook.Application.UnitUtils.Commands.CreateUnit;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
+using CookBook.Application.UnitUtils.Queries.UnitsCount;
 using CookBook.MVC.Extensions;
+using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,33 +19,48 @@ namespace CookBook.MVC.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search = "", string sortOrder = "", int page = 1, int pageSize = 5)
         {
-            var units = await _mediator.Send(new GetAllUnitsQuery());
+            this.SetViewBagParams(search, sortOrder, pageSize);
+            this.SetViewBagSortIcons(sortOrder);
+
+            var unitCount = await _mediator.Send(new UnitsCountQuery(search));
+            var pages = new Pagination(unitCount, page, pageSize);
+            pages.SortOrder = sortOrder;
+            pages.SearchPhrase = search;
+            ViewBag.Pages = pages;
+
+            var query = new ParamsQuery(sortOrder, page, pageSize);
+            this.SetTempData(query);
+
+            var units = await _mediator.Send(new GetAllUnitsQuery(search, sortOrder, page, pageSize));
             return View(units);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUnitCommand command)
         {
+            var query = this.GetTempData();
+
             if (User.Identity == null || !User.Identity.IsAuthenticated)
             {
                 this.SetNotification("warning", "Zaloguj się aby dodać nowe jednostki.");
-                return RedirectToAction(nameof(Index));
+                return this.CallRedirectToAction(query, nameof(Index));
             }
 
             if (!ModelState.IsValid)
             {
-                var units = await _mediator.Send(new GetAllUnitsQuery());
-                return View("Index", units);
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                this.SetNotification("error", errors[0]);
+                return this.CallRedirectToAction(query, nameof(Index));
             }
 
             await _mediator.Send(command);
-            return RedirectToAction(nameof(Index));
-        }
-        public ActionResult Create()
-        {
-            return RedirectToAction(nameof(Index));
+            this.SetNotification("success", $"Jednostka '{command.Name}' została dodana");
+            return this.CallRedirectToAction(query, nameof(Index));
         }
     }
 }

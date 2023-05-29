@@ -17,7 +17,9 @@ namespace CookBook.Application.UnitUtils.Queries.GetAllUnits
 
         public async Task<IEnumerable<UnitDto>> Handle(GetAllUnitsQuery request, CancellationToken cancellationToken)
         {
-            var units = await _unitRepository.GetAllUnits();
+            request.SortOrder ??= "";
+            request.SearchPhrase ??= "";
+            var units = await _unitRepository.GetAllUnits(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
             return _mapper.Map<IEnumerable<UnitDto>>(units);
         }
     }

@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Jednostki";
+    Pagination pages = ViewBag.Pages;
 }
 
 <h3>Lista wszystkich dostępnych jednostek</h3>
@@ -11,19 +12,35 @@
         <div class="mb-3">
             <partial name="_Create" model="new UnitDto()"/>
         </div>
+         <div class="mb-1">
+            <partial name="_Search" model="@pages"/>
+        </div>
+        @if (!string.IsNullOrEmpty(pages.SearchPhrase))
+         {
+            <div>
+                <a asp-action="Index" 
+                    asp-route-pageSize="@pages.PageSize" asp-route-sortOrder="@pages.SortOrder"
+                    class="btn btn-outline-primary w-100">Wróc do listy wszystkich jednostek</a>
+            </div>               
+         }
     </div>
-    <div class="col-12 col-md-9">
+    <div class="col-12 col-md-9 mt-3">
+        <div class="row">
+            <div class="col-12">
+                <partial name="_TopPaginationBar" model="@pages" />
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        Nazwa
+                        @Html.ActionLink("Nazwa", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
                     </th>
                     <th>
-                        Utworzone przez
+                        @Html.ActionLink("Dodane przez", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
                     </th>
                     <th>
-                        Data dodania
+                        @Html.ActionLink("Data dodania", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
                     </th>
                     @foreach(var item in Model)
                     {
@@ -58,6 +75,16 @@
             }
             </tbody>
         </table>
+        <div class="row">
+            <div class="col-12">
+                <partial name="_BottomPaginationBar" model="@pages" />
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Pagination/Pages.js"></script>
+}
 
