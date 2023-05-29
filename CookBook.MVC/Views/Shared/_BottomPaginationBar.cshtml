@@ -1,0 +1,29 @@
+﻿@model Pagination
+@{
+    var controller = this.ViewContext.RouteData.Values["controller"]!.ToString();
+    var action = (Model.Action == "Index") ? "" : "/" + Model.Action;
+}
+
+<div class="container-fluid m-0 p-0 btn-group pagination-nonactive h-70">
+    <div class="col-4 btn-group m-1 p-1">
+        <p>@Model.From - @Model.To / @Model.TotalItems</p>
+    </div>
+
+    <div class="col-5 btn-group justify-content-end">
+        <span class="col-4 p-1 btn-group" style="width:60px">
+            <select class="form-select form-select-sm" id="pageSizeSelector"
+                asp-items="@Model.GetPageSizes()" 
+                onchange="ChangePageSize(this, '@controller', '@action', '@Model.SortOrder', '@Model.SearchPhrase');">
+            </select>
+        </span>
+        <span class="col-8 mt-2 ms-1 p-0 text-start btn-group">
+            na stronę
+        </span>
+    </div>
+
+    <div class="col-3 btn-group justify-content-end mt-2 pe-3">
+        <p>Strona @Model.CurrentPage / @Model.TotalPages</p>
+    </div>
+</div>
+
+<input id="currentPageSize" type="hidden"/>

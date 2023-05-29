@@ -10,9 +10,9 @@ const FillData = () => {
             containerIngridient.empty();
             containerUnit.empty();
             for (const item of data.ingridients)
-                containerIngridient.append(`<option>${item}</option>`);
+                containerIngridient.append(`<option value="${item}"></option>`);
             for (const item of data.units)
-                containerUnit.append(`<option>${item}</option>`);
+                containerUnit.append(`<option value="${item}"></option>`);
         },
         error: function () {
             toastr["error"]("Lista składników lub jednostek nie mogła zostać wczytana")

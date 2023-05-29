@@ -16,7 +16,9 @@ namespace CookBook.Application.IngridientUtils.Queries.GetAllIngridients
         }
         public async Task<IEnumerable<IngridientDto>> Handle(GetAllIngridientsQuery request, CancellationToken cancellationToken)
         {
-            var ingridients = await _ingridientRepository.GetAllIngridients();
+            request.SortOrder ??= "";//jeśli null to wstawiamy pusty string
+            request.SearchPhrase ??= "";
+            var ingridients = await _ingridientRepository.GetAllIngridients(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
             return _mapper.Map<IEnumerable<IngridientDto>>(ingridients);
         }
     }

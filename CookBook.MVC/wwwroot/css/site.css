@@ -38,3 +38,24 @@ body {
         margin-top: 0;
     }
 }
+
+.pagination-no-border-radius > li > a,
+.pagination-no-border-radius > li > span {
+    border-radius: 0 !important;
+}
+
+.pagination > li > a {
+    border: 1px solid #c1baba !important;
+}
+
+.pagination-nonactive {
+    background-color: lightgray !important;
+}
+
+.h-70 {
+    height: 69%;
+}
+
+.h-20 {
+    height: 12%;
+}

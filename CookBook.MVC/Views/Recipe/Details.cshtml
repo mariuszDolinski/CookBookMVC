@@ -24,7 +24,7 @@
         }
     </div>
     <div class="row mb-3">
-        <div class="col-sm-4 border-end border-2">
+        <div class="col-sm-4">
             <div class = "fw-bold">Składniki</div>
             <div id="ingridientsList" name="details" class="row" data-recipe-id="@Model.Id"></div>
         </div>
@@ -35,10 +35,10 @@
     </div> 
     <div> 
     <a asp-action="Index" class="btn btn-secondary">Wróc do listy przepisów</a>
-    @*@if (Model.IsEditable)
+    @if (Model.IsEditable)
     {
         <a class="btn btn-outline-primary" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@Model.Id.ToString()">Edytuj</a>            
-    }*@
+    }
 </div>
 </div>
 </div>

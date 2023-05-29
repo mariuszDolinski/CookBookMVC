@@ -1,23 +1,31 @@
 ﻿using CookBook.Domain.Entities;
 using CookBook.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace CookBook.Infrastructure.Seeders
 {
     public class CookBookSeeder
     {
         private readonly CookBookDbContext _dbContext;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CookBookSeeder(CookBookDbContext dbContext, RoleManager<IdentityRole> roleManager) 
+        public CookBookSeeder(CookBookDbContext dbContext) 
         {
             _dbContext = dbContext;
-            _roleManager = roleManager;
+            //_roleManager = roleManager;
         }
 
         public async Task Seed()
         {
             if(await _dbContext.Database.CanConnectAsync())
             {
+                var pendingMigrations = _dbContext.Database.GetPendingMigrations();
+                if(pendingMigrations != null && pendingMigrations.Any())
+                {
+                    _dbContext.Database.Migrate();
+                }
+
                 if(!_dbContext.Units.Any())
                 {
                     var units = GetUnits();
@@ -32,7 +40,7 @@ namespace CookBook.Infrastructure.Seeders
                     await _dbContext.SaveChangesAsync();
                 }
                 
-                CreateDefaultRoles();
+                //CreateDefaultRoles();
 
             }
         }
@@ -63,17 +71,17 @@ namespace CookBook.Infrastructure.Seeders
 
             return ingridients;
         }
-        private async void CreateDefaultRoles()
-        {
-            string[] roleNames = { "Admin", "Manager", "User" };
-            foreach (var role in roleNames)
-            {
-                var roleExists = await _roleManager.RoleExistsAsync(role);
-                if (!roleExists)
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-        }
+        //private async void CreateDefaultRoles()
+        //{
+           // string[] roleNames = { "Admin", "Manager", "User" };
+            //foreach (var role in roleNames)
+            //{
+                //var roleExists = await _roleManager.RoleExistsAsync(role);
+                //if (!roleExists)
+                //{
+                  //  await _roleManager.CreateAsync(new IdentityRole(role));
+                //}
+            //}
+        //}
     }
 }

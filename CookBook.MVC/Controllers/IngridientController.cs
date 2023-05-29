@@ -1,9 +1,13 @@
 ﻿using CookBook.Application.IngridientUtils.Commands.CreateIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.Application.IngridientUtils.Queries.IngridientsCount;
 using CookBook.MVC.Extensions;
+using CookBook.MVC.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Globalization;
+using System.Net.Sockets;
 
 namespace CookBook.MVC.Controllers
 {
@@ -16,37 +20,51 @@ namespace CookBook.MVC.Controllers
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string search = "", string sortOrder = "", int page = 1, int pageSize = 5)
         {
-            var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
+            this.SetViewBagParams(search, sortOrder, pageSize);
+            this.SetViewBagSortIcons(sortOrder);
+
+            var ingridientsCount = await _mediator.Send(new IngridientsCountQuery(search));
+            var pages = new Pagination(ingridientsCount, page, pageSize);
+            pages.SortOrder = sortOrder;
+            pages.SearchPhrase = search;
+
+            var query = new ParamsQuery(sortOrder, page, pageSize);
+            this.SetTempData(query);
+
+            ViewBag.Pages = pages;
+
+            var ingridients = await _mediator.Send(new GetAllIngridientsQuery(search, sortOrder, page, pageSize));
+
             return View(ingridients);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateIngridientCommand command)
         {
+            var query = this.GetTempData();
+
             if(User.Identity == null || !User.Identity.IsAuthenticated)
             {
                 this.SetNotification("warning", "Zaloguj się aby dodać nowe składniki.");
-                return RedirectToAction(nameof(Index));
+                return this.CallRedirectToAction(query, nameof(Index));
             }
 
             if (!ModelState.IsValid)
             {
-                //var error = ModelState.Values.Where(e => e.Errors.Count() > 0)
-                //    .SelectMany(e => e.Errors)
-                //    .Select(e => e.ErrorMessage)
-                //   .ToList();
-                var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
-                return View("Index", ingridients);
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                this.SetNotification("error", errors[0]);
+                return this.CallRedirectToAction(query,nameof(Index));
             }
 
             await _mediator.Send(command);
-            return RedirectToAction(nameof(Index));
-        }
-        public ActionResult Create()
-        {
-            return RedirectToAction(nameof(Index));
+            this.SetNotification("success", $"Składnik '{command.Name}' został dodany");
+            return this.CallRedirectToAction(query, nameof(Index));
         }
     }
 }

@@ -17,8 +17,6 @@ namespace CookBook.Application.Mappings
             var user = userContext.GetCurrentUser();
             CreateMap<RecipeDto, Recipe>();
             CreateMap<Recipe, RecipeDto>()
-                //.ForMember(r => r.Description, opt => opt.MapFrom(
-                  //  src => (src.Description != null) ? src.Description.Replace(Environment.NewLine, "&#13;") : null))
                 .ForMember(r => r.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
                 .ForMember(r => r.Author, opt => opt.MapFrom(
@@ -31,7 +29,7 @@ namespace CookBook.Application.Mappings
 
             CreateMap<Ingridient, IngridientDto>()
                 .ForMember(ing => ing.CreatedBy, opt => opt.MapFrom(
-                    src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "brak"))
+                    src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "-"))
                 .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
                 .ForMember(ing => ing.IsEditable, opt => opt.MapFrom(src =>
@@ -40,7 +38,7 @@ namespace CookBook.Application.Mappings
 
             CreateMap<Unit, UnitDto>()
                 .ForMember(u => u.CreatedBy, opt => opt.MapFrom(
-                    src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "brak"))
+                    src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "-"))
                 .ForMember(u => u.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
                 .ForMember(u => u.IsEditable, opt => opt.MapFrom(src =>

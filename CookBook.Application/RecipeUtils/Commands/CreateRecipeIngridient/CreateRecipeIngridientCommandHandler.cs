@@ -29,7 +29,8 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
             var recipe = await _recipeRepository.GetRecipeById(request.RecipeId);
             var user = _userContext.GetCurrentUser();
 
-            var hasAccess = user != null && user.Id == recipe.AuthorId;
+            var hasAccess = user != null && 
+                (user.Id == recipe.AuthorId || user.IsInRole("Admin") || user.IsInRole("Manager"));
             if(!hasAccess)
             {
                 return false;

@@ -1,0 +1,81 @@
+﻿@model Pagination
+
+<div class="container mt-1">
+    <ul class="pagination justify-content-end pagination-no-border-radius">
+        <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
+            @if(Model.CurrentPage > 1)
+            {
+            <a class="page-link" asp-action="@Model.Action"
+                asp-route-page="1" asp-route-pageSize="@Model.PageSize"
+                asp-route-sortOrder="@Model.SortOrder"
+                asp-route-search="@Model.SearchPhrase">&lt;&lt;
+            </a>
+            }
+            else
+            {
+                <span class="page-link pagination-nonactive">&lt;&lt;</span>
+            }
+        </li>
+        <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Poprzednia">
+            @if(Model.CurrentPage > 1)
+            {
+            <a class="page-link" asp-action="@Model.Action"
+                asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize"
+                asp-route-sortOrder="@Model.SortOrder"
+                asp-route-search="@Model.SearchPhrase">&lt;
+            </a>
+            }
+            else
+            {
+                <span class="page-link pagination-nonactive">&lt;</span>
+            }
+        </li>
+       
+        @for(var p = Model.StartPage; p<=Model.EndPage; p++)
+        {
+            <li class="page-item-square @(p==Model.CurrentPage ? "active" : "")">
+                @if(p != Model.CurrentPage)
+                {
+                    <a class="page-link" asp-action="@Model.Action"
+                        asp-route-page="@p" asp-route-pageSize="@Model.PageSize"
+                        asp-route-sortOrder="@Model.SortOrder"
+                        asp-route-search="@Model.SearchPhrase">@p
+                    </a>
+                }
+                else
+                {
+                    <span class="page-link">@p</span>
+                }              
+            </li>
+        }
+
+        <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Następna">
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <a class="page-link" asp-action="@Model.Action"
+                    asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize"
+                    asp-route-sortOrder="@Model.SortOrder"
+                    asp-route-search="@Model.SearchPhrase">&gt;
+                </a>
+            }
+            else
+            {
+                <span class="page-link pagination-nonactive">&gt;</span>
+            }
+        </li>
+        <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Ostatnia">
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <a class="page-link" asp-action="@Model.Action"
+                    asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
+                    asp-route-sortOrder="@Model.SortOrder"
+                    asp-route-search="@Model.SearchPhrase">&gt;&gt;
+                </a>
+            }
+            else
+            {
+                <span class="page-link pagination-nonactive">&gt;&gt;</span>
+            }
+        </li>
+    </ul>
+</div>
