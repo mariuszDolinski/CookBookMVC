@@ -8,5 +8,7 @@ namespace CookBook.Domain.Interfaces
         Task<IEnumerable<RecipeIngridient>> GetAllRecipeIngridients(int recipeId);
         Task<RecipeIngridient> GetRecipeIngridientById(int recipeIngId);
         Task DeleteRecipeIngridientById(int id);
+        Task<RecipeIngridient?> GetRecipeIngridientByIngId(int ingId);
+        Task<RecipeIngridient?> GetRecipeIngridientByUnitId(int unitId);
     }
 }

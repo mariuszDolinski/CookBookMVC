@@ -1,8 +1,8 @@
-﻿<div class="modal fade" id="deleteRecipeModal" tabindex="-1" aria-labelledby="deleteRecipeModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="deleteUnitModal" tabindex="-1" aria-labelledby="deleteUnitModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="deleteRecipeModalLabel">Potwierdzenie usunięcia przepisu</h1>
+                <h1 class="modal-title fs-5" id="deleteUnitModalLabel">Potwierdzenie usunięcia jednostki</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -10,11 +10,8 @@
               </div>
               <div class="modal-footer">
                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                   <button type="button" class="btn btn-danger" onclick="DeleteRecipe()">Usuń</button>
+                   <button type="button" class="btn btn-danger" onclick="DeleteUnit()">Usuń</button>
               </div>
         </div>
     </div>
 </div>
-
-@*hidden input to store ingridientId*@
-<input type="hidden" id="recipeId"/>

@@ -1,4 +1,5 @@
 ﻿@using CookBook.Application.UnitUtils;
+@using CookBook.Application.UnitUtils.Commands.EditUnit;
 @model IEnumerable<CookBook.Application.UnitUtils.UnitDto>
 
 @{
@@ -67,8 +68,8 @@
                     @if(item.IsEditable)
                     {
                         <td>
-                            <a title="to do" class="btn btn-outline-primary btn-sm" asp-controller="Unit" asp-action="Index"><i class="bi bi-pencil"></i></a> 
-                            <a title="to do" class="btn btn-outline-danger btn-sm" asp-controller="Unit" asp-action="Index"><i class="bi bi-trash"></i></a> 
+                            <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditUnitModal('@item.Name')"><i class="bi bi-pencil"></i></a> 
+                            <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteUnitModal('@item.Name')"><i class="bi bi-trash"></i></a> 
                         </td>
                     }
                 </tr>
@@ -83,8 +84,15 @@
     </div>
 </div>
 
+<partial name="_EditUnit" model="new EditUnitCommand()"/>
+<partial name="_ConfirmDeleteUnitModal"/>
+
+<input id="currentUnitName" type="hidden"/>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Unit/Edit.js"></script>
+    <script src="~/js/Unit/Delete.js"></script>
     <script src="~/js/Pagination/Pages.js"></script>
 }
 

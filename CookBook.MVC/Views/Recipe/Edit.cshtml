@@ -64,6 +64,9 @@
 <partial name="_ConfirmDeleteRecipeIngridientModal"/>
 <partial name="_EditRecipeIngridients" model="new EditRecipeIngridientCommand() {RecipeId = Model.Id}"/>
 
+@*hidden input to store ingridientId*@
+<input type="hidden" id="ingridientId"/>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/Recipe/Edit.js"></script>

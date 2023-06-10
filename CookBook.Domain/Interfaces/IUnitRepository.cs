@@ -9,5 +9,8 @@ namespace CookBook.Domain.Interfaces
         Task CreateUnit(Unit unit);
         Task<Unit?> GetByName(string name);
         Task<Unit?> GetById(int id);
+        Task DeleteById(int id);
+        Task SaveChangesToDb();
+
     }
 }

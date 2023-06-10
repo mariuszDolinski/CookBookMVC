@@ -10,6 +10,7 @@ public partial class Unit
     public string? CreatedById { get; set; }
     public IdentityUser? CreatedBy { get; set; }
     public DateTime CreatedTime { get; set; } = DateTime.Now;
+    public DateTime? LastEdit { get; set; } = DateTime.Now;
 
     public void SetEncodedName() => EncodedName = Name.ToLower().Replace(" ", "-");
 }

@@ -1,4 +1,5 @@
 ﻿@using CookBook.Application.IngridientUtils;
+@using CookBook.Application.IngridientUtils.Commands.EditIngridient;
 @model IEnumerable<CookBook.Application.IngridientUtils.IngridientDto>
 
 @{
@@ -68,8 +69,8 @@
                     @if(item.IsEditable)
                     {
                         <td>
-                            <a title="to do" class="btn btn-outline-primary btn-sm" asp-controller="Ingridient" asp-action="Index"><i class="bi bi-pencil"></i></a> 
-                            <a title="to do" class="btn btn-outline-danger btn-sm" asp-controller="Ingridient" asp-action="Index"><i class="bi bi-trash"></i></a> 
+                            <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditIngModal('@item.Name')"><i class="bi bi-pencil"></i></a> 
+                            <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteIngModal('@item.Name')"><i class="bi bi-trash"></i></a> 
                         </td>
                     }
                 </tr>
@@ -84,7 +85,14 @@
     </div>
 </div>
 
+<partial name="_EditIngridient" model="new EditIngridientCommand()"/>
+<partial name="_ConfirmDeleteModal"/>
+
+<input id="currentIngName" type="hidden"/>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/Pagination/Pages.js"></script>
+    <script src="~/js/Ingridient/Edit.js"></script>
+    <script src="~/js/Ingridient/Delete.js"></script>
 }

@@ -67,5 +67,15 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<Unit?> GetById(int id)
             => await _dbContext.Units.FirstOrDefaultAsync(u => u.Id == id);
+
+        public async Task DeleteById(int id)
+        {
+            var ing = _dbContext.Units.First(ing => ing.Id == id);
+            _dbContext.Remove(ing);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SaveChangesToDb()
+            => await _dbContext.SaveChangesAsync();
     }
 }

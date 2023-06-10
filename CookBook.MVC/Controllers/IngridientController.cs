@@ -1,4 +1,6 @@
 ﻿using CookBook.Application.IngridientUtils.Commands.CreateIngridient;
+using CookBook.Application.IngridientUtils.Commands.DeleteIngridient;
+using CookBook.Application.IngridientUtils.Commands.EditIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
@@ -60,6 +62,57 @@ namespace CookBook.MVC.Controllers
             await _mediator.Send(command);
             this.SetNotification("success", $"Składnik '{command.Name}' został dodany");
             return this.CallRedirectToAction(query, nameof(Index));
+        }
+
+        [HttpPut]
+        [Route("ingridient/edit/{oldName}")]
+        public async Task<IActionResult> Edit(string oldName, EditIngridientCommand command)
+        {
+            if(!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                return BadRequest(errors[0]);
+            }
+
+            command.OldName = oldName;
+            var result = await _mediator.Send(command);
+            if(result == 0)
+            {
+                return BadRequest("Brak uprawnień do edycji składnika");
+            }
+            if(result == -1)
+            {
+                return BadRequest("Składnik o podanej nazwie już istnieje");
+            }
+            if (result == -2)
+            {
+                return BadRequest("Coś poszło nie tak");
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("ingridient/delete/{name}")]
+        public async Task<IActionResult> Delete(string name)
+        {
+            var result = await _mediator.Send(new DeleteIngridientCommand() { Name = name });
+
+            if(result < 0)
+            {
+                return BadRequest("Coś poszło nie tak");
+            }
+            else if(result == 0)
+            {
+                return BadRequest("Nie mogę usunąć składnika, gdyż jest już elementem jakiegoś przepisu");
+            }
+            else
+            {
+                return Ok();
+            }
         }
     }
 }

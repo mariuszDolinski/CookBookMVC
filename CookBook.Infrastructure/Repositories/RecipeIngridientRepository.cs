@@ -16,7 +16,7 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task DeleteRecipeIngridientById(int id)
         {
-            var ingridient = await _dbContext.RecipeIngridients.FirstAsync(ri =>  ri.Id == id);
+            var ingridient = _dbContext.RecipeIngridients.First(ri =>  ri.Id == id);
             _dbContext.Remove(ingridient);
             await _dbContext.SaveChangesAsync();
         }
@@ -34,5 +34,10 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task<RecipeIngridient> GetRecipeIngridientById(int recipeIngId)
             => await _dbContext.RecipeIngridients.FirstAsync(ri => ri.Id == recipeIngId);
+
+        public async Task<RecipeIngridient?> GetRecipeIngridientByIngId(int ingId)
+            => await _dbContext.RecipeIngridients.FirstOrDefaultAsync(ri => ri.IngridientId == ingId);
+        public async Task<RecipeIngridient?> GetRecipeIngridientByUnitId(int unitId)
+            => await _dbContext.RecipeIngridients.FirstOrDefaultAsync(ri => ri.UnitId == unitId);
     }
 }

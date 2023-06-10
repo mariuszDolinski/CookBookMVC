@@ -9,5 +9,7 @@ namespace CookBook.Domain.Interfaces
         Task CreateIngridient(Ingridient ingridient);
         Task<Ingridient?> GetByName(string name);
         Task<Ingridient?> GetById(int id);
+        Task SaveChangesToDb();
+        Task DeleteById(int id);
     }
 }
