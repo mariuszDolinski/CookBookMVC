@@ -2,19 +2,24 @@
 
 @{
     ViewData["Title"] = "Przepisy";
+    string searchPhrase = string.IsNullOrEmpty(ViewBag.SearchPhrase) ? "Wyszukaj przepis" : ViewBag.SearchPhrase; 
 }
 
 <form asp-controller="Recipe" asp-action="Index" method="get">
 <div class="input-group mb-3">
         <a class="btn btn-outline-primary @(!Model.IsInSearchMode ? "disabled" : "")" asp-controller="Recipe" asp-action="Index"><i class="bi bi-arrow-left"></i></a>
     
-    <input type="text" name="searchPhrase" class="form-control" placeholder="Wyszukaj przepis" id="searchPhrase">
+    <input type="text" name="searchPhrase" class="form-control" placeholder="@searchPhrase" id="searchPhrase">
     <input value="Szukaj" class="btn btn-primary" type="submit">
 </div>
 </form>
 
 <div class="album py-2 bg-body-tertiary">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        @if(Model.Recipes.Count() == 0)
+        {
+            <p class="btn btn-primary disabled">Brak przepisów spełniających podane kryteria</p>
+        }
         @foreach(var item in Model.Recipes)
         {
             <div class="col">

@@ -35,6 +35,7 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Index(string? searchPhrase)
         {
             var recipes = await _mediator.Send(new GetAllRecipesQuery() { SearchPhrase = searchPhrase});
+            ViewBag.SearchPhrase = searchPhrase;
             var dto = new RecipeIndexDto()
             {
                 Recipes = recipes

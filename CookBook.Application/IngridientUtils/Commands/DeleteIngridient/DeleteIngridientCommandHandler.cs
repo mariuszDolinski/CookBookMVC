@@ -19,7 +19,7 @@ namespace CookBook.Application.IngridientUtils.Commands.DeleteIngridient
             _riRepository = riRepository;
         }
         /// <summary>
-        /// return 1 if succeded, 0 if ingridient is a part of at least one recipe ingridient, <0 otherwise
+        /// return 1 if succeded, 0 if ingridient is a part of at least one recipe ingridient, <0 other error
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
