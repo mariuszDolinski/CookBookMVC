@@ -1,30 +1,26 @@
-﻿@model CookBook.Application.RecipeUtils.RecipeIndexDto
+﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
 
 @{
-    ViewData["Title"] = "Przepisy";
-    Pagination pages = ViewBag.Pages;
-    string searchPhrase = string.IsNullOrEmpty(ViewBag.SearchPhrase) ? "Wyszukaj przepis" : ViewBag.SearchPhrase; 
+    ViewData["Title"] = "SearchByIngridients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-controller="Recipe" asp-action="Index" method="get">
-<div class="input-group mb-3">
-    <a class="btn btn-outline-primary @(!Model.IsInSearchMode ? "disabled" : "")" asp-controller="Recipe" asp-action="Index"><i class="bi bi-arrow-left"></i></a>  
-    <input type="text" name="search" class="form-control" placeholder="@searchPhrase" id="searchPhrase">
-    <input value="Szukaj" class="btn btn-primary" type="submit">
-</div>
-</form>
-
-<div class="d-flex justify-content-end">
-    <a asp-controller="Recipe" asp-action="AdvancedSearch" class="btn btn-outline-primary btn-sm">Wyszukiwanie zaawansowane</a>
-</div>
-
+@if(Model.Count() == 0)
+{
+    <div class="btn-group col-6">
+        <a class="btn btn-outline-secondary" asp-controller="Recipe" asp-action="AdvancedSearch"><i class="bi bi-arrow-left"></i></a>            
+        <a class="btn btn-primary disabled col-10">Brak przepisów spełniających podane kryteria</a>
+    </div>
+}
+else
+{
+    <div class="btn-group col-6">
+        <p>Wyniki wyszukiwania</p>
+    </div>  
+}
 <div class="album py-2 bg-body-tertiary">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        @if(Model.Recipes.Count() == 0)
-        {
-            <p class="btn btn-primary disabled">Brak przepisów spełniających podane kryteria</p>
-        }
-        @foreach(var item in Model.Recipes)
+        @foreach(var item in Model)
         {
             <div class="col">
                 <div class="card shadow-sm m-3" style="width: auto">
@@ -49,11 +45,3 @@
         }
     </div>
 </div>
-
-<div class="row">
-    <div class="col-12">
-        <partial name="_TopPaginationBar" model="@pages" />
-    </div>
-</div>
-
-

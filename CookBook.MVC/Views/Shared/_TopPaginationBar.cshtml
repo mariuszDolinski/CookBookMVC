@@ -1,13 +1,12 @@
 ﻿@model Pagination
 
 <div class="container mt-1">
-    <ul class="pagination justify-content-end pagination-no-border-radius">
+    <ul class="pagination justify-content-center pagination-no-border-radius">
         <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
             @if(Model.CurrentPage > 1)
             {
             <a class="page-link" asp-action="@Model.Action"
                 asp-route-page="1" asp-route-pageSize="@Model.PageSize"
-                asp-route-sortOrder="@Model.SortOrder"
                 asp-route-search="@Model.SearchPhrase">&lt;&lt;
             </a>
             }
@@ -21,7 +20,6 @@
             {
             <a class="page-link" asp-action="@Model.Action"
                 asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize"
-                asp-route-sortOrder="@Model.SortOrder"
                 asp-route-search="@Model.SearchPhrase">&lt;
             </a>
             }
@@ -38,7 +36,6 @@
                 {
                     <a class="page-link" asp-action="@Model.Action"
                         asp-route-page="@p" asp-route-pageSize="@Model.PageSize"
-                        asp-route-sortOrder="@Model.SortOrder"
                         asp-route-search="@Model.SearchPhrase">@p
                     </a>
                 }
@@ -54,7 +51,6 @@
             {
                 <a class="page-link" asp-action="@Model.Action"
                     asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize"
-                    asp-route-sortOrder="@Model.SortOrder"
                     asp-route-search="@Model.SearchPhrase">&gt;
                 </a>
             }
@@ -68,7 +64,6 @@
             {
                 <a class="page-link" asp-action="@Model.Action"
                     asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
-                    asp-route-sortOrder="@Model.SortOrder"
                     asp-route-search="@Model.SearchPhrase">&gt;&gt;
                 </a>
             }

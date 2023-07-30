@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.Application.IngridientUtils.Queries.GetIngridient;
 using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
@@ -8,10 +9,13 @@ using CookBook.Application.RecipeUtils.Commands.DeleteRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.EditImage;
 using CookBook.Application.RecipeUtils.Commands.EditRecipe;
 using CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient;
+using CookBook.Application.RecipeUtils.Queries.AdvancedSearch;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
+using CookBook.MVC.Extensions;
+using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +28,7 @@ namespace CookBook.MVC.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public RecipeController(IMediator mediator, IMapper mapper) 
+        public RecipeController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
@@ -32,15 +36,20 @@ namespace CookBook.MVC.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index(string? searchPhrase)
+        public async Task<IActionResult> Index(string? search, int page = 1, int pageSize = 6)
         {
-            var recipes = await _mediator.Send(new GetAllRecipesQuery() { SearchPhrase = searchPhrase});
-            ViewBag.SearchPhrase = searchPhrase;
+            this.SetViewBagParams(search, "", pageSize);
+            var recipes = await _mediator.Send(new GetAllRecipesQuery(search, page, pageSize));
+
+            var pages = new Pagination(recipes.TotalItems, page, pageSize);
+            pages.SearchPhrase = search;
+            ViewBag.Pages = pages;
+
             var dto = new RecipeIndexDto()
             {
-                Recipes = recipes
+                Recipes = recipes.Items
             };
-            dto.IsInSearchMode = (searchPhrase == null) ? false : true;
+            dto.IsInSearchMode = (search == null) ? false : true;
             return View(dto);
         }
 
@@ -57,11 +66,11 @@ namespace CookBook.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateRecipeCommand command)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(command);
             }
-            await _mediator.Send(command);  
+            await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
 
@@ -141,7 +150,6 @@ namespace CookBook.MVC.Controllers
             return Ok();
         }
 
-
         #region Recipe Ingridients
         [Route("recipe/recipeIngridient")]
         public async Task<IActionResult> CreateRecipeIngridient(CreateRecipeIngridientCommand command)
@@ -155,7 +163,7 @@ namespace CookBook.MVC.Controllers
                 return BadRequest(errors[0]);
             }
             var isAuthor = await _mediator.Send(command);
-            if (!isAuthor) 
+            if (!isAuthor)
             {
                 return BadRequest("Użytkownik nie jest autorem przepisu! Składnik nie został dodany.");
             }
@@ -168,7 +176,7 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> GetRecipeIngridients(int recipeId)
         {
             var data = await _mediator.Send(new GetRecipeIngridientsQuery() { RecipeId = recipeId });
-            return Ok(data);    
+            return Ok(data);
         }
 
         [AllowAnonymous]
@@ -178,10 +186,10 @@ namespace CookBook.MVC.Controllers
         {
             var ingridients = await _mediator.Send(new GetAllIngridientsQuery());
             var units = await _mediator.Send(new GetAllUnitsQuery());
-            DatalistsDto data = new ()
-            { 
-               Ingridients = ingridients.Items.Select(x => x.Name!).ToList(),
-               Units = units.Items.Select(x => x.Name!).ToList()
+            DatalistsDto data = new()
+            {
+                Ingridients = ingridients.Items.Select(x => x.Name!).ToList(),
+                Units = units.Items.Select(x => x.Name!).ToList()
             };
             return Ok(data);
         }
@@ -190,7 +198,7 @@ namespace CookBook.MVC.Controllers
         [Route("recipeIngridient/{ingId}")]
         public async Task<IActionResult> DeleteIngridient(int ingId)
         {
-            await _mediator.Send(new DeleteRecipeIngridientCommand() { recipeIngridientId = ingId});
+            await _mediator.Send(new DeleteRecipeIngridientCommand() { recipeIngridientId = ingId });
 
             return Ok();
         }
@@ -199,7 +207,7 @@ namespace CookBook.MVC.Controllers
         [Route("recipeIngridient/{ingId}")]
         public async Task<IActionResult> EditRecipeIngridient(int ingId, EditRecipeIngridientCommand command)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
                     .SelectMany(x => x.Errors)
@@ -214,6 +222,54 @@ namespace CookBook.MVC.Controllers
                 return BadRequest("Użytkownik nie jest autorem przepisu! Składnik nie został zmieniony.");
             }
             return Ok();
+        }
+        #endregion
+
+        #region Advanced search actions
+        [AllowAnonymous]
+        public ActionResult AdvancedSearch()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("search/addIngToList")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddIngridientToSearchList(string ingridient)
+        {
+            var result = await _mediator.Send(new GetIngridientQuery(ingridient));
+            switch (result)
+            {
+                case 0: return BadRequest("Nie wybrano składnika");
+                case 1: return Ok();
+                case 2: return BadRequest("Podany składnik nie istnieje");
+                default: return BadRequest("Nieznany błąd");
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("recipe/search/advanced")]
+        public async Task<IActionResult> SearchByIngridients(string[] args)
+        {
+            string[] ingridients = new string[args.Length - 1];
+            int mode = 1;
+            for(int i=0; i<args.Length; i++)
+            {
+                if (i < args.Length - 1)
+                {
+                    ingridients[i] = args[i];
+                }
+                else
+                {
+                    if(!int.TryParse(args[i], out mode))
+                    {
+                        return BadRequest("Błąd danych");
+                    }
+                }
+            }
+            var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, mode));
+            return View(result);
         }
         #endregion
     }

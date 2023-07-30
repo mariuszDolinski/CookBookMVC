@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Wyszukiwanie zaawansowane";
+}
+
+<h5>Wyszukiwanie zaawansowane</h5>
+<hr />
+
+<form asp-action="AdvancedSearch">
+    <div class="form-group form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="saveSearch"/>
+        <label class="form-check-label" for="saveSearch">
+            Zapisz wyszukiwanie
+        </label>
+    </div>
+    <div class="form-group mb-3 col-12 col-md-4">
+         <label class="control-label" for="searchName">Nazwa wyszukiwania</label>
+         <input class="form-control" type="text" id="searchName" />   
+    </div>
+    <div class="form-group form-check mb-3">
+        <input class="form-check-input" type="radio" value="1" name="searchType" id="allRadio" checked>
+        <label class="form-check-label" for="allRadio">
+            Szukaj przepisów zawierających wszystkie składniki z listy
+        </label>
+    </div>
+    <div class="form-group form-check mb-3">
+        <input class="form-check-input" type="radio" value="2" name="searchType" id="onlyRadio">
+        <label class="form-check-label" for="onlyRadio">
+            Szukaj przepisów zawierających tylko składniki z listy
+        </label>
+    </div>
+    <div class="form-group mb-3 col-12 col-md-4">
+        <label  class="control-label" for="searchIng">Wybierz składniki do wyszukania</label>
+        <div class="input-group">
+            <input  id="searchIng" autocomplete="off" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik...">
+            <datalist id="datalistIngridients"></datalist>
+            <div class="input-group-append">
+                <a class="btn btn-primary" onclick="addToSearchList()">
+                    Dodaj    
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <h6>Lista składników do wyszukania:</h6>
+    <table class="mb-3 col-12 col-md-4">
+        <tbody id="searchListTable" name="advancedSearch">
+        </tbody>
+     </table>
+
+    <a class="btn btn-primary" onclick="searchRecipes()">
+        Wyszukaj
+    </a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/AdvancedSearch.js"></script>
+}
+

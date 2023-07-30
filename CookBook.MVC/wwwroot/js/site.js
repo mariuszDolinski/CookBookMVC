@@ -43,6 +43,15 @@ const RenderRecipeIngridients = (data, container) => {
     }
 }
 
+const RenderSearchList = (data, container) => {
+    container.append(
+        `<tr>
+            <td><i class="bi bi-cart-check"></i> ${data}</td>
+            <td><a class="btn btn-outline-danger btn-sm" onclick="deleteFromSearchList(this)"><i class="bi bi-trash"></i></a></td>
+        </tr>`
+    );
+}
+
 const LoadRecipeIngridients = () => {
     const container = $("#ingridientsList");
     const recipeId = container.data("recipeId");

@@ -11,7 +11,7 @@ namespace CookBook.MVC.Extensions
             var notification = new Notification(type, message);
             controller.TempData["Notification"] = JsonConvert.SerializeObject(notification);
         }
-        public static void SetViewBagParams(this Controller controller, string search, string sortOrder, int pageSize)
+        public static void SetViewBagParams(this Controller controller, string? search, string sortOrder, int pageSize)
         {
             controller.ViewBag.NameSortOrder = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
             controller.ViewBag.DateSortOrder = (sortOrder == "date_asc") ? "date_desc" : "date_asc";
