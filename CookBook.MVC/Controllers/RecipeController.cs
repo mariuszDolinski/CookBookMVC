@@ -100,13 +100,14 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Edit(int id, EditRecipeCommand command)
         {
             await _mediator.Send(command);
-            return RedirectToAction("Details", new RouteValueDictionary(
-                new
-                {
-                    Controller = "Recipe",
-                    Action = "Details",
-                    recipeId = id
-                }));
+            return RedirectToAction("Index", "User");
+            //return RedirectToAction("Details", new RouteValueDictionary(
+            //    new
+            //    {
+            //        Controller = "Recipe",
+            //        Action = "Details",
+            //        recipeId = id
+            //    }));
         }
 
         [Route("recipe/{Id}/edit/image")]

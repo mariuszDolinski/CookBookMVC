@@ -55,7 +55,7 @@
             <div></div>
             <div class="form-group float-md-end">
                 <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
-                <a class="btn btn-outline-secondary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@Model.Id.ToString()">Anuluj</a>
+                <a class="btn btn-outline-secondary" onclick="history.go(-1);">Anuluj</a>
             </div>
         </form>
     </div>

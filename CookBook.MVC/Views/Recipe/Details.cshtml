@@ -39,11 +39,11 @@
         </div>
     </div> 
     <div> 
-    <a asp-action="Index" class="btn btn-secondary">Wróc do listy przepisów</a>
-    @if (Model.IsEditable)
+    <a class="btn btn-secondary" onclick="history.go(-1);">Powrót</a>
+    @*@if (Model.IsEditable)
     {
         <a class="btn btn-outline-primary" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@Model.Id.ToString()">Edytuj</a>            
-    }
+    }>*@
 </div>
 </div>
 </div>

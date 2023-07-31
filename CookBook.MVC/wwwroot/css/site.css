@@ -60,8 +60,6 @@ body {
     height: 12%;
 }
 
-.divider {
-    width: 5px;
-    height: auto;
-    display: inline-block;
+textarea {
+    height: 250px;
 }
