@@ -229,7 +229,8 @@ namespace CookBook.MVC.Controllers
         [AllowAnonymous]
         public ActionResult AdvancedSearch()
         {
-            return View();
+            string[]? ingridients = (string[]?)TempData["searchIng"];
+            return View(ingridients);
         }
 
         [HttpGet]
@@ -252,6 +253,10 @@ namespace CookBook.MVC.Controllers
         [Route("recipe/search/advanced")]
         public async Task<IActionResult> SearchByIngridients(string[] args)
         {
+            if(args.Length < 2)
+            {
+                return BadRequest("Brak składników do wyszukania");
+            }
             string[] ingridients = new string[args.Length - 1];
             int mode = 1;
             for(int i=0; i<args.Length; i++)
@@ -268,8 +273,15 @@ namespace CookBook.MVC.Controllers
                     }
                 }
             }
+            TempData["searchIng"] = ingridients;
             var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, mode));
-            return View(result);
+            RecipeAdvancedSearchDto dto = new RecipeAdvancedSearchDto()
+            {
+                Recipes = result,
+                IngridientsToSearch = ingridients,
+                Mode = mode
+            };
+            return View(dto);
         }
         #endregion
     }

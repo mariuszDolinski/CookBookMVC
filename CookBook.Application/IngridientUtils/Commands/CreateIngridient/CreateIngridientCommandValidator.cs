@@ -15,6 +15,10 @@ namespace CookBook.Application.IngridientUtils.Commands.CreateIngridient
                 {
                     if(value is not null)
                     {
+                        if (value.Contains(';'))
+                        {
+                            context.AddFailure("Nazwa składnika zawiera niedozwolony znak");
+                        }
                         var ingridient = ingridientRepository.GetByName(value).Result;
                         if (ingridient is not null)
                         {

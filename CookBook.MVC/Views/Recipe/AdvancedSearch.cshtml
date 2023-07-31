@@ -1,12 +1,28 @@
-﻿@{
+﻿@model string[];
+@{
     ViewData["Title"] = "Wyszukiwanie zaawansowane";
+    string ings = "";
+    if (Model != null)
+    {
+        for(int i = 0; i<Model.Length; i++)
+        {
+            ings += Model[i];
+            if(i < Model.Length - 1)
+            {
+                ings += ";";
+            }
+        }
+    }
 }
+
+@*hidden input to store currentSearch*@
+<input type="hidden" id="ingridientList" value="@ings"/>
 
 <h5>Wyszukiwanie zaawansowane</h5>
 <hr />
 
 <form asp-action="AdvancedSearch">
-    <div class="form-group form-check mb-3">
+    <!--<div class="form-group form-check mb-3">
         <input class="form-check-input" type="checkbox" id="saveSearch"/>
         <label class="form-check-label" for="saveSearch">
             Zapisz wyszukiwanie
@@ -15,7 +31,7 @@
     <div class="form-group mb-3 col-12 col-md-4">
          <label class="control-label" for="searchName">Nazwa wyszukiwania</label>
          <input class="form-control" type="text" id="searchName" />   
-    </div>
+    </div>-->
     <div class="form-group form-check mb-3">
         <input class="form-check-input" type="radio" value="1" name="searchType" id="allRadio" checked>
         <label class="form-check-label" for="allRadio">

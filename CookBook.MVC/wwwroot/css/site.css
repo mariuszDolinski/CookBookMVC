@@ -59,3 +59,9 @@ body {
 .h-20 {
     height: 12%;
 }
+
+.divider {
+    width: 5px;
+    height: auto;
+    display: inline-block;
+}

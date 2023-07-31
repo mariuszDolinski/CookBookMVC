@@ -2,9 +2,22 @@ var ingList = [];
 var askBeforeReload = true;
 
 $(document).ready(function () {
-    FillData();
-    enableInputName();
-    $("#saveSearch").click(enableInputName);  
+    FillData();//populate datalist with ingridients names
+    //enableInputName();
+    //$("#saveSearch").click(enableInputName);  
+    const currentString = $("#ingridientList").val();
+    const moreThanOneIng = currentString.includes(";");
+    const currentList = moreThanOneIng ? currentString.split(";") : currentString;
+    if (currentList != null && currentString.length > 0) {
+        if (moreThanOneIng)
+            ingList = currentList;
+        else
+            ingList[0] = currentList;
+        const container = $("#searchListTable");
+        for (i = 0; i < ingList.length; i++) {
+            RenderSearchList(ingList[i], container);
+        }
+    }
 
     window.onbeforeunload = function () {
         if (ingList.length > 0 && askBeforeReload) {
@@ -45,7 +58,7 @@ const addToSearchList = () => {
             toastr.options = {
                 "closeButton": true
             }
-            toastr["error"](xhr.responseText)
+            toastr["warning"](xhr.responseText)
         }
     })
 }
@@ -55,7 +68,7 @@ const searchRecipes = () => {
         toastr.options = {
             "closeButton": true
         }
-        toastr["warning"]("Brak sk³adników do wyszukania.")
+        toastr["warning"]("Brak sk&#322;adnik&#243;w do wyszukania.")
         return;
     }
     askBeforeReload = false;
@@ -68,24 +81,7 @@ const searchRecipes = () => {
             paramString += "&";
     }
 
-    window.location.href = "/recipe/search/advanced?" + paramString;
-    /*$.ajax({
-        url: `/search/advanced`,
-        type: 'get',
-        traditional: true,
-        data: { 'args': ingList },
-        success: function (result) {
-            window.location = result.url;
-        },
-        error: function (xhr) {
-            toastr.options = {
-                "closeButton": true
-            }
-            toastr["error"](xhr.responseText);
-            console.log(xhr.responseText);
-        }
-    })*/
-    
+    window.location.href = "/recipe/search/advanced?" + paramString; 
 }
 
 const deleteFromSearchList = (container) => {
