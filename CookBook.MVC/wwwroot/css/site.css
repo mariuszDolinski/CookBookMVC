@@ -62,4 +62,13 @@ body {
 
 textarea {
     height: 250px;
+    resize: vertical;
+}
+
+.hideItem {
+    display: none
+}
+
+.showItem {
+    display: block
 }

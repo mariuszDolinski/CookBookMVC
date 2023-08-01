@@ -59,6 +59,7 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task CreateIngridient(Ingridient ingridient)
         {
+            ingridient.Name = ingridient.Name.ToLower();
             _dbContext.Add(ingridient);
             await _dbContext.SaveChangesAsync();
         }

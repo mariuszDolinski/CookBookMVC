@@ -37,12 +37,12 @@ function enableInputName() {
 }
 
 const addToSearchList = () => {
-    const ingToAdd = $("#searchIng").val();
+    const ingToAdd = $.trim($("#searchIng").val().toLowerCase());
     if (ingList.includes(ingToAdd)) {
         toastr.options = {
             "closeButton": true
         }
-        toastr["error"]("Sk&#322;adnik jest ju&#380; na li&#347;cie");
+        toastr["warning"]("Sk&#322;adnik jest ju&#380; na li&#347;cie");
         return;
     }
    

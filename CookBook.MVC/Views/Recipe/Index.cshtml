@@ -8,7 +8,7 @@
 
 <form asp-controller="Recipe" asp-action="Index" method="get">
 <div class="input-group mb-3">
-    <a class="btn btn-outline-primary @(!Model.IsInSearchMode ? "disabled" : "")" asp-controller="Recipe" asp-action="Index"><i class="bi bi-arrow-left"></i></a>  
+    <a class="btn btn-outline-primary @(!Model.IsInSearchMode ? "hideItem" : "showItem")" asp-controller="Recipe" asp-action="Index"><i class="bi bi-arrow-left"></i></a>  
     <input type="text" name="search" class="form-control" placeholder="@searchPhrase" id="searchPhrase">
     <input value="Szukaj" class="btn btn-primary" type="submit">
 </div>

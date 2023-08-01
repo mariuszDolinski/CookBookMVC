@@ -59,6 +59,7 @@ namespace CookBook.Infrastructure.Repositories
 
         public async Task CreateUnit(Unit unit)
         {
+            unit.Name = unit.Name.ToLower();
             _dbContext.Add(unit);
             await _dbContext.SaveChangesAsync();
         }
