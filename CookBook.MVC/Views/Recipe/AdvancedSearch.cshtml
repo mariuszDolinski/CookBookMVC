@@ -47,7 +47,7 @@
     <div class="form-group mb-3 col-12 col-md-4">
         <label  class="control-label" for="searchIng">Wybierz składniki do wyszukania</label>
         <div class="input-group">
-            <input  id="searchIng" autocomplete="off" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik...">
+            <input  id="searchIng" autocomplete="off" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik..." onClick="this.select();">
             <datalist id="datalistIngridients"></datalist>
             <div class="input-group-append">
                 <a class="btn btn-primary" onclick="addToSearchList()">
@@ -65,6 +65,9 @@
 
     <a class="btn btn-primary" onclick="searchRecipes()">
         Wyszukaj
+    </a>
+    <a class="btn btn-outline-danger" id="clearList" onclick="clearIngList()" hidden>
+        Wyczyść listę
     </a>
 </form>
 

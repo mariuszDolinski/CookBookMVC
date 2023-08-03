@@ -101,7 +101,7 @@ namespace CookBook.Infrastructure.Repositories
                         foreach(var ri in recipeIngs)
                         {
                             var name = _dbContext.Ingridients.FirstOrDefault(i => i.Id == ri.IngridientId)!.Name;
-                            if (name != null && name == ing)
+                            if (name != null && name.Contains(ing))
                             {
                                 isOnTheList = true;
                                 break;
@@ -116,8 +116,17 @@ namespace CookBook.Infrastructure.Repositories
                 case 2:
                     foreach (var ri in recipeIngs)
                     {
+                        bool isOnTheList = false;
                         var name = _dbContext.Ingridients.FirstOrDefault(i => i.Id == ri.IngridientId)!.Name;
-                        if (!searchList.Contains(name))
+                        foreach(var ing in searchList)
+                        {
+                            if (name.Contains(ing))
+                            {
+                                isOnTheList = true;
+                                break;
+                            }
+                        }                       
+                        if (!isOnTheList)
                         {
                             return false;
                         }

@@ -2,36 +2,30 @@
 
 <div class="container mt-1">
     <ul class="pagination justify-content-center pagination-no-border-radius">
-        <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
-            @if(Model.CurrentPage > 1)
-            {
-            <a class="page-link" asp-action="@Model.Action"
-                asp-route-page="1" asp-route-pageSize="@Model.PageSize"
-                asp-route-search="@Model.SearchPhrase">&lt;&lt;
-            </a>
-            }
-            else
-            {
-                <span class="page-link pagination-nonactive">&lt;&lt;</span>
-            }
-        </li>
         <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Poprzednia">
             @if(Model.CurrentPage > 1)
             {
-            <a class="page-link" asp-action="@Model.Action"
+            <a class="page-link bg-secondary" asp-action="@Model.Action"
                 asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize"
-                asp-route-search="@Model.SearchPhrase">&lt;
+                asp-route-search="@Model.SearchPhrase"><i class="bi bi-chevron-left"></i>
             </a>
             }
-            else
-            {
-                <span class="page-link pagination-nonactive">&lt;</span>
-            }
         </li>
-       
+        <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
+            <a class="page-link" asp-action="@Model.Action"
+                asp-route-page="1" asp-route-pageSize="@Model.PageSize"
+                asp-route-search="@Model.SearchPhrase">1
+            </a>
+        </li>
+        @if(Model.StartPage > 2)
+        {
+            <li>...</li>
+        }
         @for(var p = Model.StartPage; p<=Model.EndPage; p++)
         {
-            <li class="page-item-square @(p==Model.CurrentPage ? "active" : "")">
+            if (p != 1 && p!= Model.TotalPages)
+            {
+                <li class="page-item-square @(p==Model.CurrentPage ? "active" : "")">
                 @if(p != Model.CurrentPage)
                 {
                     <a class="page-link" asp-action="@Model.Action"
@@ -44,32 +38,25 @@
                     <span class="page-link">@p</span>
                 }              
             </li>
+            }          
         }
-
+        @if(Model.EndPage < Model.TotalPages - 1)
+        {
+            <li>...</li>
+        }
+        <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Ostatnia">
+            <a class="page-link" asp-action="@Model.Action"
+                asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
+                asp-route-search="@Model.SearchPhrase">@Model.TotalPages
+            </a>
+        </li>
         <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Następna">
             @if (Model.CurrentPage < Model.TotalPages)
             {
-                <a class="page-link" asp-action="@Model.Action"
+                <a class="page-link bg-secondary" asp-action="@Model.Action"
                     asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize"
-                    asp-route-search="@Model.SearchPhrase">&gt;
+                    asp-route-search="@Model.SearchPhrase"><i class="bi bi-chevron-right"></i>
                 </a>
-            }
-            else
-            {
-                <span class="page-link pagination-nonactive">&gt;</span>
-            }
-        </li>
-        <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Ostatnia">
-            @if (Model.CurrentPage < Model.TotalPages)
-            {
-                <a class="page-link" asp-action="@Model.Action"
-                    asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
-                    asp-route-search="@Model.SearchPhrase">&gt;&gt;
-                </a>
-            }
-            else
-            {
-                <span class="page-link pagination-nonactive">&gt;&gt;</span>
             }
         </li>
     </ul>

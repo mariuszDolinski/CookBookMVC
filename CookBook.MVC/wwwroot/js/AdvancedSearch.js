@@ -19,6 +19,8 @@ $(document).ready(function () {
         }
     }
 
+    hideClearAllButton(ingList.length ? false : true);
+
     window.onbeforeunload = function () {
         if (ingList.length > 0 && askBeforeReload) {
             return true;
@@ -36,6 +38,11 @@ function enableInputName() {
     }
 }
 
+function hideClearAllButton(b) {
+    $("#clearList").attr("hidden", b);
+    console.log("hidden zmieniony")
+}
+
 const addToSearchList = () => {
     const ingToAdd = $.trim($("#searchIng").val().toLowerCase());
     if (ingList.includes(ingToAdd)) {
@@ -51,6 +58,7 @@ const addToSearchList = () => {
         type: 'get',
         success: function () {
             ingList.push(ingToAdd);
+            hideClearAllButton(!ingList.length);
             const container = $("#searchListTable");
             RenderSearchList(ingToAdd, container);
         },
@@ -90,4 +98,11 @@ const deleteFromSearchList = (container) => {
     const ing = $.trim(row.children[0].innerText);
     const index = ingList.indexOf(ing);
     ingList.splice(index, 1);
+    hideClearAllButton(!ingList.length);
+}
+
+const clearIngList = () => {
+    ingList = [];
+    $("#searchListTable tr").remove();
+    hideClearAllButton(true);
 }
