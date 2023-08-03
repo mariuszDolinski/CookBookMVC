@@ -2,6 +2,7 @@
 using CookBook.Infrastructure.Persistence;
 using CookBook.Infrastructure.Repositories;
 using CookBook.Infrastructure.Seeders;
+using CookBook.Infrastructure.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace CookBook.Infrastructure.Extensions
                 .AddErrorDescriber<CustomIdentityErrorMessages>();
 
             services.AddScoped<CookBookSeeder>();
+            services.AddScoped<IRepositoryUtils, RepositoryUtils>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IIngridientRepository, IngridientRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();

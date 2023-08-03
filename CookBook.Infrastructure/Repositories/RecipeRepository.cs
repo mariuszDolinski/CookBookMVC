@@ -2,6 +2,7 @@
 using CookBook.Domain.Interfaces;
 using CookBook.Domain.Pagination;
 using CookBook.Infrastructure.Persistence;
+using CookBook.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -10,10 +11,12 @@ namespace CookBook.Infrastructure.Repositories
     public class RecipeRepository : IRecipeRepository
     {
         private readonly CookBookDbContext _dbContext;
+        private readonly IRepositoryUtils _utils;
 
-        public RecipeRepository(CookBookDbContext dbContext) 
+        public RecipeRepository(CookBookDbContext dbContext, IRepositoryUtils utils) 
         {
             _dbContext = dbContext;
+            _utils = utils;
         }
         public async Task CreateRecipe(Recipe recipe)
         {
@@ -39,7 +42,7 @@ namespace CookBook.Infrastructure.Repositories
 
                 foreach(var r in recipes)
                 {
-                    if(IsRecipeMeetsSearchCondition(ingList,r.RecipeIngridients,advancedSearchMode))
+                    if(_utils.IsRecipeMeetsSearchCondition(ingList,r.RecipeIngridients,advancedSearchMode,_dbContext))
                     {
                         items.Add(r);
                     }
@@ -85,59 +88,5 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Recipes.Remove(recipe);
             await _dbContext.SaveChangesAsync();
         }
-
-        #region Utilities
-        private bool IsRecipeMeetsSearchCondition
-            (string[] searchList, List<RecipeIngridient> recipeIngs, int mode)
-        {
-            if (recipeIngs.Count == 0) { return false; }
-
-            switch (mode)
-            {
-                case 1:
-                    foreach(var ing in searchList)
-                    {
-                        bool isOnTheList = false;
-                        foreach(var ri in recipeIngs)
-                        {
-                            var name = _dbContext.Ingridients.FirstOrDefault(i => i.Id == ri.IngridientId)!.Name;
-                            if (name != null && name.Contains(ing))
-                            {
-                                isOnTheList = true;
-                                break;
-                            }
-                        }
-                        if (!isOnTheList)
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                case 2:
-                    foreach (var ri in recipeIngs)
-                    {
-                        bool isOnTheList = false;
-                        var name = _dbContext.Ingridients.FirstOrDefault(i => i.Id == ri.IngridientId)!.Name;
-                        foreach(var ing in searchList)
-                        {
-                            if (name.Contains(ing))
-                            {
-                                isOnTheList = true;
-                                break;
-                            }
-                        }                       
-                        if (!isOnTheList)
-                        {
-                            return false;
-                        }
-                    }
-                    break;
-                default: return false;
-
-            }
-
-            return true;
-        }
-        #endregion
     }
 }
