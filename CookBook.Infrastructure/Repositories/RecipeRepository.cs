@@ -28,6 +28,7 @@ namespace CookBook.Infrastructure.Repositories
             string? searchPhrase, int pageNumber, int pageSize, string[]? ingList, int advancedSearchMode)
         {
             var baseQuery = _dbContext.Recipes
+                .Where(r => r.IsHidden == false)
                 .Where(r => string.IsNullOrEmpty(searchPhrase) ? true : r.Name.Contains(searchPhrase))
                 .OrderByDescending(r => r.CreatedTime);
 

@@ -21,6 +21,14 @@ namespace CookBook.Infrastructure.Persistence
                 .IsRequired()
                 .HasMaxLength(100);
 
+            modelBuilder.Entity<Recipe>()
+                .Property(r => r.Servings)
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Recipe>()
+                .Property(r => r.Source)
+                .HasMaxLength(200);
+
             modelBuilder.Entity<Ingridient>()
                 .Property(d => d.Name)
                 .IsRequired()

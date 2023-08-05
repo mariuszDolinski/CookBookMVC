@@ -4,6 +4,7 @@ using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Infrastructure.Migrations
 {
     [DbContext(typeof(CookBookDbContext))]
-    partial class CookBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230804150501_Add4ColumnsToRecipe")]
+    partial class Add4ColumnsToRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,10 +79,10 @@ namespace CookBook.Infrastructure.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsHidden")
+                    b.Property<bool>("IsVegeterian")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsVegeterian")
+                    b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")

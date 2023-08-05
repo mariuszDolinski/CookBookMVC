@@ -37,23 +37,44 @@
                 <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group form-check mb-3">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="OnlyForAdults" />
-                    Tylko dla pełnoletnich
-                </label>
+            <div class="form-group mb-3">
+                <label class="control-label" for="Servings">Ilość porcji</label>
+                <input class="form-control" type="text" asp-for="Servings" placeholder="Wpisz na ile porcji jest przepis">   
+                <span asp-validation-for="Servings" class="text-danger"></span>
             </div>
-            @if(Model.ImageName == null)
-            {
-                <div>Brak zdjęcia</div>
-            }
-            else
-            {
-               <div><img width="122" height="auto" class="mb-1" src="@("~/images/"+Model.ImageName)" asp-append-version="true"/></div>                
-            }
-            <a asp-controller="Recipe" asp-action="EditImage" asp-route-Id="@Model.Id.ToString()" class="btn btn-secondary mb-3">Zmień zdjęcie</a>         
-            <div></div>
-            <div class="form-group float-md-end">
+            <div class="form-group mb-3">
+                <label class="control-label" for="Source">Źródło przepisu</label>
+                <input class="form-control" type="text" asp-for="Source" placeholder="Podaj źródło przepisu jesli nie jesteś jego autorem">   
+                <span asp-validation-for="Source" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-check form-switch mb-1">
+                        <input class="form-check-input" type="checkbox" role="switch" id="eafo" asp-for="OnlyForAdults" />
+                        <label class="form-check-label" for="eafo">Tylko dla pełnoletnich</label>
+                    </div>
+                    <div class="form-check form-switch mb-1">
+                        <input class="form-check-input" type="checkbox" role="switch" id="eisv" asp-for="IsVegeterian" />
+                        <label class="form-check-label" for="eisv">Przepis wegetariański</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="eshr" asp-for="IsHidden" />
+                        <label class="form-check-label" for="eshr" title="Nie wyświetlaj na stronie głównej i w wynikach wyszukiwania">Ukryj przepis</label>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    @if(Model.ImageName == null)
+                    {
+                        <div>Brak zdjęcia</div>
+                    }
+                    else
+                    {
+                       <div><img width="122" height="auto" class="mb-1" src="@("~/images/"+Model.ImageName)" asp-append-version="true"/></div>                
+                    }
+                    <a asp-controller="Recipe" asp-action="EditImage" asp-route-Id="@Model.Id.ToString()" class="btn btn-secondary mb-3">Zmień zdjęcie</a>
+                </div>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
                 <a class="btn btn-outline-secondary" onclick="history.go(-1);">Anuluj</a>
             </div>

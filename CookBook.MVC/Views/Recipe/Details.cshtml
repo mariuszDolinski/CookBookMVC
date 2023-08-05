@@ -4,16 +4,21 @@
     ViewData["Title"] = @Model.Name;
 }
 <div class="container d-flex justify-content-center">
-<div  class = "col-sm-8">
-    <h3>@Model.Name @if (Model.OnlyForAdults)
+<div  class = "col-sm-9">
+    <h3>@Model.Name 
+    @if (Model.OnlyForAdults)
     {
         <span class="badge bg-warning">18+</span>
+    }
+    @if (Model.IsVegeterian)
+    {
+        <span class="badge bg-success">Wege</span>
     }
     </h3>
 
     <hr class="mb-0 mt-0"/>
     <div class="d-flex justify-content-between">
-        <div class="clol-md-6">Autor: @Model.Author</div>
+        <div class="clol-md-6"><i class="bi bi-person"></i> @Model.Author</div>
         <div class="clol-md-1"></div>
         <div class="clol-md-5"><i class="bi bi-calendar2"></i>  @Model.CreatedTime</div>
     </div>
@@ -29,17 +34,25 @@
         }
     </div>
     <div class="row mb-3">
-        <div class="col-sm-4">
-            <div class = "fw-bold">Składniki</div>
-            <div id="ingridientsList" name="details" class="row" data-recipe-id="@Model.Id"></div>
+        <div class="col-sm-5">
+            <div class="card mb-1">
+                <div class = "card-header"><strong>Składniki</strong></div>
+                <div id="ingridientsList" name="details" class="row card-body" data-recipe-id="@Model.Id"></div>
+                <div class="card-footer"><strong>Ilość porcji: </strong> @Model.Servings</div>    
+            </div>
         </div>
-        <div class="col-sm-8">
-            <div class = "fw-bold">Opis przygotowania</div> 
-            <div class = "mb-3" style="white-space: pre-line">@Model.Description</div>
+        <div class="col-sm-7">
+            <div class="card">
+                <div class = "card-header"><strong>Opis przygotowania</strong></div> 
+                <div class = "mb-3 card-body" style="white-space: pre-line">@Model.Description</div>
+            </div>
         </div>
     </div> 
+        <div class="row mb-3" @(string.IsNullOrEmpty(Model.Source) ? "hidden" : "")>
+            <strong>Źródło przepisu:</strong> <i>@Model.Source</i>
+        </div>
     <div> 
-    <a class="btn btn-secondary" onclick="history.go(-1);">Powrót</a>
+    <a class="btn btn-secondary mt-2" onclick="history.go(-1);">Powrót</a>
     @*@if (Model.IsEditable)
     {
         <a class="btn btn-outline-primary" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@Model.Id.ToString()">Edytuj</a>            

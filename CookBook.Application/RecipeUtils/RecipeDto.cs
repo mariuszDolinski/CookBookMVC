@@ -9,6 +9,11 @@ namespace CookBook.Application.RecipeUtils
         public string? Name { get; set; }
         public string? Description { get; set; }
         public bool OnlyForAdults { get; set; } = false;
+        public bool IsVegeterian { get; set; } = false;
+        public bool IsHidden { get; set; } = false;
+        public string? Servings { get; set; }
+        public string? Source { get; set; }
+
         public IFormFile? ImageFile { get; set; }
         public string? ImageName { get; set; }
         public string? Author { get; set; }

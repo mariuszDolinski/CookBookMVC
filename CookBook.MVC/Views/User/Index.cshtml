@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>Nazwa przepisu</th>
+            <th>Ukryty</th>
             <th>Akcje</th>
         </tr>
     </thead>
@@ -18,11 +19,10 @@
 @foreach (var item in Model) {
         <tr id="row-@item.Id">
             <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.Name)
-                    @if (item.OnlyForAdults)
-                    {
-                       <span class="badge bg-warning pe-1 ps-1">18+</span>
-                    }  
+                @Html.DisplayFor(modelItem => item.Name) 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsHidden)
             </td>
             <td>
                 <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a> 

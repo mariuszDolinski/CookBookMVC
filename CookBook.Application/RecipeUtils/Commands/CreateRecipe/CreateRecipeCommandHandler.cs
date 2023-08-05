@@ -33,7 +33,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
             }
             catch (Exception)
             {
-                throw new Exception("Couldn't upload the image");
+                throw new Exception("Nie można załadować zdjęcia");
             }
 
             var recipe = _mapper.Map<Recipe>(request);

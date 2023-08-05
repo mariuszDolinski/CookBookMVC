@@ -20,16 +20,36 @@
             </div>
 
             <div class="form-group mb-3">
+                <label class="control-label" for="Servings">Ilość porcji</label>
+                <input class="form-control" type="text" asp-for="Servings" placeholder="Opcjonalnie (możesz dodać później)">   
+                <span asp-validation-for="Servings" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" for="Source">Źródło przepisu</label>
+                <input class="form-control" type="text" asp-for="Source" placeholder="Podaj źródło przepisu jesli nie jesteś jego autorem">   
+                <span asp-validation-for="Source" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
                 <label class="form-label" for="ImageFile">Wgraj zdjęcie (preferowana proporcja 4:3)</label>
                 <input class="form-control" type="file" asp-for="ImageFile" accept="image/*">
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
 
-            <div class="form-group form-check mb-3">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="OnlyForAdults" />
-                    Tylko dla pełnoletnich
-                </label>
+            <div class="form-check form-switch mb-1">
+                <input class="form-check-input" type="checkbox" role="switch" id="afo" asp-for="OnlyForAdults" />
+                <label class="form-check-label" for="afo">Tylko dla pełnoletnich</label>
+            </div>
+
+            <div class="form-check form-switch mb-1">
+                <input class="form-check-input" type="checkbox" role="switch" id="isv" asp-for="IsVegeterian" />
+                <label class="form-check-label" for="isv">Przepis wegetariański</label>
+            </div>
+
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="shr" checked asp-for="IsHidden" />
+                <label class="form-check-label" for="eshr" title="Nie wyświetlaj na stronie głównej i w wynikach wyszukiwania">Ukryj przepis</label>
             </div>
 
             <input type="submit" value="Dodaj przepis" class="btn btn-primary">    

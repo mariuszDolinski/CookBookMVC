@@ -9,10 +9,15 @@ public partial class Recipe
     public string? Description { get; set; }
     public string? ImageName { get; set; }
     public bool OnlyForAdults { get; set; } = false;
+    public bool IsVegeterian { get; set; } = false;
+    public bool IsHidden { get; set; }
+    public string? Servings { get; set; }
+    public string? Source { get; set; }
+    public DateTime CreatedTime { get; set; } = DateTime.Now;
 
     public string AuthorId { get; set; } = default!;
     public IdentityUser Author { get; set; } = default!;
-    public DateTime CreatedTime { get; set; } = DateTime.Now;
+    
 
     public List<RecipeIngridient> RecipeIngridients { get; set; } = new List<RecipeIngridient>();
 }

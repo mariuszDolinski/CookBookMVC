@@ -33,6 +33,10 @@ namespace CookBook.Application.RecipeUtils.Commands.EditRecipe
             recipe.Name = request.Name!;
             recipe.Description = request.Description;
             recipe.OnlyForAdults = request.OnlyForAdults;
+            recipe.Servings = request.Servings;
+            recipe.Source = request.Source;
+            recipe.IsVegeterian = request.IsVegeterian;
+            recipe.IsHidden = request.IsHidden;
             await _recipeRepository.SaveChangesToDb();
         }
     }

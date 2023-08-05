@@ -32,17 +32,20 @@
          <label class="control-label" for="searchName">Nazwa wyszukiwania</label>
          <input class="form-control" type="text" id="searchName" />   
     </div>-->
-    <div class="form-group form-check mb-3">
-        <input class="form-check-input" type="radio" value="1" name="searchType" id="allRadio" checked>
-        <label class="form-check-label" for="allRadio">
-            Szukaj przepisów zawierających wszystkie składniki z listy
-        </label>
-    </div>
-    <div class="form-group form-check mb-3">
-        <input class="form-check-input" type="radio" value="2" name="searchType" id="onlyRadio">
-        <label class="form-check-label" for="onlyRadio">
-            Szukaj przepisów zawierających tylko składniki z listy
-        </label>
+    <div class="border p-2 mb-2 col-12 col-md-4" id="advancedMode">
+        <label for="advancedMode" class="form-label">Wyszukaj...</label>
+        <div class="form-group form-check mb-1">
+            <input class="form-check-input" type="radio" value="1" name="searchType" id="allRadio" checked>
+            <label class="form-check-label" for="allRadio">
+                przepisy zawierające wszystkie składniki z listy
+            </label>
+        </div>
+        <div class="form-group form-check mb-1">
+            <input class="form-check-input" type="radio" value="2" name="searchType" id="onlyRadio">
+            <label class="form-check-label" for="onlyRadio">
+                przepisy zawierające tylko składniki z listy
+            </label>
+        </div>
     </div>
     <div class="form-group mb-3 col-12 col-md-4">
         <label  class="control-label" for="searchIng">Wybierz składniki do wyszukania</label>
