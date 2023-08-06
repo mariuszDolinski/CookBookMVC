@@ -17,6 +17,9 @@ public partial class Recipe
 
     public string AuthorId { get; set; } = default!;
     public IdentityUser Author { get; set; } = default!;
+
+    public int CategoryId { get; set; }
+    public virtual RecipeCategory Category { get; set; } = default!;
     
 
     public List<RecipeIngridient> RecipeIngridients { get; set; } = new List<RecipeIngridient>();

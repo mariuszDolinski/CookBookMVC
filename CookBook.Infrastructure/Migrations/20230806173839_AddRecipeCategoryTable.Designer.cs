@@ -4,6 +4,7 @@ using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Infrastructure.Migrations
 {
     [DbContext(typeof(CookBookDbContext))]
-    partial class CookBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230806173839_AddRecipeCategoryTable")]
+    partial class AddRecipeCategoryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,9 +70,6 @@ namespace CookBook.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -104,8 +104,6 @@ namespace CookBook.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Recipes");
                 });
@@ -413,15 +411,7 @@ namespace CookBook.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CookBook.Domain.Entities.RecipeCategory", "Category")
-                        .WithMany("Recipes")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("CookBook.Domain.Entities.RecipeIngridient", b =>
@@ -498,11 +488,6 @@ namespace CookBook.Infrastructure.Migrations
             modelBuilder.Entity("CookBook.Domain.Entities.Recipe", b =>
                 {
                     b.Navigation("RecipeIngridients");
-                });
-
-            modelBuilder.Entity("CookBook.Domain.Entities.RecipeCategory", b =>
-                {
-                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

@@ -39,6 +39,13 @@ namespace CookBook.Infrastructure.Seeders
                     _dbContext.Ingridients.AddRange(ingridients);
                     await _dbContext.SaveChangesAsync();
                 }
+
+                if (!_dbContext.RecipeCategories.Any())
+                {
+                    var categories = GetRecipeCategories();
+                    _dbContext.RecipeCategories.AddRange(categories);
+                    await _dbContext.SaveChangesAsync();
+                }
                 
                 //CreateDefaultRoles();
 
@@ -70,6 +77,21 @@ namespace CookBook.Infrastructure.Seeders
             }
 
             return ingridients;
+        }
+        private IEnumerable<RecipeCategory> GetRecipeCategories()
+        {
+            var categories = new List<RecipeCategory>
+            {
+                new RecipeCategory() { CategoryName = "Zupy" },
+                new RecipeCategory() { CategoryName = "Inne" }
+            };
+
+            foreach(var r in _dbContext.Recipes)
+            {
+                r.CategoryId = 2;
+            }
+
+            return categories;
         }
         //private async void CreateDefaultRoles()
         //{
