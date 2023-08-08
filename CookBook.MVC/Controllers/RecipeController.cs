@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.Application.IngridientUtils.Queries.GetIngridient;
 using CookBook.Application.RecipeUtils;
@@ -68,37 +69,42 @@ namespace CookBook.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(command);
+                return await this.ViewWithCategories(_mediator, command);
             }
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            return await this.ViewWithCategories(_mediator);
         }
         #endregion
 
         #region Edit Actions
+        [HttpGet]
         [Route("recipe/{Id}/edit")]
         public async Task<IActionResult> Edit(int id)
         {
-            var dto = await _mediator.Send(new GetRecipeByIdQuery(id));
+            var result = await _mediator.Send(new GetRecipeByIdQuery(id));
 
-            if (!dto.IsEditable)
+            if (!result.IsEditable)
             {
                 return RedirectToAction("NoAccess", "Home");
             }
 
-            var result = _mapper.Map<EditRecipeCommand>(dto);
+            //var result = _mapper.Map<EditRecipeCommand>(dto);
             result.Id = id;
-            return View(result);
+            return await this.ViewWithCategories(_mediator, result);
         }
         [HttpPost]
         [Route("recipe/{Id}/edit")]
-        public async Task<IActionResult> Edit(int id, EditRecipeCommand command)
+        public async Task<IActionResult> Edit(EditRecipeCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return await this.ViewWithCategories(_mediator, command);
+            }
             await _mediator.Send(command);
             return RedirectToAction("Index", "User");
             //return RedirectToAction("Details", new RouteValueDictionary(

@@ -20,5 +20,6 @@ namespace CookBook.Application.RecipeUtils
         public string? CreatedTime { get; set; }
         public bool IsEditable { get; set; }
         public List<RecipeIngridientDto> RecipeIngridients { get; set; } = new List<RecipeIngridientDto>();
+        public int CategoryId { get; set; }
     }
 }

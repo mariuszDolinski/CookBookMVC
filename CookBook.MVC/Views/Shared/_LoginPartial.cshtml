@@ -12,8 +12,16 @@
                 <a class="dropdown-item" asp-controller="User" asp-action="Index" >
                     Moje przepisy
                 </a>
-              </li>  
-			  <li>
+              </li>
+                @if(User.IsInRole("Manager") || User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a class="dropdown-item" asp-controller="User" asp-action="Categories" >
+                            Kategorie
+                        </a>
+                    </li>  
+                }
+                <li>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
                     Ustawienia konta
                 </a>

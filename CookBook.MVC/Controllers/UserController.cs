@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
 using CookBook.Application.ApplicationUser.Queries.GetAllUserRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using MediatR;
@@ -18,12 +19,26 @@ namespace CookBook.MVC.Controllers
             _mediator = mediator;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// return view with all user's recipes
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery());
             return View(userRecipes);
+        }
+        /// <summary>
+        /// return view with recipe categories
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> Categories()
+        {
+            var categories = await _mediator.Send(new GetAllRecipeCategoriesQuery());
+            return View(categories);
         }
     }
 }

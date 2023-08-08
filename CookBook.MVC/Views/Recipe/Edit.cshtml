@@ -1,9 +1,11 @@
 ﻿@using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient
 @using CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient;
-@model CookBook.Application.RecipeUtils.Commands.EditRecipe.EditRecipeCommand
+@using CookBook.Application.RecipeUtils;
+@model CookBook.Application.RecipeUtils.RecipeDto;
 
 @{
     ViewData["Title"] = "Edytuj przepis";
+    var categories = (List<RecipeCategoryDto>)ViewBag.Categories;
 }
 <div class="row">
     <div class="col-md-5">
@@ -28,9 +30,27 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mb-3">
-                <label asp-for="Name" class="control-label">Nazwa</label>
+                <label asp-for="Name" class="control-label">Nazwa (wymagane)</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="control-label" for="CategoryId">Kategoria (wymagane)</label>
+                <select class="form-select" asp-for="CategoryId">
+                    @foreach(var cat in categories)
+                    {
+                        if(cat.CategoryId == Model.CategoryId)
+                        {
+                            <option value="@cat.CategoryId" selected>@cat.CategoryName</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.CategoryId">@cat.CategoryName</option>
+                        }
+
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Description" class="control-label">Opis przygotowania</label>
@@ -76,7 +96,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
-                <a class="btn btn-outline-secondary" onclick="history.go(-1);">Anuluj</a>
+                <a class="btn btn-outline-secondary" asp-controller="User" asp-action="Index">Anuluj</a>
             </div>
         </form>
     </div>

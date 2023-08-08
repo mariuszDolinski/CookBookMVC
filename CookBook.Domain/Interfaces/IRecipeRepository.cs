@@ -8,6 +8,7 @@ namespace CookBook.Domain.Interfaces
         Task CreateRecipe(Recipe recipe);
         Task<PaginatedResult<Recipe>> GetAllRecipes(string? searchPhrase, int pageNumber, int pageSize, string[]? ingList, int advancedSearchMode);
         Task<Recipe> GetRecipeById(int id);
+        Task<int> GetCategoryIdByName(string categoryName);
         Task SaveChangesToDb();
         Task DeleteById(int id);
     }

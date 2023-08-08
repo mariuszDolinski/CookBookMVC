@@ -37,6 +37,7 @@ namespace CookBook.Application.RecipeUtils.Commands.EditRecipe
             recipe.Source = request.Source;
             recipe.IsVegeterian = request.IsVegeterian;
             recipe.IsHidden = request.IsHidden;
+            recipe.CategoryId = request.CategoryId;
             await _recipeRepository.SaveChangesToDb();
         }
     }

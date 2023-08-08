@@ -14,6 +14,8 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
                 .MaximumLength(100).WithMessage("Pole powinno mieć maksimum 100 znaków");
             RuleFor(r => r.Source)
                 .MaximumLength(200).WithMessage("Pole powinno mieć maksimum 200 znaków");
+            RuleFor(r => r.CategoryId)
+                .NotEmpty().WithMessage("Wybierz kategorię dla przepisu");
             RuleFor(r => r.ImageFile)
                 .Custom((value, context) =>
                 {

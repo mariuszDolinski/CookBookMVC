@@ -1,7 +1,9 @@
 ﻿@using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
+@using CookBook.Application.RecipeUtils;
 @model CreateRecipeCommand
 @{
     ViewData["Title"] = "Dodaj przepis";
+    var categories = (List<RecipeCategoryDto>)ViewBag.Categories;
 }
 <h4 style="font-weight:normal">Dodaj nowy przepis</h4>
 <hr />
@@ -12,6 +14,20 @@
                 <label class="control-label" for="Name">Nazwa (wymagane)</label>
                 <input class="form-control" type="text" asp-for="Name" placeholder="Wpisz nazwę (max. 100 znaków)">   
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label" for="CategoryId">Kategoria (wymagane)</label>
+                <select class="form-select" asp-for="CategoryId">
+                    <option value="0"></option>   
+                    @foreach(var cat in categories)
+                    {
+                        <option value="@cat.CategoryId">
+                            @cat.CategoryName
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">

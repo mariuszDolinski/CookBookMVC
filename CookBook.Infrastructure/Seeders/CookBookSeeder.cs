@@ -85,8 +85,8 @@ namespace CookBook.Infrastructure.Seeders
                 new RecipeCategory() { CategoryName = "Zupy" },
                 new RecipeCategory() { CategoryName = "Inne" }
             };
-
-            foreach(var r in _dbContext.Recipes)
+            //set default CategoryId value on 2 "Inne"
+            foreach (var r in _dbContext.Recipes)
             {
                 r.CategoryId = 2;
             }

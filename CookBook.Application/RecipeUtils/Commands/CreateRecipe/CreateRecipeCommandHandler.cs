@@ -37,8 +37,14 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipe
             }
 
             var recipe = _mapper.Map<Recipe>(request);
+            //var categoryId = await _recipeRepository.GetCategoryIdByName(request.CategoryName!);
+            //if(categoryId == 0)
+            //{
+            //    return;
+            //}
             recipe.AuthorId = _userContext.GetCurrentUser()!.Id;
             recipe.CreatedTime = DateTime.Now;
+            recipe.CategoryId = request.CategoryId;
             await _recipeRepository.CreateRecipe(recipe);
         }
     }

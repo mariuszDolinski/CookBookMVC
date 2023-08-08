@@ -1,4 +1,8 @@
-﻿using CookBook.MVC.Models;
+﻿using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
+using CookBook.Application.RecipeUtils;
+using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
+using CookBook.MVC.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -84,5 +88,29 @@ namespace CookBook.MVC.Extensions
                        pageSize = query.PageSize
                    });
         }
+        //metody do zwracania widoku Create dla przepisu z przesyłem listy kategorii przez ViewBag
+        #region metody do populacji kategorii w widokach
+        public static async Task<IActionResult> ViewWithCategories(this Controller controller, 
+            IMediator mediator, CreateRecipeCommand command)
+        {
+            var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
+            controller.ViewBag.Categories = categories.ToList();
+            return controller.View(command);
+        }
+        public static async Task<IActionResult> ViewWithCategories(this Controller controller,
+            IMediator mediator, RecipeDto command)
+        {
+            var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
+            controller.ViewBag.Categories = categories.ToList();
+            return controller.View(command);
+        }
+        public static async Task<IActionResult> ViewWithCategories(this Controller controller,
+            IMediator mediator)
+        {
+            var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
+            controller.ViewBag.Categories = categories.ToList();
+            return controller.View();
+        }
+        #endregion
     }
 }
