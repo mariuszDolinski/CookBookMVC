@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.Application.IngridientUtils.Queries.GetIngridient;
 using CookBook.Application.RecipeUtils;
@@ -13,6 +12,7 @@ using CookBook.Application.RecipeUtils.Commands.EditRecipeIngridient;
 using CookBook.Application.RecipeUtils.Queries.AdvancedSearch;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
+using CookBook.Application.RecipeUtils.Queries.GetRecipeCategoryById;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
 using CookBook.MVC.Extensions;
@@ -60,6 +60,8 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Details(int recipeId)
         {
             var dto = await _mediator.Send(new GetRecipeByIdQuery(recipeId));
+            var recipeCategory = await _mediator.Send(new GetRecipeCategoryByIdQuery(dto.CategoryId));
+            ViewBag.CategoryName = recipeCategory.CategoryName;
             return View(dto);
         }
 

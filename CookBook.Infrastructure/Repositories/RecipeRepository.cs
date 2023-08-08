@@ -77,16 +77,16 @@ namespace CookBook.Infrastructure.Repositories
             => await _dbContext.Recipes
             .Include(r => r.RecipeIngridients)
             .FirstAsync(r => r.Id == id);
-        public async Task<int> GetCategoryIdByName(string categoryName)
-        {
-            var category = await _dbContext.RecipeCategories
-                .FirstOrDefaultAsync(c => c.CategoryName == categoryName);
-            if(category == null)
-            {
-                return 0;
-            }
-            return category.CategoryId;
-        }
+        //public async Task<int> GetCategoryIdByName(string categoryName)
+        //{
+        //    var category = await _dbContext.RecipeCategories
+        //        .FirstOrDefaultAsync(c => c.CategoryName == categoryName);
+        //    if(category == null)
+        //    {
+        //        return 0;
+        //    }
+        //    return category.CategoryId;
+        //}
         public async Task SaveChangesToDb()
             => await _dbContext.SaveChangesAsync();
 
@@ -98,5 +98,8 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Recipes.Remove(recipe);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<RecipeCategory> GetCategoryById(int id)
+            => await _dbContext.RecipeCategories.FirstAsync(r => r.CategoryId == id);
     }
 }

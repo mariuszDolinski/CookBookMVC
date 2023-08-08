@@ -2,21 +2,24 @@
 
 @{
     ViewData["Title"] = @Model.Name;
+    var categoryName = (string)ViewBag.CategoryName;
 }
 <div class="container d-flex justify-content-center">
 <div  class = "col-sm-9">
     <h3>@Model.Name 
-    @if (Model.OnlyForAdults)
-    {
-        <span class="badge bg-warning">18+</span>
-    }
-    @if (Model.IsVegeterian)
-    {
-        <span class="badge bg-success">Wege</span>
-    }
     </h3>
-
-    <hr class="mb-0 mt-0"/>
+    <hr class="m-0">
+    <h6 class="my-1">Kategoria: @categoryName
+          @if (Model.OnlyForAdults)
+          {
+              <span class="badge bg-warning p-1 me-1 mb-0 float-end" style="font-size: 12px;">18+</span>
+          }
+          @if (Model.IsVegeterian)
+          {
+              <span class="badge bg-success p-1 me-1 mb-0 float-end" style="font-size: 12px;">Wege</span>
+          }
+    </h6>
+    <hr class="m-0"/>
     <div class="d-flex justify-content-between">
         <div class="clol-md-6"><i class="bi bi-person"></i> @Model.Author</div>
         <div class="clol-md-1"></div>

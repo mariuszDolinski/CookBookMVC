@@ -39,13 +39,13 @@
                     <div class="card-body">
                         <h5 class="card-subtitle mb-2">@item.GetShortName()</h5>                      
                         <a title="@item.Name" class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id.ToString()">Szczegóły</a>
-                        @if (item.IsVegeterian)
-                        {
-                            <span class="badge bg-success float-end me-1 pe-2 ps-2">Wege</span>
-                        }
                         @if (item.OnlyForAdults)
                         {
-                            <span class="badge bg-warning float-end me-1 pe-2 ps-2">18+</span>
+                            <span class="badge bg-warning p-1 me-1 float-end" style="font-size: 12px;">18+</span>
+                        }
+                        @if (item.IsVegeterian)
+                        {
+                            <span class="badge bg-success p-1 me-1 mb-0 float-end" style="font-size: 12px;">Wege</span>
                         }
                     </div>
                 </div>

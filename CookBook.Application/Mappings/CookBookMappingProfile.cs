@@ -49,7 +49,8 @@ namespace CookBook.Application.Mappings
                 .ForMember(ri => ri.Ingridient, opt => opt.Ignore())
                 .ForMember(ri => ri.Unit, opt => opt.Ignore());
 
-            CreateMap<RecipeCategory, RecipeCategoryDto>();
+            CreateMap<RecipeCategory, RecipeCategoryDto>()
+                .ReverseMap();
 
         }
     }

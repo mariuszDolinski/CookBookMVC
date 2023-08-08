@@ -1,4 +1,4 @@
-﻿using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
+﻿using CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories;
 using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
 using CookBook.MVC.Models;

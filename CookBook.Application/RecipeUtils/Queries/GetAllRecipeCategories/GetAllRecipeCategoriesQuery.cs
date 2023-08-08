@@ -1,7 +1,6 @@
-﻿using CookBook.Application.RecipeUtils;
-using MediatR;
+﻿using MediatR;
 
-namespace CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories
+namespace CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories
 {
     public class GetAllRecipeCategoriesQuery : IRequest<IEnumerable<RecipeCategoryDto>>
     {

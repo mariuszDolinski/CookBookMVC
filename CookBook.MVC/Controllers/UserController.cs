@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using CookBook.Application.ApplicationUser.Queries.GetAllRecipeCategories;
+using CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories;
 using CookBook.Application.ApplicationUser.Queries.GetAllUserRecipes;
-using CookBook.Application.RecipeUtils.Queries.GetAllRecipes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
