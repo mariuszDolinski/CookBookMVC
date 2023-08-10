@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CookBook.Application.RecipeUtils.RecipeCategoryDto>
+﻿@using CookBook.Application.RecipeUtils;
+@model IEnumerable<CookBook.Application.RecipeUtils.RecipeCategoryDto>
 
 @{
     ViewData["Title"] = "Kategorie przepisów";
@@ -6,25 +7,38 @@
 }
 
 <h3>Kategorie przepisów</h3>
+<hr />
+<div class="row">
+    <div class="col-12 col-md-3">
+        <div class="mb-3">
+            <partial name="_CreateCategory" model="new RecipeCategoryDto()"/>
+        </div>
+    </div>
+    <div class="col-12 col-md-9 mt-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa kategorii</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr id="cat-row-@item.CategoryId">
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.CategoryName) 
+                        </td>
+                        <td>
+                            @*<a title="Zmień nazwę" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a> 
+                            <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.CategoryName')"><i class="bi bi-trash"></i></a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nazwa kategorii</th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr id="cat-row-@item.CategoryId">
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.CategoryName) 
-            </td>
-            <td>
-                @*<a title="Zmień nazwę" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a> 
-                <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.CategoryName')"><i class="bi bi-trash"></i></a>*@
-            </td>
-        </tr>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-    </tbody>
-</table>

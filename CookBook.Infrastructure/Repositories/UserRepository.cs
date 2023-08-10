@@ -14,8 +14,5 @@ namespace CookBook.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Recipe>> GetAllUserRecipe(string id)
             => await _dbContext.Recipes.Where(r => r.AuthorId == id).ToListAsync();
-
-        public async Task<IEnumerable<RecipeCategory>> GetAllRecipeCategories()
-            => await _dbContext.RecipeCategories.ToListAsync();
     }
 }

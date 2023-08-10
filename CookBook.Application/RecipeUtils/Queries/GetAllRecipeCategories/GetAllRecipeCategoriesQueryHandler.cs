@@ -7,17 +7,17 @@ namespace CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories
     public class GetAllRecipeCategoriesQueryHandler :
         IRequestHandler<GetAllRecipeCategoriesQuery, IEnumerable<RecipeCategoryDto>>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IRecipeRepository _recipeRepository;
         private readonly IMapper _mapper;
 
-        public GetAllRecipeCategoriesQueryHandler(IUserRepository userRepository, IMapper mapper)
+        public GetAllRecipeCategoriesQueryHandler(IRecipeRepository recipeRepository, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _recipeRepository = recipeRepository;
             _mapper = mapper;        
         }
         public async Task<IEnumerable<RecipeCategoryDto>> Handle(GetAllRecipeCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _userRepository.GetAllRecipeCategories();
+            var categories = await _recipeRepository.GetAllRecipeCategories();
             return _mapper.Map<IEnumerable<RecipeCategoryDto>>(categories);
         }
     }

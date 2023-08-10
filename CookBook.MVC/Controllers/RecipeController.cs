@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using CookBook.Application.IngridientUtils.Commands.CreateIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
 using CookBook.Application.IngridientUtils.Queries.GetIngridient;
 using CookBook.Application.RecipeUtils;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipe;
+using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeIngridient;
 using CookBook.Application.RecipeUtils.Commands.DeleteRecipe;
 using CookBook.Application.RecipeUtils.Commands.DeleteRecipeIngridient;
@@ -65,7 +67,7 @@ namespace CookBook.MVC.Controllers
             return View(dto);
         }
 
-        #region Create Action
+        #region Create Actions
         [HttpPost]
         public async Task<IActionResult> Create(CreateRecipeCommand command)
         {
@@ -80,6 +82,30 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Create()
         {
             return await this.ViewWithCategories(_mediator);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRecipeCategory(CreateRecipeCategoryCommand command)
+        {
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                this.SetNotification("warning", "Zaloguj się aby dodać nowe składniki.");
+                return RedirectToAction("Categories", "User");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                this.SetNotification("warning", errors[0]);
+                return RedirectToAction("Categories", "User");
+            }
+
+            await _mediator.Send(command);
+            this.SetNotification("success", $"Kategoria '{command.CategoryName}' została dodana");
+            return RedirectToAction("Categories", "User");
         }
         #endregion
 

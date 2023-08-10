@@ -4,6 +4,7 @@ using CookBook.Application.ApplicationUser.Queries.GetAllUserRecipes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CookBook.MVC.Extensions;
 
 namespace CookBook.MVC.Controllers
 {

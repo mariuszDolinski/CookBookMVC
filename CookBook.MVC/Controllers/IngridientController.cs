@@ -56,7 +56,7 @@ namespace CookBook.MVC.Controllers
                     .Select(y => y.ErrorMessage)
                     .ToList();
                 this.SetNotification("error", errors[0]);
-                return this.CallRedirectToAction(query,nameof(Index));
+                return this.CallRedirectToAction(query, nameof(Index));
             }
 
             await _mediator.Send(command);
