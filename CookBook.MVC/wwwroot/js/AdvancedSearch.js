@@ -2,7 +2,10 @@ var ingList = [];
 var askBeforeReload = true;
 
 $(document).ready(function () {
-    FillData();//populate datalist with ingridients names
+    $("#searchlistIngridients").select2({
+        width: '100%',
+    });
+    FillData($("#searchlistIngridients"), null, "", "");//populate datalist with ingridients names
     //enableInputName();
     //$("#saveSearch").click(enableInputName);  
     const currentString = $("#ingridientList").val();
@@ -44,13 +47,16 @@ function hideClearAllButton(b) {
 }
 
 const addToSearchList = () => {
-    const ingToAdd = $.trim($("#searchIng").val().toLowerCase());
-    if (ingList.includes(ingToAdd)) {
-        toastr.options = {
-            "closeButton": true
+    const ingVal = $("#searchlistIngridients").val();
+    const ingToAdd = (ingVal == null) ? null : $.trim(ingVal.toLowerCase());
+    if (ingVal != null) {
+        if (ingList.includes(ingToAdd)) {
+            toastr.options = {
+                "closeButton": true
+            }
+            toastr["warning"]("Sk&#322;adnik jest ju&#380; na li&#347;cie");
+            return;
         }
-        toastr["warning"]("Sk&#322;adnik jest ju&#380; na li&#347;cie");
-        return;
     }
    
     $.ajax({

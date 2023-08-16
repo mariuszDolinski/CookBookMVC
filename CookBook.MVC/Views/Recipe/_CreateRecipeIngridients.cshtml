@@ -27,14 +27,14 @@
                             <input asp-for="Amount" id="amountId" class="form-control" placeholder="Wpisz liczbę lub ułamek..." />
                         </div>
                         <div class="form-group mb-2">
-                            <label asp-for="Ingridient" class="control-label">Wybierz składnik</label>
-                            <input asp-for="Ingridient" id="ingId" autocomplete="off" class="form-control" list="datalistIngridients" placeholder="Znajdź składnik...">
-                            <datalist id="datalistIngridients"></datalist>
+                            <label asp-for="Ingridient" class="control-label">Nazwa składnika</label>
+                            <select asp-for="Ingridient" id="createlistIngridients" class="form-control">
+                            </select>
                         </div>
                         <div class="form-group mb-2">
-                            <label asp-for="Unit" class="control-label">Wybierz jednostkę</label>
-                            <input asp-for="Unit" id="unitId" autocomplete="off" class="form-control" list="datalistUnits" placeholder="Znajdź jednostkę...">
-                            <datalist id="datalistUnits"></datalist>
+                            <label asp-for="Unit" class="control-label">Nazwa jednostki</label>
+                            <select asp-for="Unit" id="createlistUnits" class="form-control">
+                            </select>
                         </div>
                          <div class="form-group mb-2">
                             <label asp-for="Description" class="control-label">Opis</label>

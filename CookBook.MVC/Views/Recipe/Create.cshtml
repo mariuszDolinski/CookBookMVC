@@ -7,9 +7,9 @@
 }
 <h4 style="font-weight:normal">Dodaj nowy przepis</h4>
 <hr />
-<div class="row">
-    <div class="col-md-5">
-        <form action="/Recipe/Create" method="post" enctype="multipart/form-data">
+<form action="/Recipe/Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-5">
             <div class="form-group mb-3">
                 <label class="control-label" for="Name">Nazwa (wymagane)</label>
                 <input class="form-control" type="text" asp-for="Name" placeholder="Wpisz nazwę (max. 100 znaków)">   
@@ -31,11 +31,6 @@
             </div>
 
             <div class="form-group mb-3">
-                <label class="control-label" for="Description">Opis przygotowania</label>
-                <textarea class="form-control" type="text" asp-for="Description" placeholder="Opcjonalnie (możesz dodać później)"></textarea>  
-            </div>
-
-            <div class="form-group mb-3">
                 <label class="control-label" for="Servings">Ilość porcji</label>
                 <input class="form-control" type="text" asp-for="Servings" placeholder="Opcjonalnie (możesz dodać później)">   
                 <span asp-validation-for="Servings" class="text-danger"></span>
@@ -52,7 +47,14 @@
                 <input class="form-control" type="file" asp-for="ImageFile" accept="image/*">
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
-
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <div class="form-group mb-3">
+                <label class="control-label" for="Description">Opis przygotowania</label>
+                <textarea class="form-control" type="text" asp-for="Description" placeholder="Opcjonalnie (możesz dodać później)"></textarea>  
+            </div>
+                
             <div class="form-check form-switch mb-1">
                 <input class="form-check-input" type="checkbox" role="switch" id="afo" asp-for="OnlyForAdults" />
                 <label class="form-check-label" for="afo">Tylko dla pełnoletnich</label>
@@ -67,12 +69,14 @@
                 <input class="form-check-input" type="checkbox" role="switch" id="shr" checked asp-for="IsHidden" />
                 <label class="form-check-label" for="eshr" title="Nie wyświetlaj na stronie głównej i w wynikach wyszukiwania">Ukryj przepis</label>
             </div>
-
-            <input type="submit" value="Dodaj przepis" class="btn btn-primary">    
-            <a asp-action="Index" class="btn btn-outline-secondary">Anuluj</a>
-        </form>
+            <div class="form-group float-end">
+                <input type="submit" value="Dodaj przepis" class="btn btn-primary">    
+                <a asp-action="Index" class="btn btn-outline-secondary">Anuluj</a>
+            </div>
+        </div>
     </div>
-</div>
+</form>
+
 
 @section Scripts {
     @{

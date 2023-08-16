@@ -5,6 +5,7 @@ using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using CookBook.Domain.Utils;
 
 namespace CookBook.MVC.Extensions
 {
@@ -112,5 +113,20 @@ namespace CookBook.MVC.Extensions
             return controller.View();
         }
         #endregion
+        //metoda ustawiająca wartości pól w klasie RecipesQueryParams
+        public static RecipesQueryParams SetQueryParams(this Controller controller, string? searchPhrase, int pageNaumber, int pageSize,
+            string[]? ingList, int advancedMode, string category, bool isVege)
+        {
+            return new RecipesQueryParams()
+            {
+                SearchPhrase = searchPhrase,
+                PageNumber = pageNaumber,
+                PageSize = pageSize,
+                IngList = ingList,
+                AdvancedSearchMode = advancedMode,
+                Category = category,
+                IsVegetarian = isVege
+            };
+        }
     }
 }

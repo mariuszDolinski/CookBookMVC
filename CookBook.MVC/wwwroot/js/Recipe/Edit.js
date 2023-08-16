@@ -1,7 +1,25 @@
 $(document).ready(function () {
 
-    FillData()
-    LoadRecipeIngridients()
+    $("#createlistIngridients").select2({
+        width: '100%',
+        dropdownParent: $('#createRecipeIngridientModal'),//poprawa dzia³ania w modalu
+    });
+    $("#createlistUnits").select2({
+        width: '100%',
+        dropdownParent: $('#createRecipeIngridientModal')//poprawa dzia³ania w modalu
+    });
+
+    $("#editlistIngridients").select2({
+        width: '100%',
+        dropdownParent: $('#editRecipeIngridientModal')
+    });
+    $("#editlistUnits").select2({
+        width: '100%',
+        dropdownParent: $('#editRecipeIngridientModal')
+    });
+
+    FillData($("#createlistIngridients"), $("#createlistUnits"),"","");
+    LoadRecipeIngridients();
 
     $("#createRecipeIngridientModal form").submit(function (event) {
         event.preventDefault();
@@ -76,10 +94,11 @@ const ConfirmDeleteModal = (ingId, ingDesc) => {
 }
 
 const ShowEditModal = (id, desc, amount, ing, unit) => {
+    FillData($("#editlistIngridients"), $("#editlistUnits"),ing,unit)
     $("#ingridientId").val(id);
     $("#amountEdit").val(amount);
-    $("#ingEdit").val(ing);
-    $("#unitEdit").val(unit);
+    //$("#editlistIngridients").val(ing).trigger('change');
+    //$("#unitEdit").val(unit);
     $("#descEdit").val(desc);
     $("#editRecipeIngridientModal").modal('show');
 }

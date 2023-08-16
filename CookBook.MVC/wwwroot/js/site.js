@@ -1,18 +1,45 @@
 ﻿//populate datalists with ingridients and units names
-const FillData = () => {
-    const containerIngridient = $("#datalistIngridients")
-    const containerUnit = $("#datalistUnits")
+const FillData = (iContainer, uContainer, ing, un) => {
 
     $.ajax({
         url: `/recipe/getDatalists`,
         type: 'get',
         success: function (data) {
-            containerIngridient.empty();
-            containerUnit.empty();
-            for (const item of data.ingridients)
-                containerIngridient.append(`<option value="${item}"></option>`);
-            for (const item of data.units)
-                containerUnit.append(`<option value="${item}"></option>`);
+            if (iContainer != null) {
+                iContainer.empty();
+                if (ing == "") {
+                    iContainer.append(`<option value="0" selected disabled="true">Wybierz składnik</option>`);
+                    for (const item of data.ingridients)
+                        iContainer.append(`<option value="${item}">${item}</option>`);
+                }
+                else {
+                    iContainer.append(`<option value="0" disabled="true">Wybierz składnik</option>`);
+                    for (const item of data.ingridients) {
+                        if (item == ing) {
+                            iContainer.append(`<option value="${item}" selected>${item}</option>`);
+                        } else {
+                            iContainer.append(`<option value="${item}">${item}</option>`);
+                        }
+                    }
+                }
+            }              
+            if (uContainer != null) {
+                uContainer.empty();
+                if (un == "") {
+                    uContainer.append(`<option value="0" selected disabled="true">Wybierz jednostkę</option>`);
+                    for (const item of data.units)
+                        uContainer.append(`<option value="${item}">${item}</option>`);
+                }
+                else {
+                uContainer.append(`<option value="0" disabled="true">Wybierz jednostkę</option>`);
+                for (const item of data.units)
+                    if (item == un) {
+                        uContainer.append(`<option value="${item}" selected>${item}</option>`);
+                    } else {
+                        uContainer.append(`<option value="${item}">${item}</option>`);
+                    }
+                }
+            }    
         },
         error: function () {
             toastr["error"]("Lista składników lub jednostek nie mogła zostać wczytana")
