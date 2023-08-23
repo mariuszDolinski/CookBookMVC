@@ -1,4 +1,5 @@
 ﻿@model string[];
+@using CookBook.Application.RecipeUtils;
 @{
     ViewData["Title"] = "Wyszukiwanie zaawansowane";
     string ings = "";
@@ -13,6 +14,8 @@
             }
         }
     }
+
+    var categories = (List<RecipeCategoryDto>)ViewBag.Categories;
 }
 
 @*hidden input to store currentSearch*@
@@ -22,66 +25,111 @@
 <hr />
 
 <form asp-action="AdvancedSearch">
-    <!--<div class="form-group form-check mb-3">
-        <input class="form-check-input" type="checkbox" id="saveSearch"/>
-        <label class="form-check-label" for="saveSearch">
-            Zapisz wyszukiwanie
-        </label>
-    </div>
-    <div class="form-group mb-3 col-12 col-md-4">
-         <label class="control-label" for="searchName">Nazwa wyszukiwania</label>
-         <input class="form-control" type="text" id="searchName" />   
-    </div>-->
     <div class="row">
-        <div class="col-md-5 col-lg-5">
-            <div class="border p-2 mb-2" id="advancedMode">
-                <label for="advancedMode" class="form-label">Dodatkowe filtry</label>
-                <div class="form-group form-check mb-1">
-                    <input class="form-check-input" type="radio" value="0" name="searchType" id="allRecipeRadio" checked>
-                    <label class="form-check-label" for="allRadio">
-                        wszystkie przepisy
-                    </label>
+        <div class="col-md-6 col-lg-6">
+            <div class="card mb-2" id="categorySearch">
+                <div class="card-header">
+                    <a data-bs-toggle="collapse" data-bs-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse" class="d-block collapsed" id="heading-categories" style="text-decoration:none">
+                        <i class="bi bi-chevron-down float-end"></i>
+                        Szukaj w kategoriach
+                        <span id="categoryBadge" class="badge rounded-pill bg-primary"></span>
+                    </a>
                 </div>
-                <div class="form-group form-check mb-1">
-                    <input class="form-check-input" type="radio" value="1" name="searchType" id="allRadio" checked>
-                    <label class="form-check-label" for="allRadio">
-                        przepisy zawierające wszystkie składniki z listy
-                    </label>
-                </div>
-                <div class="form-group form-check mb-1">
-                    <input class="form-check-input" type="radio" value="2" name="searchType" id="onlyRadio">
-                    <label class="form-check-label" for="onlyRadio">
-                        przepisy zawierające tylko składniki z listy
-                    </label>
+                <div id="categoryCollapse" class="collapse scroll-card" aria-labelledby="heading-categories">
+                    <div class="card-body">
+                        @foreach(var cat in categories)
+                        {
+                            <div class="form-check mb-3">
+                            <input class="form-check-input" onchange="categoryCheckChange()" type="checkbox" value="@cat.CategoryName" name="categories" id="@cat.CategoryName"/>
+                            <label class="form-check-label" for="@cat.CategoryName">
+                                @cat.CategoryName
+                            </label>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-1 col-lg-1"></div>
-        <div class="col-md-5 col-lg-5">
-            <div class="form-group mb-3">
-                <label  class="control-label" for="searchIng">Wybierz składniki do wyszukania</label>
-                <div class="input-group">
-                    <select id="searchlistIngridients" class="form-control">
-                    </select>
-                    <div class="mt-1 float-end">
-                        <a class="btn btn-primary" onclick="addToSearchList()">
-                            Dodaj    
-                        </a>
+            <div class="card mb-2" id="ingSearch">
+                <div class="card-header">
+                    <a data-bs-toggle="collapse" data-bs-target="#ingCollapse" aria-expanded="true" aria-controls="ingCollapse" class="d-block collapsed" id="heading-ings" style="text-decoration:none">
+                        <i class="bi bi-chevron-down float-end"></i>
+                        Wyszukiwanie po składnikach
+                        <span id="ingBadge" class="badge rounded-pill bg-primary"></span>
+                    </a>
+                </div>
+
+                <div id="ingCollapse" class="collapse" aria-labelledby="heading-ings">
+                    <div class="card-body">
+                        <div class="form-group form-check mb-1">
+                            <input class="form-check-input" type="radio" onchange="changeMode()" value="0" name="searchType" id="allRecipeRadio" checked>
+                            <label class="form-check-label" for="allRecipeRadio">
+                                Wyłączone (szukaj wsród wszystkich przepisów)
+                            </label>
+                            @*<button type="button" class="btn btn-sm btn-outline-primary h-50" data-bs-toggle="popover" data-bs-content="szukaj wsród wszystkich przepisów">?</button>*@
+                        </div>
+                        <div class="form-group form-check mb-1">
+                            <input class="form-check-input" type="radio" onchange="changeMode()" value="1" name="searchType" id="allRadio">
+                            <label class="form-check-label" for="allRadio">
+                                Szukaj przepisów ze wszystkimi podanymi składnikami
+                            </label>
+                        </div>
+                        <div class="form-group form-check mb-1">
+                            <input class="form-check-input" type="radio" onchange="changeMode()" value="2" name="searchType" id="onlyRadio">
+                            <label class="form-check-label" for="onlyRadio">
+                                Szukaj przepisów zawierających tylko podane składniki
+                            </label>
+                        </div>
+
+                        <div id="ingSearchList">
+                            <hr />
+                            <div class="form-group mb-3">
+                                <label  class="control-label" for="searchIng">Wybierz składniki do wyszukania</label>
+                                <div class="input-group">
+                                    <select id="searchlistIngridients" class="form-control">
+                                    </select>
+                                    <div class="input-group-append">
+                                        <a class="btn btn-primary" onclick="addToSearchList()">
+                                            Dodaj    
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6>Lista składników do wyszukania:</h6>
+                            <table class="mb-3">
+                                <tbody id="searchListTable" name="advancedSearch">
+                                </tbody>
+                            </table>   
+
+                            <a class="btn btn-outline-danger" id="clearList" onclick="clearIngList()" hidden>
+                                Wyczyść listę
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h6>Lista składników do wyszukania:</h6>
-            <table class="mb-3">
-                <tbody id="searchListTable" name="advancedSearch">
-                </tbody>
-            </table>   
-
+            <div class="card mb-2" id="otherSearch">
+                <div class="card-header">
+                    <a data-bs-toggle="collapse" data-bs-target="#otherCollapse" aria-expanded="true" aria-controls="otherCollapse" class="d-block collapsed" id="heading-others" style="text-decoration:none">
+                        <i class="bi bi-chevron-down float-end"></i>
+                        Pozostałe filtry
+                        <span id="otherBadge" class="badge rounded-pill bg-primary"></span>
+                    </a>
+                </div>
+                <div id="otherCollapse" class="collapse" aria-labelledby="heading-others">
+                    <div class="card-body">
+                        <div class="form-group form-check mb-1">
+                         <input class="form-check-input" name="otherFilters" type="checkbox" id="onlyVege" onchange="othersCheckChange()"/>
+                         <label class="form-check-label" for="onlyVege">
+                             Tylko dania wegetariańskie
+                         </label>
+                    </div>
+                    </div>
+                </div>
+            </div>
             <a class="btn btn-primary" onclick="searchRecipes()">
                 Wyszukaj
-            </a>
-            <a class="btn btn-outline-danger" id="clearList" onclick="clearIngList()" hidden>
-                Wyczyść listę
             </a>
         </div>
      </div>

@@ -1,13 +1,24 @@
 var ingList = [];
 var askBeforeReload = true;
 
+$(function () {
+    $('[data-bs-toggle="popover"]').popover()
+})
+
 $(document).ready(function () {
     $("#searchlistIngridients").select2({
-        width: '100%',
+        theme: 'bootstrap-5'
     });
     FillData($("#searchlistIngridients"), null, "", "");//populate datalist with ingridients names
-    //enableInputName();
-    //$("#saveSearch").click(enableInputName);  
+
+    enableInputName();
+    $("#categorySearch").click(enableInputName);
+
+    $("#categoryBadge").attr("hidden", true);
+    $("#ingBadge").attr("hidden", true);
+    $("#otherBadge").attr("hidden", true);
+    $("#ingSearchList").attr("hidden", true);
+
     const currentString = $("#ingridientList").val();
     const moreThanOneIng = currentString.includes(";");
     const currentList = moreThanOneIng ? currentString.split(";") : currentString;
@@ -35,17 +46,18 @@ $(document).ready(function () {
 
 function enableInputName() {
     if (this.checked) {
-        $("#searchName").removeAttr("disabled");
+        $("#selectedCategories").removeAttr("disabled");
     } else {
-        $("#searchName").attr("disabled", true);
+        $("#selectedCategories").attr("disabled", true);
     }
 }
 
+//metoda do ukrycia/pokazania przycisku do usuwania wszystkich sk³adnikó z listy
 function hideClearAllButton(b) {
     $("#clearList").attr("hidden", b);
-    console.log("hidden zmieniony")
 }
 
+//metoda dodaj¹ca sk³adnik do wyszukania
 const addToSearchList = () => {
     const ingVal = $("#searchlistIngridients").val();
     const ingToAdd = (ingVal == null) ? null : $.trim(ingVal.toLowerCase());
@@ -77,7 +89,12 @@ const addToSearchList = () => {
     })
 }
 
+//metoda wywo³uj¹ca wyszukiwanie
 const searchRecipes = () => {
+    //zapisuje do tablicy wszystkie wybrane kategorie
+    const selectedCategories = $.map($('input[name="categories"]:checked'),
+        function (c) { return c.value; });
+    
     if (ingList.length == 0) {
         toastr.options = {
             "closeButton": true
@@ -98,6 +115,7 @@ const searchRecipes = () => {
     window.location.href = "/recipe/search/advanced?" + paramString; 
 }
 
+//usuwanie pojedynczego s³adnika
 const deleteFromSearchList = (container) => {
     const row = container.parentNode.parentNode;
     row.parentNode.removeChild(row);
@@ -107,8 +125,38 @@ const deleteFromSearchList = (container) => {
     hideClearAllButton(!ingList.length);
 }
 
+//czyszczenie ca³ej listy
 const clearIngList = () => {
     ingList = [];
     $("#searchListTable tr").remove();
     hideClearAllButton(true);
+}
+
+//liczy iloœæ zaznaczonych kategorii i uaktualnia badge kategorii
+const categoryCheckChange = () => {
+    const checkCount = document.querySelectorAll('input[type="checkbox"][name="categories"]:checked').length;
+    $("#categoryBadge").text(checkCount);
+    $("#categoryBadge").attr("hidden", checkCount == 0);
+}
+
+//ustawia badge wyszukiwania po sk³adnikach oraz ukrywanie dodawania sk³adników do listy
+const changeMode = () => {
+    const selectedMode = $('input[name="searchType"]:checked').val();
+    $("#ingBadge").empty();
+    $("#ingBadge").append(`<i class="bi bi-check-lg"></i>`); 
+    $("#ingBadge").attr("hidden", selectedMode == 0);
+    $("#ingSearchList").attr("hidden", selectedMode == 0);
+    if (selectedMode == 0) {
+        askBeforeReload = false;
+        $("#searchlistIngridients").val("0").change();
+    } else {
+        askBeforeReload = true;
+    }
+}
+
+//liczy iloœæ zaznaczonych dodatkowych fitrów
+const othersCheckChange = () => {
+    const checkCount = document.querySelectorAll('input[type="checkbox"][name="otherFilters"]:checked').length;
+    $("#otherBadge").text(checkCount);
+    $("#otherBadge").attr("hidden", checkCount == 0);
 }

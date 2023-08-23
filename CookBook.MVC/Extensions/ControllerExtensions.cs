@@ -112,6 +112,13 @@ namespace CookBook.MVC.Extensions
             controller.ViewBag.Categories = categories.ToList();
             return controller.View();
         }
+        public static async Task<IActionResult> ViewWithCategories(this Controller controller,
+            IMediator mediator, string[]? ingList)
+        {
+            var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
+            controller.ViewBag.Categories = categories.ToList();
+            return controller.View(ingList);
+        }
         #endregion
         //metoda ustawiająca wartości pól w klasie RecipesQueryParams
         public static RecipesQueryParams SetQueryParams(this Controller controller, string? searchPhrase, int pageNaumber, int pageSize,

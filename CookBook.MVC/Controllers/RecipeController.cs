@@ -262,10 +262,11 @@ namespace CookBook.MVC.Controllers
 
         #region Advanced search actions
         [AllowAnonymous]
-        public ActionResult AdvancedSearch()
+        public async Task<IActionResult> AdvancedSearch()
         {
             string[]? ingridients = (string[]?)TempData["searchIng"];
-            return View(ingridients);
+            return await this.ViewWithCategories(_mediator, ingridients);
+            //return View(ingridients);
         }
 
         [HttpGet]

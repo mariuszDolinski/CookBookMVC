@@ -78,3 +78,23 @@ textarea {
     margin-left: auto;
     margin-right: auto;
 }
+
+[class^='select2'] {
+    border-radius: 0px !important;
+}
+
+/*obracanie strza³ki w wyborze kategorii*/
+.card-header .bi {
+    transition: .3s transform ease-in-out;
+}
+
+.card-header .collapsed .bi {
+    transform: rotate(180deg);
+}
+
+/*dodanie scrolla do listy kategorii*/
+.scroll-card {
+    max-height: 180px;
+    overflow-y: auto;
+}
+

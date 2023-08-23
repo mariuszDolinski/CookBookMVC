@@ -3,19 +3,23 @@ $(document).ready(function () {
     $("#createlistIngridients").select2({
         width: '100%',
         dropdownParent: $('#createRecipeIngridientModal'),//poprawa dzia³ania w modalu
+        theme: 'bootstrap-5'
     });
     $("#createlistUnits").select2({
         width: '100%',
-        dropdownParent: $('#createRecipeIngridientModal')//poprawa dzia³ania w modalu
+        dropdownParent: $('#createRecipeIngridientModal'),
+        theme: 'bootstrap-5'
     });
 
     $("#editlistIngridients").select2({
         width: '100%',
-        dropdownParent: $('#editRecipeIngridientModal')
+        dropdownParent: $('#editRecipeIngridientModal'),
+        theme: 'bootstrap-5'
     });
     $("#editlistUnits").select2({
         width: '100%',
-        dropdownParent: $('#editRecipeIngridientModal')
+        dropdownParent: $('#editRecipeIngridientModal'),
+        theme: 'bootstrap-5'
     });
 
     FillData($("#createlistIngridients"), $("#createlistUnits"),"","");
@@ -31,10 +35,10 @@ $(document).ready(function () {
             data: form.serialize(),
             success: function () {
                 toastr["success"]("Sk&#322;adnik zosta&#322; dodany do przepisu");
-                $("#amountId").val("")
-                $("#ingId").val("")
-                $("#unitId").val("")
-                $("#descId").val("")
+                $("#amountId").val("");
+                $("#createlistIngridients").val('0').trigger('change');
+                $("#createlistUnits").val('0').trigger('change');
+                $("#descId").val("");
                 $("#createRecipeIngridientModal").modal('hide');
                 LoadRecipeIngridients()
             },
