@@ -29,7 +29,7 @@
         <div class="col-md-6 col-lg-6">
             <div class="card mb-2" id="categorySearch">
                 <div class="card-header">
-                    <a data-bs-toggle="collapse" data-bs-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse" class="d-block collapsed" id="heading-categories" style="text-decoration:none">
+                    <a data-bs-toggle="collapse" role="button" onclick="collapseFilters(this)" data-bs-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse" class="d-block collapsed" id="heading-categories" style="text-decoration:none">
                         <i class="bi bi-chevron-down float-end"></i>
                         Szukaj w kategoriach
                         <span id="categoryBadge" class="badge rounded-pill bg-primary"></span>
@@ -51,7 +51,7 @@
             </div>
             <div class="card mb-2" id="ingSearch">
                 <div class="card-header">
-                    <a data-bs-toggle="collapse" data-bs-target="#ingCollapse" aria-expanded="true" aria-controls="ingCollapse" class="d-block collapsed" id="heading-ings" style="text-decoration:none">
+                    <a role="button" onclick="collapseFilters(this)" data-bs-toggle="collapse" data-bs-target="#ingCollapse" aria-expanded="true" aria-controls="ingCollapse" class="d-block collapsed" id="heading-ings" style="text-decoration:none">
                         <i class="bi bi-chevron-down float-end"></i>
                         Wyszukiwanie po składnikach
                         <span id="ingBadge" class="badge rounded-pill bg-primary"></span>
@@ -111,7 +111,7 @@
 
             <div class="card mb-2" id="otherSearch">
                 <div class="card-header">
-                    <a data-bs-toggle="collapse" data-bs-target="#otherCollapse" aria-expanded="true" aria-controls="otherCollapse" class="d-block collapsed" id="heading-others" style="text-decoration:none">
+                    <a role="button" onclick="collapseFilters(this)" data-bs-toggle="collapse" data-bs-target="#otherCollapse" aria-expanded="true" aria-controls="otherCollapse" class="d-block collapsed" id="heading-others" style="text-decoration:none">
                         <i class="bi bi-chevron-down float-end"></i>
                         Pozostałe filtry
                         <span id="otherBadge" class="badge rounded-pill bg-primary"></span>

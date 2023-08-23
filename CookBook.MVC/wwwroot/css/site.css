@@ -79,11 +79,12 @@ textarea {
     margin-right: auto;
 }
 
+/*kwadratowe naro¿niki w select 2*/
 [class^='select2'] {
     border-radius: 0px !important;
 }
 
-/*obracanie strza³ki w wyborze kategorii*/
+/*obracanie strza³ki w zaawansowanych filtrach*/
 .card-header .bi {
     transition: .3s transform ease-in-out;
 }

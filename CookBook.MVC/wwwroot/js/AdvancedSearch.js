@@ -160,3 +160,19 @@ const othersCheckChange = () => {
     $("#otherBadge").text(checkCount);
     $("#otherBadge").attr("hidden", checkCount == 0);
 }
+
+//zmienia klasê collpase (efekt akordeonu)
+const collapseFilters = (container) => {
+    const aid = container.id;
+    if (aid == "heading-ings") {
+        $('#categoryCollapse').collapse("hide");
+        $('#otherCollapse').collapse("hide");
+    } else if (aid == "heading-categories") {
+        $('#ingCollapse').collapse("hide");
+        $('#otherCollapse').collapse("hide");
+    } else if (aid == "heading-others") {
+        $('#ingCollapse').collapse("hide");
+        $('#categoryCollapse').collapse("hide");
+    }
+    
+}
