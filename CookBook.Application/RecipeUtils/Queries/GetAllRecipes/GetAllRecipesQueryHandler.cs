@@ -19,7 +19,7 @@ namespace CookBook.Application.RecipeUtils.Queries.GetAllRecipes
         public async Task<PaginatedResult<PreviewRecipeDto>> Handle(GetAllRecipesQuery request, CancellationToken cancellationToken)
         {
             request.SearchPhrase ??= "";
-            var paginatedRecipes = await _recipeRepository.GetAllRecipes(request.SearchPhrase, request.PageNumber, request.PageSize, null, 0);
+            var paginatedRecipes = await _recipeRepository.GetAllRecipes(request.SearchPhrase, request.PageNumber, request.PageSize);
 
             var dto =  _mapper.Map<IEnumerable<PreviewRecipeDto>>(paginatedRecipes.Items).ToList();
 

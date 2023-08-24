@@ -26,7 +26,7 @@
 
 <form asp-action="AdvancedSearch">
     <div class="row">
-        <div class="col-md-6 col-lg-6">
+        <div class="col-md-5 col-lg-5">
             <div class="card mb-2" id="categorySearch">
                 <div class="card-header">
                     <a data-bs-toggle="collapse" role="button" onclick="collapseFilters(this)" data-bs-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse" class="d-block collapsed" id="heading-categories" style="text-decoration:none">
@@ -131,6 +131,21 @@
             <a class="btn btn-primary" onclick="searchRecipes()">
                 Wyszukaj
             </a>
+        </div>
+        <div class="col-md-7 col-lg-7">
+            <div class="album bg-body-tertiary">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3" id="advSearchResults">
+                    <div class="col">
+                        <div class="card shadow-sm" style="width: auto">
+                            <img class="bd-placeholder-img card-img-top" src="~/images/placeholder.jpg" asp-append-version="true" />
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2">Testowy przepis</h5>
+                                <a class="btn btn-primary" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="1">Szczegóły</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
      </div>
 </form>

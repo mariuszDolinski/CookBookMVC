@@ -25,7 +25,7 @@ namespace CookBook.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
         public async Task<PaginatedResult<Recipe>> GetAllRecipes(
-            string? searchPhrase, int pageNumber, int pageSize, string[]? ingList, int advancedSearchMode)
+            string? searchPhrase, int pageNumber, int pageSize)
         {
             var baseQuery = _dbContext.Recipes
                 .Where(r => r.IsHidden == false)
@@ -34,32 +34,6 @@ namespace CookBook.Infrastructure.Repositories
 
             List<Recipe> items = new List<Recipe>();
 
-            #region advanced search mode
-            if (ingList != null && ingList.Length > 0)
-            {
-                var recipes = await baseQuery
-                    .Include(r => r.RecipeIngridients)
-                    .ToListAsync();
-
-                foreach(var r in recipes)
-                {
-                    if(_utils.IsRecipeMeetsSearchCondition(ingList,r.RecipeIngridients,advancedSearchMode,_dbContext))
-                    {
-                        items.Add(r);
-                    }
-                }
-                if(pageNumber == 0)
-                {
-                    return new PaginatedResult<Recipe>(items, items.Count);
-                }
-                else
-                {
-                    return new PaginatedResult<Recipe>(items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(), items.Count);
-                }
-            }
-            #endregion
-
-            #region regular mode
             if (pageNumber == 0)
             {
                 items = await baseQuery.ToListAsync();
@@ -70,7 +44,57 @@ namespace CookBook.Infrastructure.Repositories
             }
 
             return new PaginatedResult<Recipe>(items, baseQuery.Count());
-            #endregion
+        }
+
+        public async Task<IEnumerable<Recipe>> GetAllFilteredRecipes(
+            string[]? ingridients, string[]? categories, bool[] othersFilters)
+        {
+            var baseQuery = _dbContext.Recipes
+                .Include(r => r.Category)
+                .Where(r => r.IsHidden == false);
+
+            //filtrujemy po kategoriach
+            if(categories != null)
+            {
+                baseQuery = baseQuery
+                    .Where(r => categories.Contains(r.Category.CategoryName));                   
+            }
+
+            //pozostałe filtry:
+            //0-isVege
+            if (othersFilters[0])
+                baseQuery = baseQuery.Where(r => r.IsVegeterian);
+
+            var filteredQuery = baseQuery.OrderByDescending(r => r.CreatedTime);
+
+            List<Recipe> items = new List<Recipe>();
+
+            //wyszukiwanie po składnikach
+            if (ingridients != null)
+            {
+                var recipes = await filteredQuery
+                    .Include(r => r.RecipeIngridients)
+                    .ToListAsync();
+
+                int advancedSearchMode = int.Parse(ingridients[0]);
+                string[] ingList = new string[ingridients.Length-1];
+                for (int i = 1; i < ingridients.Length; i++)
+                    ingList[i - 1] = ingridients[i];
+
+                foreach (var r in recipes)
+                {
+                    if (_utils.IsRecipeMeetsSearchCondition(ingList, r.RecipeIngridients, advancedSearchMode, _dbContext))
+                    {
+                        items.Add(r);
+                    }
+                }
+            }
+            else
+            {
+                items = await filteredQuery.ToListAsync();
+            }
+
+            return items;
         }
 
         public async Task<Recipe> GetRecipeById(int id)

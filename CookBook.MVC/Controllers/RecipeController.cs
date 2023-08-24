@@ -22,6 +22,7 @@ using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CookBook.MVC.Controllers
 {
@@ -266,7 +267,6 @@ namespace CookBook.MVC.Controllers
         {
             string[]? ingridients = (string[]?)TempData["searchIng"];
             return await this.ViewWithCategories(_mediator, ingridients);
-            //return View(ingridients);
         }
 
         [HttpGet]
@@ -287,37 +287,30 @@ namespace CookBook.MVC.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("recipe/search/advanced")]
-        public async Task<IActionResult> SearchByIngridients(string[] args)
+        public async Task<IActionResult> SearchByIngridients(string categories, string ings, string others)
         {
-            if(args.Length < 2)
+            string[]? categoryNames = categories.IsNullOrEmpty() ? null : categories.Split(";");
+
+            string[]? ingridients = (ings == "0") ? null : ings.Split(";");
+
+            int othersCount = others.Count(c => c == ';') + 1;
+            bool[] otherFilters = new bool[othersCount];
+            if(othersCount == 1)
             {
-                return BadRequest("Brak składników do wyszukania");
+                otherFilters[0] = bool.Parse(others);
             }
-            string[] ingridients = new string[args.Length - 1];
-            int mode = 1;
-            for(int i=0; i<args.Length; i++)
+            else
             {
-                if (i < args.Length - 1)
+                string[] otherString = others.Split(";");
+                for (int i = 0; i < otherString.Length; i++)
                 {
-                    ingridients[i] = args[i];
-                }
-                else
-                {
-                    if(!int.TryParse(args[i], out mode))
-                    {
-                        return BadRequest("Błąd danych");
-                    }
+                    otherFilters[i] = bool.Parse(otherString[i]);
                 }
             }
-            TempData["searchIng"] = ingridients;
-            var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, mode));
-            RecipeAdvancedSearchDto dto = new RecipeAdvancedSearchDto()
-            {
-                Recipes = result,
-                IngridientsToSearch = ingridients,
-                Mode = mode
-            };
-            return View(dto);
+
+            //TempData["searchIng"] = ingridients;
+            var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, categoryNames, otherFilters));
+            return Ok(result);
         }
         #endregion
     }

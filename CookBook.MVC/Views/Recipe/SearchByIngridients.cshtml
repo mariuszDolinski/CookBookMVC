@@ -1,4 +1,4 @@
-﻿@model CookBook.Application.RecipeUtils.RecipeAdvancedSearchDto
+﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
 
 @{
     ViewData["Title"] = "Wyszukiwanie zaawansowane";
@@ -8,29 +8,13 @@
 <a class="btn btn-secondary mt-1" asp-controller="Recipe" asp-action="AdvancedSearch">
     <i class="bi bi-arrow-left-square"></i> Zmień wyszukiwanie
 </a> <br /> 
-@if(Model.Recipes.Count() == 0)
+@if(Model.Count() == 0)
 {       
     <a class="btn btn-primary disabled">Brak przepisów spełniających podane kryteria</a>
 }
-else
-{
-    @if(Model.Mode == 1)
-    {
-        <a class="btn btn-primary disabled mt-1">Przepisy zawierające wszystkie składniki z listy: </a>
-    }
-    else
-    {
-         <a class="btn btn-primary disabled mt-1">Przepisy zawierające tylko składniki z listy: </a>
-    }
-    
-    @foreach(var ing in Model.IngridientsToSearch)
-    {
-        <a class="btn btn-secondary disabled mt-1">@ing</a>
-    }
-}
 <div class="album py-2 bg-body-tertiary">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        @foreach(var item in Model.Recipes)
+        @foreach(var item in Model)
         {
             <div class="col">
                 <div class="card shadow-sm m-3" style="width: auto">

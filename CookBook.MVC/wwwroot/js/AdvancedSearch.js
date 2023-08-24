@@ -1,9 +1,9 @@
 var ingList = [];
 var askBeforeReload = true;
 
-$(function () {
-    $('[data-bs-toggle="popover"]').popover()
-})
+//$(function () {
+//    $('[data-bs-toggle="popover"]').popover()
+//})
 
 $(document).ready(function () {
     $("#searchlistIngridients").select2({
@@ -91,28 +91,65 @@ const addToSearchList = () => {
 
 //metoda wywo³uj¹ca wyszukiwanie
 const searchRecipes = () => {
-    //zapisuje do tablicy wszystkie wybrane kategorie
-    const selectedCategories = $.map($('input[name="categories"]:checked'),
-        function (c) { return c.value; });
-    
-    if (ingList.length == 0) {
+    var catString = "";
+    //zapisujemy do tablicy wszystkie wybrane kategorie i tworzymy z nich string
+    const selectedCategories = $.map($('input[name="categories"]:checked'),function (c) { return c.value; });
+    for (i = 0; i < selectedCategories.length; i++) {
+        catString += selectedCategories[i];
+        if (i < selectedCategories.length - 1)
+            catString += ";";
+    }
+
+    //tworzymy string ze sk³adnikami mode;ing1;ing2...
+    //jeœli nie wyszukujemy po sk³adnikach to string=0
+    const selectedMode = $('input[name="searchType"]:checked').val();
+    if (selectedMode != 0 && ingList.length == 0) {
         toastr.options = {
             "closeButton": true
         }
-        toastr["warning"]("Brak sk&#322;adnik&#243;w do wyszukania.")
+        toastr["warning"]("Dodaj sk&#322;adniki do wyszukania.")
         return;
     }
     askBeforeReload = false;
-    var mode = $('input[name=searchType]:checked').val();
-    ingList.push(mode);
-    var paramString = "";
-    for (i = 0; i < ingList.length; i++) {
-        paramString += "args=" + ingList[i];
-        if (i < ingList.length - 1)
-            paramString += "&";
+    var ingString = selectedMode;
+    if (selectedMode != 0) {
+        for (i = 0; i < ingList.length; i++) {
+            ingString += ";" + ingList[i];
+        }
     }
 
-    window.location.href = "/recipe/search/advanced?" + paramString; 
+    //tworzymy string z dodatkowymi filtrami np. true;false;false... (true jeœli zaznaczony)
+    //kolejnoœæ: isVege;
+    var otherString = "";
+    otherString += $('#onlyVege').is(":checked");
+
+    var queryString = "categories=" + catString;
+    queryString += "&ings=" + ingString;
+    queryString += "&others=" + otherString;
+
+    $.ajax({
+        url: `/recipe/search/advanced`,
+        type: 'get',
+        data: {'categories': catString, 'ings': ingString, 'others': otherString },
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+            console.log(data.length);
+            var container = $("#advSearchResults");
+            container.empty();
+            if (data.length == 0) {
+                container.append(`<div>Brak przepisów spe³niaj¹cych podane kryteria</div>`)
+            } else {
+                for (const item of data) {
+                    container.append(`<div>${item.name}</div>`)
+                }
+            }
+        },
+        error: function (xhr) {
+            toastr["error"](xhr.responseText);
+        }
+    })
+    //window.location.href = "/recipe/search/advanced?" + queryString; 
 }
 
 //usuwanie pojedynczego s³adnika
@@ -161,7 +198,7 @@ const othersCheckChange = () => {
     $("#otherBadge").attr("hidden", checkCount == 0);
 }
 
-//zmienia klasê collpase (efekt akordeonu)
+//ukrywa/odkrywa pozosta³e filtry (efekt akordeonu)
 const collapseFilters = (container) => {
     const aid = container.id;
     if (aid == "heading-ings") {
@@ -173,6 +210,5 @@ const collapseFilters = (container) => {
     } else if (aid == "heading-others") {
         $('#ingCollapse').collapse("hide");
         $('#categoryCollapse').collapse("hide");
-    }
-    
+    }  
 }

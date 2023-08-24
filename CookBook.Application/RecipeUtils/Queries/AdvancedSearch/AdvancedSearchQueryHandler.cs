@@ -17,9 +17,10 @@ namespace CookBook.Application.RecipeUtils.Queries.AdvancedSearch
         }
         public async Task<IEnumerable<PreviewRecipeDto>> Handle(AdvancedSearchQuery request, CancellationToken cancellationToken)
         {
-            var result = await _recipeRepository.GetAllRecipes(null, 0, 0, request.Ingridients, request.Mode);
+            var result = await _recipeRepository.GetAllFilteredRecipes
+                (request.Ingridients, request.Categories, request.Others);
 
-            var dto = _mapper.Map<IEnumerable<PreviewRecipeDto>>(result.Items).ToList();
+            var dto = _mapper.Map<IEnumerable<PreviewRecipeDto>>(result).ToList();
 
             return dto;
         }
