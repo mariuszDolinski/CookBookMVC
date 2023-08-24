@@ -1,10 +1,6 @@
 var ingList = [];
 var askBeforeReload = true;
 
-//$(function () {
-//    $('[data-bs-toggle="popover"]').popover()
-//})
-
 $(document).ready(function () {
     $("#searchlistIngridients").select2({
         theme: 'bootstrap-5'
@@ -127,6 +123,10 @@ const searchRecipes = () => {
     queryString += "&ings=" + ingString;
     queryString += "&others=" + otherString;
 
+    var url = "/Recipe/AdvancedSearch?" + queryString;
+
+    window.history.replaceState(null, null, url);
+
     $.ajax({
         url: `/recipe/search/advanced`,
         type: 'get',
@@ -134,22 +134,20 @@ const searchRecipes = () => {
         contentType: 'application/json; charset=utf-8',
         dataType: "json",
         success: function (data) {
-            console.log(data.length);
             var container = $("#advSearchResults");
             container.empty();
+            $("#searchInfo").empty();
             if (data.length == 0) {
-                container.append(`<div>Brak przepisów spe³niaj¹cych podane kryteria</div>`)
+                $("#searchInfo").append(`<div class="btn btn-outline-primary mb-2 disabled col-12">Brak przepis&#243;w spe&#322;niaj&#261;cych podane kryteria</div>`);
             } else {
-                for (const item of data) {
-                    container.append(`<div>${item.name}</div>`)
-                }
+                $("#searchInfo").append(`<div class="btn btn-secondary mb-2 disabled col-12" id="searchInfo">Znalezione przepisy: ` + data.length + `</div>`);
+                RenderRecipeCard(data, container);
             }
         },
         error: function (xhr) {
             toastr["error"](xhr.responseText);
         }
     })
-    //window.location.href = "/recipe/search/advanced?" + queryString; 
 }
 
 //usuwanie pojedynczego s³adnika

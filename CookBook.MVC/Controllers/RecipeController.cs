@@ -17,6 +17,7 @@ using CookBook.Application.RecipeUtils.Queries.GetRecipeById;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeCategoryById;
 using CookBook.Application.RecipeUtils.Queries.GetRecipeIngridients;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
+using CookBook.Domain.Entities;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
@@ -263,7 +264,7 @@ namespace CookBook.MVC.Controllers
 
         #region Advanced search actions
         [AllowAnonymous]
-        public async Task<IActionResult> AdvancedSearch()
+        public async Task<IActionResult> AdvancedSearch(string ings, string categories, string others)
         {
             string[]? ingridients = (string[]?)TempData["searchIng"];
             return await this.ViewWithCategories(_mediator, ingridients);

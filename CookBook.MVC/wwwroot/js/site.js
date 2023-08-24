@@ -98,3 +98,36 @@ const LoadRecipeIngridients = () => {
         }
     })
 }
+
+const RenderRecipeCard = (data, container) => {
+    var image, vegeBadge=``, adultBadge=``;
+    for (const item of data) {
+        if (item.imageName == null) {
+            image = `<img title="${item.name}" class="bd-placeholder-img card-img-top" src="/images/placeholder.jpg" asp-append-version="true" />`;
+        } else {
+            var source = `"/images/` + item.imageName + `"`;
+            image = `<img  title="${item.name}" class="bd-placeholder-img card-img-top" src=` + source + ` asp-append-version="true"/>`;
+        }
+        if (item.isVegeterian)
+            vegeBadge = `<span class="badge bg-success float-end pe-2 ps-2 me-1">Wege</span>`;
+        if (item.onlyForAdults)
+            adultBadge = `<span class="badge bg-warning float-end pe-2 ps-2 me-1">18+</span>`;
+
+        container.append(`
+        <div class="col">
+                <div class="card shadow-sm" style="width: auto">`
+                    + image +
+                    `<div class="card-body">
+                        <h5 class="card-subtitle mb-2">${item.name}</h5>                      
+                        <a title="${item.name}" class="btn btn-primary" onclick="goToDetails(${item.id})">Szczegóły</a>`
+                        + vegeBadge + adultBadge +                      
+                    `</div>
+                </div>
+            </div>
+        `)
+    }
+}
+
+const goToDetails = (rid) => {
+    window.location.href = "/recipe/" + rid + "/details";
+}
