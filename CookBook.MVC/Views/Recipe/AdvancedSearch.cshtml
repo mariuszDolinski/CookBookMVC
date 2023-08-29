@@ -1,25 +1,40 @@
-﻿@model string[];
+﻿@model CookBook.MVC.Models.SearchParams;
 @using CookBook.Application.RecipeUtils;
 @{
     ViewData["Title"] = "Wyszukiwanie zaawansowane";
     string ings = "";
-    if (Model != null)
+    string cats = "";
+    string other = "";
+    int searchMode = -1; 
+    int isInSearchMode = 0;
+    if (Model != null && !string.IsNullOrEmpty(Model.IngridientsList))
     {
-        for(int i = 0; i<Model.Length; i++)
-        {
-            ings += Model[i];
-            if(i < Model.Length - 1)
-            {
-                ings += ";";
-            }
-        }
+        searchMode = Model.Mode;
+        isInSearchMode = 1;
+        ings = Model.IngridientsList;
+    }
+
+    if(Model != null && !string.IsNullOrEmpty(Model.ChoosenCategories))
+    {
+        isInSearchMode = 1;
+        cats = Model.ChoosenCategories;
+    }
+
+    if (Model != null && !string.IsNullOrEmpty(Model.OtherFilters))
+    {
+        isInSearchMode = 1;
+        other = Model.OtherFilters;
     }
 
     var categories = (List<RecipeCategoryDto>)ViewBag.Categories;
 }
 
-@*hidden input to store currentSearch*@
-<input type="hidden" id="ingridientList" value="@ings"/>
+@*hidden inputs to store search parameters*@
+<input type="hidden" id="ingridientList" value="@ings" />
+<input type="hidden" id="inSearchMode" value="@isInSearchMode" />
+<input type="hidden" id="searchMode" value="@searchMode" />
+<input type="hidden" id="choosenCategories" value="@cats" />
+<input type="hidden" id="otherFilters" value="@other" />
 
 <h5>Wyszukiwanie zaawansowane</h5>
 <hr />

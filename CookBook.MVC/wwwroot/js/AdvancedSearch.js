@@ -15,18 +15,22 @@ $(document).ready(function () {
     $("#otherBadge").attr("hidden", true);
     $("#ingSearchList").attr("hidden", true);
 
-    const currentString = $("#ingridientList").val();
-    const moreThanOneIng = currentString.includes(";");
-    const currentList = moreThanOneIng ? currentString.split(";") : currentString;
-    if (currentList != null && currentString.length > 0) {
-        if (moreThanOneIng)
-            ingList = currentList;
-        else
-            ingList[0] = currentList;
-        const container = $("#searchListTable");
-        for (i = 0; i < ingList.length; i++) {
-            RenderSearchList(ingList[i], container);
+    const inSearchMode = $("#inSearchMode").val();
+    const ingString = $("#ingridientList").val();
+    const catString = $("#choosenCategories").val();
+    const otherString = $("#otherFilters").val();
+    if (inSearchMode == "1") {
+        if (catString != null && catString.length > 0) setCategorySearch(catString);
+        if (ingString != null && ingString.length > 0) recreateIngList(ingString);
+        if (otherString != null && otherString.length > 0) setOtherSearch(otherString);
+        const currentMode = $("#searchMode").val();
+        switch (currentMode) {
+            case "0": $("#allRecipeRadio").attr('checked', true).trigger('change'); break;
+            case "1": $("#allRadio").attr('checked', true).trigger('change'); break;
+            case "2": $("#onlyRadio").attr('checked', true).trigger('change'); break;
+            default: break;
         }
+        searchRecipes();
     }
 
     hideClearAllButton(ingList.length ? false : true);
@@ -209,4 +213,39 @@ const collapseFilters = (container) => {
         $('#ingCollapse').collapse("hide");
         $('#categoryCollapse').collapse("hide");
     }  
+}
+
+//odtwarzanie listy sk³adników do wyszukania
+const recreateIngList = (ingString) => {
+    const moreThanOneIng = ingString.includes(";");
+    const currentList = moreThanOneIng ? ingString.split(";") : ingString;
+    if (currentList != null && ingString.length > 0) {
+        if (moreThanOneIng)
+            ingList = currentList;
+        else
+            ingList[0] = currentList;
+        const container = $("#searchListTable");
+        for (i = 0; i < ingList.length; i++) {
+            RenderSearchList(ingList[i], container);
+        }
+    }
+}
+
+//tworzymy tablicê zaznaczonych nazw kategorii i ustawiamy wyszukiwanie
+const setCategorySearch = (catString) => {
+    const moreThanOneCat = catString.includes(";");
+    const catList = moreThanOneCat ? catString.split(";") : catString;
+    $('input[type="checkbox"][name="categories"]').each(function (index, obj) {
+        if (catList.indexOf($(this).val()) >= 0) {
+            $(this).attr('checked', true).trigger('change');
+        }
+    });
+}
+
+//tworzymy tablicê pozosta³ych filtrów i ustawiamy wyszukiwanie
+const setOtherSearch = (otherString) => {
+    const moreThanOneOther = otherString.includes(";");
+    const otherList = moreThanOneOther ? otherString.split(";") : otherString;
+    if (otherList == "true")
+        $("#onlyVege").attr('checked', true).trigger('change');
 }
