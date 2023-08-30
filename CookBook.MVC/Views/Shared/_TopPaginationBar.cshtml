@@ -7,16 +7,28 @@
             {
             <a class="page-link bg-secondary" asp-action="@Model.Action"
                 asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize"
-                asp-route-search="@Model.SearchPhrase"><i class="bi bi-chevron-left"></i>
+                   asp-route-search="@Model.SearchPhrase" asp-route-sortOrder="@Model.SortOrder">
+                    <i class="bi bi-chevron-left"></i>
             </a>
             }
         </li>
-        <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
-            <a class="page-link" asp-action="@Model.Action"
-                asp-route-page="1" asp-route-pageSize="@Model.PageSize"
-                asp-route-search="@Model.SearchPhrase">1
-            </a>
-        </li>
+        @if (Model.TotalPages > 1)
+        {
+            <li class="page-item-square @(Model.CurrentPage == 1 ? "active" : "")" title="Pierwsza">
+                @if(Model.CurrentPage > 1)
+                {
+                    <a class="page-link" asp-action="@Model.Action"
+                       asp-route-page="1" asp-route-pageSize="@Model.PageSize"
+                       asp-route-search="@Model.SearchPhrase" asp-route-sortOrder="@Model.SortOrder">
+                        1
+                    </a>
+                }
+                else
+                {
+                    <span class="page-link">1</span>
+                }              
+            </li>
+        }
         @if(Model.StartPage > 2)
         {
             <li>...</li>
@@ -30,32 +42,42 @@
                 {
                     <a class="page-link" asp-action="@Model.Action"
                         asp-route-page="@p" asp-route-pageSize="@Model.PageSize"
-                        asp-route-search="@Model.SearchPhrase">@p
+                           asp-route-search="@Model.SearchPhrase" asp-route-sortOrder="@Model.SortOrder">
+                            @p
                     </a>
                 }
                 else
                 {
                     <span class="page-link">@p</span>
                 }              
-            </li>
-            }          
+                </li>
+            }           
         }
         @if(Model.EndPage < Model.TotalPages - 1)
         {
             <li>...</li>
         }
         <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Ostatnia">
-            <a class="page-link" asp-action="@Model.Action"
-                asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
-                asp-route-search="@Model.SearchPhrase">@Model.TotalPages
-            </a>
+            @if(Model.CurrentPage < Model.TotalPages)
+            {
+                <a class="page-link" asp-action="@Model.Action"
+                   asp-route-page="@Model.TotalPages" asp-route-pageSize="@Model.PageSize"
+                   asp-route-search="@Model.SearchPhrase" asp-route-sortOrder="@Model.SortOrder">
+                    @Model.TotalPages
+                </a>
+            }
+            else
+            {
+                <span class="page-link">@Model.TotalPages</span>
+            }
+            
         </li>
         <li class="page-item-square @(Model.CurrentPage == Model.TotalPages ? "active" : "")" title="Następna">
             @if (Model.CurrentPage < Model.TotalPages)
             {
                 <a class="page-link bg-secondary" asp-action="@Model.Action"
                     asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize"
-                    asp-route-search="@Model.SearchPhrase"><i class="bi bi-chevron-right"></i>
+                    asp-route-search="@Model.SearchPhrase" asp-route-sortOrder="@Model.SortOrder"><i class="bi bi-chevron-right"></i>
                 </a>
             }
         </li>
