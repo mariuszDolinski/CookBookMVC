@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
+
+@{
+    string code = ViewBag.Code;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Nazwa", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
+            </th>
+            <th>
+                @Html.ActionLink("Dodane przez", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
+            </th>
+            <th>
+                @Html.ActionLink("Data dodania", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
+            </th>
+            @foreach (var item in Model)
+            {
+                @if (item.IsEditable)
+                {
+                    <th>Akcje</th>
+                }
+                break;
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedTime)
+                </td>
+                @if (item.IsEditable)
+                {
+                    <td>
+                        <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditModal('@item.Name')"><i class="bi bi-pencil"></i></a>
+                        <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteModal('@item.Name','@code')"><i class="bi bi-trash"></i></a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

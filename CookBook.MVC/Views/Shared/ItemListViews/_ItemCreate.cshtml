@@ -1,8 +1,19 @@
-﻿@model CookBook.Application.IngridientUtils.IngridientDto
+﻿@model CookBook.Application.CommonDtos.ItemListDto
+@{
+    string description = "";
+    string code = ViewBag.Code;
+    switch (code)
+    {
+        case "UNIT":
+            description = "Dodaj nową jednstkę"; break;
+        case "INGR":
+            description = "Dodaj nowy składnik"; break;
+    }
+}
 
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <label class="control-label" for="Name">Dodaj nowy składnik</label>
+    <label class="control-label" for="Name">@description</label>
     <div class="input-group">
         <input class="form-control" asp-for="Name" type="text" placeholder="Podaj nazwę"/>
         <div class="input-group-append"><input type="submit" value="Dodaj" class="btn btn-primary" /></div>

@@ -6,6 +6,7 @@ using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CookBook.MVC.Controllers
 {
@@ -23,6 +24,7 @@ namespace CookBook.MVC.Controllers
         {
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
+            ViewBag.Code = "INGR";
 
             var ingridientsDto = await _mediator.Send(new GetAllIngridientsQuery
                 (search, sortOrder, page, pageSize));
@@ -65,19 +67,20 @@ namespace CookBook.MVC.Controllers
         }
 
         [HttpPut]
-        [Route("ingridient/edit/{oldName}")]
-        public async Task<IActionResult> Edit(string oldName, EditIngridientCommand command)
+        [Route("ingridient/edit/{names}")]
+        public async Task<IActionResult> Edit(string names)
         {
-            if(!ModelState.IsValid)
+            string[] oldNewName = names.Split(';');
+
+            if(oldNewName.Length < 2)
             {
-                var errors = ModelState.Values
-                    .SelectMany(x => x.Errors)
-                    .Select(y => y.ErrorMessage)
-                    .ToList();
-                return BadRequest(errors[0]);
+                return BadRequest("Dane nie zostały poprawnie przesłane");
             }
 
-            command.OldName = oldName;
+            EditIngridientCommand command = new EditIngridientCommand();
+            command.Name = oldNewName[1];
+            command.OldName = oldNewName[0];
+
             var result = await _mediator.Send(command);
             if(result == 0)
             {

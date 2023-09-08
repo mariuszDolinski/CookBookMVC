@@ -1,7 +1,18 @@
 ﻿@model Pagination
+@{
+    string description = "";
+    string code = ViewBag.Code;
+    switch (code)
+    {
+        case "UNIT":
+            description = "Znajdź jednstkę"; break;
+        case "INGR":
+            description = "Znajdź składnik"; break;
+    }
+}
 
 <form asp-action="Index" method="get">
-    <label class="control-label">Znajdź składnik</label>
+    <label class="control-label">@description</label>
     <div class="input-group">
         <input type="text" name="search" value="@Model.SearchPhrase" class="form-control" placeholder="Wpisz szukaną frazę" id="search">
         <div class="input-group-append"><input type="submit" value="Szukaj" class="btn btn-primary" /></div>
@@ -9,3 +20,4 @@
     <input value="@Model.PageSize" name="pageSize" type="hidden"/>
     <input value="@Model.SortOrder" name="sortOrder" type="hidden"/>
 </form>
+

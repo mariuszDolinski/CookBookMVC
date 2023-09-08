@@ -53,6 +53,10 @@ namespace CookBook.Infrastructure.Persistence
                 .Property(c => c.CategoryName) 
                 .IsRequired()
                 .HasMaxLength(100);
+
+            modelBuilder.Entity<RecipeCategory>()
+                .Property(c => c.CreatedTime)
+                .HasDefaultValue(DateTime.Now);
         }
     }
 }

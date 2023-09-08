@@ -1,20 +1,23 @@
-﻿@using CookBook.Application.UnitUtils;
+﻿@using CookBook.Application.CommonDtos;
 @using CookBook.Application.UnitUtils.Commands.EditUnit;
-@model IEnumerable<CookBook.Application.UnitUtils.UnitDto>
+@using CookBook.Application.IngridientUtils.Commands.EditIngridient;
+@model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
 
 @{
     ViewData["Title"] = "Jednostki";
     Pagination pages = ViewBag.Pages;
+    string code = ViewBag.Code;
 }
 
 <h3>Lista wszystkich dostępnych jednostek</h3>
+<hr />
 <div class="row">
     <div class="col-12 col-md-3">
         <div class="mb-3">
-            <partial name="_Create" model="new UnitDto()"/>
+            <partial name="ItemListViews/_ItemCreate" model="new ItemListDto()" />
         </div>
-         <div class="mb-1">
-            <partial name="_Search" model="@pages"/>
+        <div class="mb-1">
+            <partial name="ItemListViews/_ItemSearch" model="@pages" />
         </div>
         @if (!string.IsNullOrEmpty(pages.SearchPhrase))
          {
@@ -31,51 +34,11 @@
                 <partial name="_TopPaginationBar" model="@pages" />
             </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.ActionLink("Nazwa", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
-                    </th>
-                    <th>
-                        @Html.ActionLink("Dodane przez", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
-                    </th>
-                    <th>
-                        @Html.ActionLink("Data dodania", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
-                    </th>
-                    @foreach(var item in Model)
-                    {
-                        @if (item.IsEditable)
-                        {
-                            <th>Akcje</th>
-                        }
-                        break;
-                    }
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedTime)
-                    </td>
-                    @if(item.IsEditable)
-                    {
-                        <td>
-                            <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditUnitModal('@item.Name')"><i class="bi bi-pencil"></i></a> 
-                            <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteUnitModal('@item.Name')"><i class="bi bi-trash"></i></a> 
-                        </td>
-                    }
-                </tr>
-            }
-            </tbody>
-        </table>
+        
+        <div>
+            <partial name="ItemListViews/_ItemList" model="@Model" />
+        </div>
+
         <div class="row">
             <div class="col-12">
                 <partial name="_BottomPaginationBar" model="@pages" />
@@ -84,15 +47,15 @@
     </div>
 </div>
 
-<partial name="_EditUnit" model="new EditUnitCommand()"/>
-<partial name="_ConfirmDeleteUnitModal"/>
+<partial name="ItemListViews/_EditItemModal" />
+<partial name="ItemListViews/_ConfirmDeleteModal" />
 
-<input id="currentUnitName" type="hidden"/>
+<input id="currentItemName" type="hidden"/>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/Unit/Edit.js"></script>
-    <script src="~/js/Unit/Delete.js"></script>
     <script src="~/js/Pagination/Pages.js"></script>
+    <script src="~/js/ItemList/Edit.js"></script>
+    <script src="~/js/ItemList/Delete.js"></script>
 }
 
