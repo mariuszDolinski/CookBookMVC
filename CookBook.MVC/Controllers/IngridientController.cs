@@ -37,7 +37,7 @@ namespace CookBook.MVC.Controllers
             var query = new ParamsQuery(sortOrder, page, pageSize);
             this.SetTempData(query);
 
-            return View(ingridientsDto.Items);
+            return View(@"ItemListViews/ListIndex", ingridientsDto.Items);
         }
 
         [HttpPost]

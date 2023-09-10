@@ -1,15 +1,26 @@
-﻿@using CookBook.Application.IngridientUtils.Commands.EditIngridient;
-@using CookBook.Application.UnitUtils.Commands.EditUnit;
-@using CookBook.Application.CommonDtos;
+﻿@using CookBook.Application.CommonDtos;
 @model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
 
 @{
     ViewData["Title"] = "Składniki";
     Pagination pages = ViewBag.Pages;
     string code = ViewBag.Code;
+    string subtitle = "";
+    string backToList = "";
+    switch (code)
+    {
+        case "INGR":
+            subtitle = "Lista wszystkich dostępnych składników";
+            backToList = "Wróc do listy wszystkich składników";
+            break;
+        case "UNIT":
+            subtitle = "Lista wszystkich dostępnych jednostek";
+            backToList = "Wróc do listy wszystkich jednostek";
+            break;
+    }
 }
 
-<h3>Lista wszystkich dostępnych składników</h3>
+<h3>@subtitle</h3>
 <hr />
 <div class="row">
     <div class="col-12 col-md-3">
@@ -20,13 +31,13 @@
             <partial name="ItemListViews/_ItemSearch" model="@pages" />
         </div>
         @if (!string.IsNullOrEmpty(pages.SearchPhrase))
-         {
+        {
             <div>
-                <a asp-action="Index" 
-                    asp-route-pageSize="@pages.PageSize" asp-route-sortOrder="@pages.SortOrder"
-                    class="btn btn-outline-primary w-100">Wróc do listy wszystkich składników</a>
-            </div>               
-         }
+                <a asp-action="Index"
+                   asp-route-pageSize="@pages.PageSize" asp-route-sortOrder="@pages.SortOrder"
+                   class="btn btn-outline-primary w-100">@backToList</a>
+            </div>
+        }
     </div>
     <div class="col-12 col-md-9 mt-3">
         <div class="row">
@@ -50,10 +61,12 @@
 <partial name="ItemListViews/_EditItemModal" />
 <partial name="ItemListViews/_ConfirmDeleteModal" />
 
-<input id="currentItemName" type="hidden"/>
+<input id="currentItemName" type="hidden" />
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="~/js/Pagination/Pages.js"></script>
     <script src="~/js/ItemList/Edit.js"></script>
     <script src="~/js/ItemList/Delete.js"></script>
