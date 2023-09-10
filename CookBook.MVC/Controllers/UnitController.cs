@@ -27,7 +27,7 @@ namespace CookBook.MVC.Controllers
         {
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
-            ViewBag.Code = "UNIT";
+            ViewBag.Code = ItemCodes.UNIT;
 
             var paginatedUnits = await _mediator.Send(new GetAllUnitsQuery(search, sortOrder, page, pageSize));
             var pages = new Pagination(paginatedUnits.TotalItems, page, pageSize);

@@ -1,11 +1,11 @@
 ﻿@{
     string description = "";
-    string code = ViewBag.Code;
+    var code = ViewBag.Code;
     switch (code)
     {
-        case "UNIT":
+        case ItemCodes.UNIT:
             description = "Edycja jednostki"; break;
-        case "INGR":
+        case ItemCodes.INGR:
             description = "Edycja składnika"; break;
     }
 }

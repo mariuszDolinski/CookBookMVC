@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
 
 @{
-    string code = ViewBag.Code;
+    var code = ViewBag.Code;
 }
 
 <table class="table">
@@ -43,7 +43,7 @@
                 {
                     <td>
                         <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditModal('@item.Name')"><i class="bi bi-pencil"></i></a>
-                        <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteModal('@item.Name','@code')"><i class="bi bi-trash"></i></a>
+                        <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteModal('@item.Name','@code.ToString()')"><i class="bi bi-trash"></i></a>
                     </td>
                 }
             </tr>

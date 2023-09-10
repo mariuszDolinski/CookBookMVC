@@ -4,16 +4,16 @@
 @{
     ViewData["Title"] = "Składniki";
     Pagination pages = ViewBag.Pages;
-    string code = ViewBag.Code;
+    var code = ViewBag.Code;
     string subtitle = "";
     string backToList = "";
     switch (code)
     {
-        case "INGR":
+        case ItemCodes.INGR:
             subtitle = "Lista wszystkich dostępnych składników";
             backToList = "Wróc do listy wszystkich składników";
             break;
-        case "UNIT":
+        case ItemCodes.UNIT:
             subtitle = "Lista wszystkich dostępnych jednostek";
             backToList = "Wróc do listy wszystkich jednostek";
             break;

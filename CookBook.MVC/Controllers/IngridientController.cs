@@ -24,7 +24,7 @@ namespace CookBook.MVC.Controllers
         {
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
-            ViewBag.Code = "INGR";
+            ViewBag.Code = ItemCodes.INGR;
 
             var ingridientsDto = await _mediator.Send(new GetAllIngridientsQuery
                 (search, sortOrder, page, pageSize));
