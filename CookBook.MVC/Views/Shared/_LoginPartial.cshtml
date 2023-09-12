@@ -16,7 +16,7 @@
                 @if(User.IsInRole("Manager") || User.IsInRole("Admin"))
                 {
                     <li>
-                        <a class="dropdown-item" asp-controller="User" asp-action="Categories" >
+                        <a class="dropdown-item" asp-controller="User" asp-action="GetAllCategories" >
                             Kategorie
                         </a>
                     </li>  

@@ -5,6 +5,7 @@ using CookBook.Infrastructure.Persistence;
 using CookBook.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Linq.Expressions;
 
 namespace CookBook.Infrastructure.Repositories
 {
@@ -114,10 +115,47 @@ namespace CookBook.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RecipeCategory>> GetAllRecipeCategories()
-            => await _dbContext.RecipeCategories
-                .OrderBy(c => c.CategoryName)
-                .ToListAsync();
+        public async Task<PaginatedResult<RecipeCategory>> GetAllRecipeCategories(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
+        {
+            var baseQuery = _dbContext.RecipeCategories
+                .Include(ctg => ctg.CreatedBy)
+                .Where(ctg => string.IsNullOrEmpty(searchPhrase) ? true : ctg.CategoryName.Contains(searchPhrase));
+
+            var columnSelector = new Dictionary<string, Expression<Func<RecipeCategory, object>>>()
+            {
+                {nameof(RecipeCategory.CategoryName), ctg => ctg.CategoryName },
+                {nameof(RecipeCategory.CreatedTime), ctg => ctg.CreatedTime },
+                {nameof(RecipeCategory.CreatedBy), ctg => (ctg.CreatedBy != null) ? ctg.CreatedBy.UserName! : "-"}
+            };
+
+            string selectedColumn;
+            if (sortOrder.Contains("date"))
+                selectedColumn = nameof(RecipeCategory.CreatedTime);
+            else if (sortOrder.Contains("author"))
+                selectedColumn = nameof(RecipeCategory.CreatedBy);
+            else
+                selectedColumn = nameof(RecipeCategory.CategoryName);
+
+            if (sortOrder.Contains("desc"))
+                baseQuery = baseQuery
+                    .OrderByDescending(columnSelector[selectedColumn]);
+            else
+                baseQuery = baseQuery
+                    .OrderBy(columnSelector[selectedColumn]);
+
+            List<RecipeCategory> items;
+            if (pageNumber == 0)
+            {
+                items = await baseQuery.ToListAsync();
+            }
+            else
+            {
+                items = await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
+
+            return new PaginatedResult<RecipeCategory>(items, baseQuery.Count());
+        }
+
         public async Task<RecipeCategory> GetCategoryById(int id)
             => await _dbContext.RecipeCategories.FirstAsync(r => r.CategoryId == id);
 

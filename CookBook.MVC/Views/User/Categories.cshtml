@@ -26,7 +26,7 @@
                 @foreach (var item in Model) {
                     <tr id="cat-row-@item.CategoryId">
                         <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.CategoryName) 
+                            @Html.DisplayFor(modelItem => item.Name) 
                         </td>
                         <td>
                             @*<a title="Zmień nazwę" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a> 

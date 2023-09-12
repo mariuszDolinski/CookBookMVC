@@ -7,7 +7,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory
     {
         public CreateRecipeCategoryCommandValidator(IRecipeRepository recipeRepository) 
         {
-            RuleFor(c => c.CategoryName)
+            RuleFor(c => c.Name)
                 .NotEmpty().WithMessage("Podaj nazwę kategorii")
                 .MaximumLength(100).WithMessage("Nazwa powinna mieć maksimum 100 znaków")
                 .Custom((value, context) =>

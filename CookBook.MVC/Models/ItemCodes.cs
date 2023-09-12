@@ -3,6 +3,7 @@
     public enum ItemCodes
     {
         INGR,//code for ingridients
-        UNIT //code for units
+        UNIT,//code for units
+        CATG //code for categories
     }
 }

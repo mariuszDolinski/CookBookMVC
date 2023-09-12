@@ -65,7 +65,7 @@ namespace CookBook.MVC.Controllers
         {
             var dto = await _mediator.Send(new GetRecipeByIdQuery(recipeId));
             var recipeCategory = await _mediator.Send(new GetRecipeCategoryByIdQuery(dto.CategoryId));
-            ViewBag.CategoryName = recipeCategory.CategoryName;
+            ViewBag.CategoryName = recipeCategory.Name;
             return View(dto);
         }
 
@@ -106,7 +106,7 @@ namespace CookBook.MVC.Controllers
             }
 
             await _mediator.Send(command);
-            this.SetNotification("success", $"Kategoria '{command.CategoryName}' została dodana");
+            this.SetNotification("success", $"Kategoria '{command.Name}' została dodana");
             return RedirectToAction("Categories", "User");
         }
         #endregion

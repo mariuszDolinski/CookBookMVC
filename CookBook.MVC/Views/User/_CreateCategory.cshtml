@@ -4,8 +4,8 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <label class="control-label" for="Name">Dodaj nową kategorię</label>
     <div class="input-group">
-        <input class="form-control" asp-for="CategoryName" type="text" placeholder="Podaj nazwę"/>
+        <input class="form-control" asp-for="Name" type="text" placeholder="Podaj nazwę"/>
         <div class="input-group-append"><input type="submit" value="Dodaj" class="btn btn-primary" /></div>
     </div>
-    <span asp-validation-for="CategoryName" class="text-danger"></span>
+    <span asp-validation-for="Name" class="text-danger"></span>
 </form>

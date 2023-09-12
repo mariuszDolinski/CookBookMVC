@@ -95,28 +95,28 @@ namespace CookBook.MVC.Extensions
             IMediator mediator, CreateRecipeCommand command)
         {
             var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
-            controller.ViewBag.Categories = categories.ToList();
+            controller.ViewBag.Categories = categories.Items.ToList();
             return controller.View(command);
         }
         public static async Task<IActionResult> ViewWithCategories(this Controller controller,
             IMediator mediator, RecipeDto command)
         {
             var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
-            controller.ViewBag.Categories = categories.ToList();
+            controller.ViewBag.Categories = categories.Items.ToList();
             return controller.View(command);
         }
         public static async Task<IActionResult> ViewWithCategories(this Controller controller,
             IMediator mediator)
         {
             var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
-            controller.ViewBag.Categories = categories.ToList();
+            controller.ViewBag.Categories = categories.Items.ToList();
             return controller.View();
         }
         public static async Task<IActionResult> SearchViewWithCategories(this Controller controller,
             IMediator mediator, SearchParams parameters)
         {
             var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
-            controller.ViewBag.Categories = categories.ToList();
+            controller.ViewBag.Categories = categories.Items.ToList();
             return controller.View(parameters);
         }
         #endregion

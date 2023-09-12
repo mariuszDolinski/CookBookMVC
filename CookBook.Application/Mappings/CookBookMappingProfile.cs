@@ -50,8 +50,18 @@ namespace CookBook.Application.Mappings
                 .ForMember(ri => ri.Unit, opt => opt.Ignore());
 
             CreateMap<RecipeCategory, RecipeCategoryDto>()
-                .ReverseMap();
+                .ForMember(rc => rc.Name, opt => opt.MapFrom(
+                    src => src.CategoryName))
+                .ForMember(u => u.CreatedBy, opt => opt.MapFrom(
+                    src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "-"))
+                .ForMember(u => u.CreatedTime, opt => opt.MapFrom(
+                    src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
+                .ForMember(u => u.IsEditable, opt => opt.MapFrom(src =>
+                    user != null && (user.IsInRole("Admin") || user.IsInRole("Manager"))));
 
+            CreateMap<RecipeCategoryDto, RecipeCategory>()
+                .ForMember(rc => rc.CategoryName, opt => opt.MapFrom(
+                    src => src.Name));
         }
     }
 }

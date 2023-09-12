@@ -18,11 +18,12 @@ namespace CookBook.MVC.Models
         public string? SearchPhrase { get; set; }
         public string? SortOrder { get; set; }
 
-        public Pagination(int totalItems, int currentPage, int pageSize)
+        public Pagination(int totalItems, int currentPage, int pageSize, string actionName = "Index")
         {
             TotalItems = totalItems;
             CurrentPage = currentPage;
             PageSize = pageSize;
+            Action = actionName;
 
             TotalPages = (int)Math.Ceiling(totalItems / (decimal)pageSize);
 

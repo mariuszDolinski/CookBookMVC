@@ -1,8 +1,9 @@
-﻿namespace CookBook.Application.RecipeUtils
+﻿using CookBook.Application.CommonDtos;
+
+namespace CookBook.Application.RecipeUtils
 {
-    public class RecipeCategoryDto
+    public class RecipeCategoryDto : ItemListDto
     {
         public int CategoryId { get; set; }
-        public string? CategoryName { get; set; } = default!;
     }
 }

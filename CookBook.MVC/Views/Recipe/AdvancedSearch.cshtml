@@ -55,9 +55,9 @@
                         @foreach(var cat in categories)
                         {
                             <div class="form-check mb-3">
-                            <input class="form-check-input" onchange="categoryCheckChange()" type="checkbox" value="@cat.CategoryName" name="categories" id="@cat.CategoryName"/>
-                            <label class="form-check-label" for="@cat.CategoryName">
-                                @cat.CategoryName
+                            <input class="form-check-input" onchange="categoryCheckChange()" type="checkbox" value="@cat.Name" name="categories" id="@cat.Name"/>
+                            <label class="form-check-label" for="@cat.Name">
+                                @cat.Name
                             </label>
                             </div>
                         }

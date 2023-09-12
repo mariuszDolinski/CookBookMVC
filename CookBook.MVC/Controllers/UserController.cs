@@ -5,6 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CookBook.MVC.Extensions;
+using CookBook.Application.UnitUtils.Queries.GetAllUnits;
+using CookBook.MVC.Models;
+using Microsoft.Data.SqlClient;
+using System.Drawing.Printing;
 
 namespace CookBook.MVC.Controllers
 {
@@ -35,10 +39,22 @@ namespace CookBook.MVC.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> Categories()
+        public async Task<IActionResult> GetAllCategories(string search = "", string sortOrder = "", int page = 1, int pageSize = 5)
         {
-            var categories = await _mediator.Send(new GetAllRecipeCategoriesQuery());
-            return View(categories);
+            this.SetViewBagParams(search, sortOrder, pageSize);
+            this.SetViewBagSortIcons(sortOrder);
+            ViewBag.Code = ItemCodes.CATG;
+
+            var paginatedCategories = await _mediator.Send(new GetAllRecipeCategoriesQuery(search, sortOrder, page, pageSize));
+            var pages = new Pagination(paginatedCategories.TotalItems, page, pageSize, nameof(this.GetAllCategories));
+            pages.SortOrder = sortOrder;
+            pages.SearchPhrase = search;
+            ViewBag.Pages = pages;
+
+            var query = new ParamsQuery(sortOrder, page, pageSize);
+            this.SetTempData(query);
+
+            return View(@"ItemListViews/ListIndex", paginatedCategories.Items);
         }
     }
 }
