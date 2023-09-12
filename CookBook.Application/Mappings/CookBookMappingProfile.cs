@@ -51,7 +51,7 @@ namespace CookBook.Application.Mappings
 
             CreateMap<RecipeCategory, RecipeCategoryDto>()
                 .ForMember(rc => rc.Name, opt => opt.MapFrom(
-                    src => src.CategoryName))
+                    src => src.Name))
                 .ForMember(u => u.CreatedBy, opt => opt.MapFrom(
                     src => (src.CreatedById != null) ? userContext.GetUserNameById(src.CreatedById).Result : "-"))
                 .ForMember(u => u.CreatedTime, opt => opt.MapFrom(
@@ -60,7 +60,7 @@ namespace CookBook.Application.Mappings
                     user != null && (user.IsInRole("Admin") || user.IsInRole("Manager"))));
 
             CreateMap<RecipeCategoryDto, RecipeCategory>()
-                .ForMember(rc => rc.CategoryName, opt => opt.MapFrom(
+                .ForMember(rc => rc.Name, opt => opt.MapFrom(
                     src => src.Name));
         }
     }

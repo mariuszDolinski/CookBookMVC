@@ -2,19 +2,27 @@
 
 @{
     var code = ViewBag.Code;
+    string actionName;
+    switch (code)
+    {
+        case ItemCodes.CATG:
+            actionName = "GetAllCategories"; break;
+        default:
+            actionName = "Index"; break;
+    }
 }
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.ActionLink("Nazwa", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
+                @Html.ActionLink("Nazwa", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
             </th>
             <th>
-                @Html.ActionLink("Dodane przez", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
+                @Html.ActionLink("Dodane przez", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
             </th>
             <th>
-                @Html.ActionLink("Data dodania", "Index", new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
+                @Html.ActionLink("Data dodania", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
             </th>
             @foreach (var item in Model)
             {

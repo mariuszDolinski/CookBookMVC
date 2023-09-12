@@ -50,13 +50,13 @@ namespace CookBook.Infrastructure.Persistence
                 .IsRequired();
 
             modelBuilder.Entity<RecipeCategory>()
-                .Property(c => c.CategoryName) 
+                .Property(c => c.Name) 
                 .IsRequired()
                 .HasMaxLength(100);
 
             modelBuilder.Entity<RecipeCategory>()
-                .Property(c => c.CreatedTime)
-                .HasDefaultValue(DateTime.Now);
+               .Property(c => c.CreatedTime)
+               .HasDefaultValue(new DateTime(2023,1,1,12,0,0));
         }
     }
 }

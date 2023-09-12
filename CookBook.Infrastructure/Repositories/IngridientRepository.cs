@@ -10,52 +10,17 @@ namespace CookBook.Infrastructure.Repositories
     public class IngridientRepository : IIngridientRepository
     {
         private readonly CookBookDbContext _dbContext;
+        private readonly ICommonService<Ingridient> _commonService;
 
-        public IngridientRepository(CookBookDbContext dbContext)
+        public IngridientRepository(CookBookDbContext dbContext, ICommonService<Ingridient> commonService)
         {
             _dbContext = dbContext;
+            _commonService = commonService;
         }
 
-        public async Task<PaginatedResult<Ingridient>> GetAllIngridients(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
-        {
-            var baseQuery = _dbContext.Ingridients
-                .Include(ing => ing.CreatedBy)
-                .Where(ing => string.IsNullOrEmpty(searchPhrase) ? true : ing.Name.Contains(searchPhrase));
-
-            var columnSelector = new Dictionary<string, Expression<Func<Ingridient, object>>>()
-            {
-                {nameof(Ingridient.Name), ing => ing.Name },
-                {nameof(Ingridient.CreatedTime), ing => ing.CreatedTime },
-                {nameof(Ingridient.CreatedBy), ing => (ing.CreatedBy != null) ? ing.CreatedBy.UserName! : "-"}
-            };
-
-            string selectedColumn;
-            if(sortOrder.Contains("date"))
-                selectedColumn = nameof(Ingridient.CreatedTime);
-            else if(sortOrder.Contains("author"))
-                selectedColumn = nameof(Ingridient.CreatedBy);
-            else
-                selectedColumn = nameof(Ingridient.Name);
-
-            if (sortOrder.Contains("desc"))
-                baseQuery = baseQuery
-                    .OrderByDescending(columnSelector[selectedColumn]);
-            else
-                baseQuery = baseQuery
-                    .OrderBy(columnSelector[selectedColumn]);
-
-            List<Ingridient> items;
-            if(pageNumber == 0)
-            {
-                items = await baseQuery.ToListAsync();
-            }
-            else
-            {
-                items = await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            }
-
-            return new PaginatedResult<Ingridient>(items, baseQuery.Count());
-        }
+        public async Task<PaginatedResult<Ingridient>> GetAllIngridients(string searchPhrase, 
+            string sortOrder, int pageNumber, int pageSize)
+                => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
 
         public async Task CreateIngridient(Ingridient ingridient)
         {

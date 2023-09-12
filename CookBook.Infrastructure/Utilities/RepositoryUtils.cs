@@ -61,8 +61,8 @@ namespace CookBook.Infrastructure.Utilities
                         }
                     }
                     break;
-                default: return false;
-
+                default: 
+                    return false;
             }
 
             return true;

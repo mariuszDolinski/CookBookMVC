@@ -4,6 +4,7 @@ using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Infrastructure.Migrations
 {
     [DbContext(typeof(CookBookDbContext))]
-    partial class CookBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230912091942_CategoryNameColumnChanged")]
+    partial class CategoryNameColumnChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Ingridients", (string)null);
+                    b.ToTable("Ingridients");
                 });
 
             modelBuilder.Entity("CookBook.Domain.Entities.Recipe", b =>
@@ -107,7 +110,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Recipes", (string)null);
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("CookBook.Domain.Entities.RecipeCategory", b =>
@@ -138,7 +141,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("RecipeCategories", (string)null);
+                    b.ToTable("RecipeCategories");
                 });
 
             modelBuilder.Entity("CookBook.Domain.Entities.RecipeIngridient", b =>
@@ -171,7 +174,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeIngridients", (string)null);
+                    b.ToTable("RecipeIngridients");
                 });
 
             modelBuilder.Entity("CookBook.Domain.Entities.Unit", b =>
@@ -204,7 +207,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Units", (string)null);
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

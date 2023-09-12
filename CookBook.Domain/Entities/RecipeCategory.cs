@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CookBook.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CookBook.Domain.Entities
 {
-    public class RecipeCategory
+    public class RecipeCategory : IEntity
     {
         [Key]
         public int CategoryId { get; set; }
-        public string CategoryName { get; set; } = default!;
+        public string Name { get; set; } = default!;
         public string? CreatedById { get; set; }
         public IdentityUser? CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;

@@ -7,19 +7,23 @@
     var code = ViewBag.Code;
     string subtitle = "";
     string backToList = "";
+    string backToAction = "";
     switch (code)
     {
         case ItemCodes.INGR:
             subtitle = "Lista wszystkich dostępnych składników";
             backToList = "Wróc do listy wszystkich składników";
+            backToAction = "Index";
             break;
         case ItemCodes.UNIT:
             subtitle = "Lista wszystkich dostępnych jednostek";
             backToList = "Wróc do listy wszystkich jednostek";
+            backToAction = "Index";
             break;
         case ItemCodes.CATG:
             subtitle = "Lista wszystkich dostępnych kategorii";
             backToList = "Wróc do listy wszystkich kategorii";
+            backToAction = "GetAllCategories";
             break;
     }
 }
@@ -37,7 +41,7 @@
         @if (!string.IsNullOrEmpty(pages.SearchPhrase))
         {
             <div>
-                <a asp-action="Index"
+                <a asp-action="@backToAction"
                    asp-route-pageSize="@pages.PageSize" asp-route-sortOrder="@pages.SortOrder"
                    class="btn btn-outline-primary w-100">@backToList</a>
             </div>

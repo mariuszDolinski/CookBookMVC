@@ -1,4 +1,6 @@
-﻿using CookBook.Domain.Interfaces;
+﻿using CookBook.Domain.Entities;
+using CookBook.Domain.Interfaces;
+using CookBook.Infrastructure.CommonServices;
 using CookBook.Infrastructure.Persistence;
 using CookBook.Infrastructure.Repositories;
 using CookBook.Infrastructure.Seeders;
@@ -34,6 +36,9 @@ namespace CookBook.Infrastructure.Extensions
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<IRecipeIngridientRepository, RecipeIngridientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICommonService<Ingridient>, CommonService<Ingridient>>();
+            services.AddScoped<ICommonService<Unit>, CommonService<Unit>>();
+            services.AddScoped<ICommonService<RecipeCategory>, CommonService<RecipeCategory>>();
         }
     }
 }

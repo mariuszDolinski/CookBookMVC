@@ -1,19 +1,26 @@
 ﻿@model Pagination
 @{
     string description = "";
+    string actionName = "";
     var code = ViewBag.Code;
     switch (code)
     {
         case ItemCodes.UNIT:
-            description = "Znajdź jednstkę"; break;
+            description = "Znajdź jednstkę";
+            actionName = "Index";
+            break;
         case ItemCodes.INGR:
-            description = "Znajdź składnik"; break;
+            description = "Znajdź składnik";
+            actionName = "Index";
+            break;
         case ItemCodes.CATG:
-            description = "Znajdź kategorię"; break;
+            description = "Znajdź kategorię";
+            actionName = "GetAllCategories";
+            break;
     }
 }
 
-<form asp-action="Index" method="get">
+<form asp-action="@actionName" method="get">
     <label class="control-label">@description</label>
     <div class="input-group">
         <input type="text" name="search" value="@Model.SearchPhrase" class="form-control" placeholder="Wpisz szukaną frazę" id="search">

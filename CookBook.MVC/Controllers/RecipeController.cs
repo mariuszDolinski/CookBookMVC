@@ -85,30 +85,6 @@ namespace CookBook.MVC.Controllers
         {
             return await this.ViewWithCategories(_mediator);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateRecipeCategory(CreateRecipeCategoryCommand command)
-        {
-            if (User.Identity == null || !User.Identity.IsAuthenticated)
-            {
-                this.SetNotification("warning", "Zaloguj się aby dodać nowe składniki.");
-                return RedirectToAction("Categories", "User");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                    .SelectMany(x => x.Errors)
-                    .Select(y => y.ErrorMessage)
-                    .ToList();
-                this.SetNotification("warning", errors[0]);
-                return RedirectToAction("Categories", "User");
-            }
-
-            await _mediator.Send(command);
-            this.SetNotification("success", $"Kategoria '{command.Name}' została dodana");
-            return RedirectToAction("Categories", "User");
-        }
         #endregion
 
         #region Edit Actions

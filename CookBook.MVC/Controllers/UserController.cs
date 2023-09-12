@@ -5,10 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CookBook.MVC.Extensions;
-using CookBook.Application.UnitUtils.Queries.GetAllUnits;
 using CookBook.MVC.Models;
-using Microsoft.Data.SqlClient;
-using System.Drawing.Printing;
+using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
 
 namespace CookBook.MVC.Controllers
 {
@@ -55,6 +53,30 @@ namespace CookBook.MVC.Controllers
             this.SetTempData(query);
 
             return View(@"ItemListViews/ListIndex", paginatedCategories.Items);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRecipeCategory(CreateRecipeCategoryCommand command)
+        {
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                this.SetNotification("warning", "Zaloguj się aby dodać nowe składniki.");
+                return RedirectToAction("Categories", "User");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(y => y.ErrorMessage)
+                    .ToList();
+                this.SetNotification("warning", errors[0]);
+                return RedirectToAction("Categories", "User");
+            }
+
+            await _mediator.Send(command);
+            this.SetNotification("success", $"Kategoria '{command.Name}' została dodana");
+            return RedirectToAction(nameof(GetAllCategories));
         }
     }
 }

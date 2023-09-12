@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CookBook.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace CookBook.Domain.Entities;
 
-public partial class Ingridient
+public partial class Ingridient : IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

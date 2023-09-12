@@ -13,11 +13,14 @@ namespace CookBook.Infrastructure.Repositories
     {
         private readonly CookBookDbContext _dbContext;
         private readonly IRepositoryUtils _utils;
+        private readonly ICommonService<RecipeCategory> _commonService;
 
-        public RecipeRepository(CookBookDbContext dbContext, IRepositoryUtils utils) 
+        public RecipeRepository(CookBookDbContext dbContext, IRepositoryUtils utils, 
+            ICommonService<RecipeCategory> commonService) 
         {
             _dbContext = dbContext;
             _utils = utils;
+            _commonService = commonService;
         }
 
         public async Task CreateRecipe(Recipe recipe)
@@ -25,6 +28,8 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Add(recipe);
             await _dbContext.SaveChangesAsync();
         }
+
+        //wykorzystywane na stronie głównej
         public async Task<PaginatedResult<Recipe>> GetAllRecipes(
             string? searchPhrase, int pageNumber, int pageSize)
         {
@@ -47,6 +52,7 @@ namespace CookBook.Infrastructure.Repositories
             return new PaginatedResult<Recipe>(items, baseQuery.Count());
         }
 
+        //wykorzystywane w wynikach zaawansowanego wyszukiwania
         public async Task<IEnumerable<Recipe>> GetAllFilteredRecipes(
             string[]? ingridients, string[]? categories, bool[] othersFilters)
         {
@@ -58,7 +64,7 @@ namespace CookBook.Infrastructure.Repositories
             if(categories != null)
             {
                 baseQuery = baseQuery
-                    .Where(r => categories.Contains(r.Category.CategoryName));                   
+                    .Where(r => categories.Contains(r.Category.Name));                   
             }
 
             //pozostałe filtry:
@@ -115,52 +121,16 @@ namespace CookBook.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<PaginatedResult<RecipeCategory>> GetAllRecipeCategories(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
-        {
-            var baseQuery = _dbContext.RecipeCategories
-                .Include(ctg => ctg.CreatedBy)
-                .Where(ctg => string.IsNullOrEmpty(searchPhrase) ? true : ctg.CategoryName.Contains(searchPhrase));
-
-            var columnSelector = new Dictionary<string, Expression<Func<RecipeCategory, object>>>()
-            {
-                {nameof(RecipeCategory.CategoryName), ctg => ctg.CategoryName },
-                {nameof(RecipeCategory.CreatedTime), ctg => ctg.CreatedTime },
-                {nameof(RecipeCategory.CreatedBy), ctg => (ctg.CreatedBy != null) ? ctg.CreatedBy.UserName! : "-"}
-            };
-
-            string selectedColumn;
-            if (sortOrder.Contains("date"))
-                selectedColumn = nameof(RecipeCategory.CreatedTime);
-            else if (sortOrder.Contains("author"))
-                selectedColumn = nameof(RecipeCategory.CreatedBy);
-            else
-                selectedColumn = nameof(RecipeCategory.CategoryName);
-
-            if (sortOrder.Contains("desc"))
-                baseQuery = baseQuery
-                    .OrderByDescending(columnSelector[selectedColumn]);
-            else
-                baseQuery = baseQuery
-                    .OrderBy(columnSelector[selectedColumn]);
-
-            List<RecipeCategory> items;
-            if (pageNumber == 0)
-            {
-                items = await baseQuery.ToListAsync();
-            }
-            else
-            {
-                items = await baseQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            }
-
-            return new PaginatedResult<RecipeCategory>(items, baseQuery.Count());
-        }
+        public async Task<PaginatedResult<RecipeCategory>> GetAllRecipeCategories(
+            string searchPhrase, string sortOrder, int pageNumber, int pageSize)
+                => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
+        
 
         public async Task<RecipeCategory> GetCategoryById(int id)
             => await _dbContext.RecipeCategories.FirstAsync(r => r.CategoryId == id);
 
         public async Task<RecipeCategory?> GetCategoryByName(string name)
-            => await _dbContext.RecipeCategories.FirstOrDefaultAsync(r => r.CategoryName == name);
+            => await _dbContext.RecipeCategories.FirstOrDefaultAsync(r => r.Name == name);
 
         public async Task CreateCategory(RecipeCategory category)
         {

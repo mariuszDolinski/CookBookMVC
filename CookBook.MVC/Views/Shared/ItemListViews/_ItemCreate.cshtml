@@ -1,19 +1,26 @@
 ﻿@model CookBook.Application.CommonDtos.ItemListDto
 @{
     string description = "";
+    string actionName = "";
     var code = ViewBag.Code;
     switch (code)
     {
         case ItemCodes.UNIT:
-            description = "Dodaj nową jednostkę"; break;
+            description = "Dodaj nową jednostkę"; 
+            actionName = "Create";
+            break;
         case ItemCodes.INGR:
-            description = "Dodaj nowy składnik"; break;
+            description = "Dodaj nowy składnik";
+            actionName = "Create";
+            break;
         case ItemCodes.CATG:
-            description = "Dodaj nową kategorie"; break;
+            description = "Dodaj nową kategorie";
+            actionName = "CreateRecipeCategory";
+            break;
     }
 }
 
-<form asp-action="Create">
+<form asp-action="@actionName">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <label class="control-label" for="Name">@description</label>
     <div class="input-group">
