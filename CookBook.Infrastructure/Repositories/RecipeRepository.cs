@@ -120,5 +120,8 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Recipes.Remove(recipe);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Recipe?> GetRecipeByCategoryId(int id)
+            => await _dbContext.Recipes.FirstOrDefaultAsync(r => r.Category.CategoryId == id);
     }
 }

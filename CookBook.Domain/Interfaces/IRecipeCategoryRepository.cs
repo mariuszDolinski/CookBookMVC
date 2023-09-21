@@ -9,5 +9,6 @@ namespace CookBook.Domain.Interfaces
         Task<RecipeCategory> GetById(int id);
         Task<RecipeCategory?> GetByName(string name);
         Task Create(RecipeCategory category);
+        Task DeleteById(int id);
     }
 }

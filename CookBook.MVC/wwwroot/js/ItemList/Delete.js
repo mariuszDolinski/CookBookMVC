@@ -1,8 +1,3 @@
-const DeleteItem = (code) => {
-    const itemName = $("#currentItemName").val();
-    ExecuteDeleteAjax(code, itemName);
-}
-
 const ShowDeleteModal = (name, code) => {
     $("#currentItemName").val(name);
     $("#deleteItemModal").modal('show');
@@ -10,40 +5,28 @@ const ShowDeleteModal = (name, code) => {
     $("#confMessage").html(message);
 }
 
+//funkcja z onclick na buttonie
+const DeleteItem = (code) => {
+    const itemName = $("#currentItemName").val();
+    ExecuteDeleteAjax(code, itemName);
+}
 
-//metody do wywo³ywnia ajaxa dla konkretnego kontrolera
 const ExecuteDeleteAjax = (code, name) => {
     switch (code) {
-        case "INGR": ExecuteDeleteIngAjax(name); break;
-        case "UNIT": ExecuteDeleteUnitAjax(name); break;
+        case "INGR": ExecuteDeleteItemAjax(name, "ingridient"); break;
+        case "UNIT": ExecuteDeleteItemAjax(name, "unit"); break;
+        case "CATG": ExecuteDeleteItemAjax(name, "recipeCategory"); break;
         default: break;
     }
-
 }
 
-const ExecuteDeleteIngAjax = (name) => {
+//wywo³nie akcje Edit w danym kontrolerze poprzez ajax
+const ExecuteDeleteItemAjax = (name, controller) => {
     $.ajax({
-        url: `/ingridient/delete/${name}`,
+        url: `/${controller}/delete/${name}`,
         type: 'delete',
         success: function () {
-            $("#deleteIngridientModal").modal('hide');
-            location.reload();
-        },
-        error: function (xhr) {
-            toastr.options = {
-                "closeButton": true
-            }
-            toastr["error"](xhr.responseText)
-        }
-    })
-}
-
-const ExecuteDeleteUnitAjax = (name) => {
-    $.ajax({
-        url: `/unit/delete/${name}`,
-        type: 'delete',
-        success: function () {
-            $("#deleteUnitModal").modal('hide');
+            $("#deleteItemModal").modal('hide');
             location.reload();
         },
         error: function (xhr) {
@@ -59,6 +42,7 @@ const GetModalMessage = (name, code) => {
     switch (code) {
         case "INGR": return "Czy na pewno chcesz usun&#261;&#263; sk&#322;adnik: <br />'" + name + "'?"
         case "UNIT": return "Czy na pewno chcesz usun&#261;&#263; jednostk&#281;: <br />'" + name + "'?"
+        case "CATG": return "Czy na pewno chcesz usun&#261;&#263; kategori&#281;: <br />'" + name + "'?"
         default: break;
     }
 }

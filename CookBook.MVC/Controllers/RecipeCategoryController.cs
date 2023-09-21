@@ -1,4 +1,6 @@
 ﻿using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
+using CookBook.Application.RecipeUtils.Commands.DeleteRecipeCategory;
+using CookBook.Application.RecipeUtils.Commands.EditRecipeCategory;
 using CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
@@ -19,7 +21,8 @@ namespace CookBook.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string search = "", string sortOrder = "", int page = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(string search = "", string sortOrder = "", 
+            int page = 1, int pageSize = 5)
         {
             this.SetViewBagParams(search, sortOrder, pageSize);
             this.SetViewBagSortIcons(sortOrder);
@@ -59,6 +62,20 @@ namespace CookBook.MVC.Controllers
             await _mediator.Send(command);
             this.SetNotification("success", $"Kategoria '{command.Name}' została dodana");
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPut]
+        [Route("recipeCategory/edit/{names}")]
+        public async Task<IActionResult> Edit(string names)
+        {
+            return await this.EditItem(_mediator, new EditRecipeCategoryCommand(), names);
+        }
+
+        [HttpDelete]
+        [Route("recipeCategory/delete/{name}")]
+        public async Task<IActionResult> Delete(string name)
+        {
+            return await this.DeleteItem(_mediator, new DeleteRecipeCategoryCommand(), name);
         }
     }
 }
