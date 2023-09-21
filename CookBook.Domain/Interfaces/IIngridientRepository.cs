@@ -3,10 +3,10 @@ using CookBook.Domain.Pagination;
 
 namespace CookBook.Domain.Interfaces
 {
-    public interface IIngridientRepository
+    public interface IIngridientRepository : IRepository
     {
-        Task<PaginatedResult<Ingridient>> GetAllIngridients(string searchPhrase, string sortOrder, int pageNumber, int pageSize);
-        Task CreateIngridient(Ingridient ingridient);
+        Task<PaginatedResult<Ingridient>> GetAll(string searchPhrase, string sortOrder, int pageNumber, int pageSize);
+        Task Create(Ingridient ingridient);
         Task<Ingridient?> GetByName(string name);
         Task<Ingridient?> GetById(int id);
         Task SaveChangesToDb();

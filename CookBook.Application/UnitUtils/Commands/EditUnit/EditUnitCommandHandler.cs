@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CookBook.Application.UnitUtils.Commands.EditUnit
 {
-    public class EditUnitCommandHandler : IRequestHandler<EditUnitCommand, int>
+    public class EditUnitCommandHandler : IRequestHandler<EditUnitCommand, string>
     {
         private readonly IUserContext _userContext;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace CookBook.Application.UnitUtils.Commands.EditUnit
             _mapper = mapper;
             _unitRepository = unitRepository;
         }
-        public async Task<int> Handle(EditUnitCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(EditUnitCommand request, CancellationToken cancellationToken)
         {
             var unit = await _unitRepository.GetByName(request.OldName);
 
@@ -27,19 +27,19 @@ namespace CookBook.Application.UnitUtils.Commands.EditUnit
                 var existingUnit = await _unitRepository.GetByName(request.Name);
                 if (existingUnit != null)
                 {
-                    return -1;
+                    return "Jednostka o podanej nazwie już istnieje";
                 }
             }
 
             if (unit == null)
             {
-                return -2;
+                return "Edycja jednostki nie powiodła się.";
             }
 
             var user = _userContext.GetCurrentUser();
             if (user == null || !(user.IsInRole("Admin") || user.IsInRole("Manager")))
             {
-                return 0;
+                return "Brak uprawnień do edycji jednostki";
             }
 
             unit.Name = request.Name!;
@@ -47,7 +47,7 @@ namespace CookBook.Application.UnitUtils.Commands.EditUnit
             unit.LastEdit = DateTime.Now;
 
             await _unitRepository.SaveChangesToDb();
-            return 1;
+            return "";
         }
     }
 }

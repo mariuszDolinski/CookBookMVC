@@ -18,11 +18,11 @@ namespace CookBook.Infrastructure.Repositories
             _commonService = commonService;
         }
 
-        public async Task<PaginatedResult<Unit>> GetAllUnits(string searchPhrase, 
+        public async Task<PaginatedResult<Unit>> GetAll(string searchPhrase, 
             string sortOrder, int pageNumber, int pageSize)
                 => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
 
-        public async Task CreateUnit(Unit unit)
+        public async Task Create(Unit unit)
         {
             unit.Name = unit.Name.ToLower();
             _dbContext.Add(unit);

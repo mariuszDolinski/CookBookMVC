@@ -1,7 +1,4 @@
-﻿using CookBook.Application.IngridientUtils;
-using CookBook.Application.IngridientUtils.Commands.DeleteIngridient;
-using CookBook.Application.IngridientUtils.Commands.EditIngridient;
-using CookBook.Application.UnitUtils.Commands.CreateUnit;
+﻿using CookBook.Application.UnitUtils.Commands.CreateUnit;
 using CookBook.Application.UnitUtils.Commands.DeleteUnits;
 using CookBook.Application.UnitUtils.Commands.EditUnit;
 using CookBook.Application.UnitUtils.Queries.GetAllUnits;
@@ -9,7 +6,6 @@ using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Azure.Core.HttpHeader;
 
 namespace CookBook.MVC.Controllers
 {
@@ -71,60 +67,14 @@ namespace CookBook.MVC.Controllers
         [Route("unit/edit/{names}")]
         public async Task<IActionResult> Edit(string names)
         {
-            string[] oldNewName = names.Split(';');
-
-            if (oldNewName.Length < 2)
-            {
-                return BadRequest("Dane nie zostały poprawnie przesłane");
-            }
-
-            EditUnitCommand command = new EditUnitCommand();
-            command.Name = oldNewName[1];
-            command.OldName = oldNewName[0];
-
-            var result = await _mediator.Send(command);
-            if (result == 0)
-            {
-                return BadRequest("Brak uprawnień do edycji jednostki");
-            }
-            if (result == -1)
-            {
-                return BadRequest("Jednostka o podanej nazwie już istnieje");
-            }
-            if (result == -2)
-            {
-                return BadRequest("Coś poszło nie tak");
-            }
-
-            return Ok();
+            return await this.EditItem(_mediator, new EditUnitCommand(), names);
         }
 
         [HttpDelete]
         [Route("unit/delete/{name}")]
         public async Task<IActionResult> Delete(string name)
         {
-            var result = await _mediator.Send(new DeleteUnitCommand() { Name = name });
-
-            if (result == -3)
-            {
-                return BadRequest("Nazwa nie istnieje");
-            }
-            if (result == -2)
-            {
-                return BadRequest("Nazwa jest pusta");
-            }
-            if (result == -1)
-            {
-                return BadRequest("Brak uprawnień");
-            }
-            else if (result == 0)
-            {
-                return BadRequest("Nie mogę usunąć jednostki, gdyż jest już elementem jakiegoś przepisu");
-            }
-            else
-            {
-                return Ok();
-            }
+            return await this.DeleteItem(_mediator, new DeleteUnitCommand(), name);
         }
     }
 }

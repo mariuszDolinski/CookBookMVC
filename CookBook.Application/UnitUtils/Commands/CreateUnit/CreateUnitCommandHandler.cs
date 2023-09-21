@@ -24,7 +24,7 @@ namespace CookBook.Application.UnitUtils.Commands.CreateUnit
             unit.SetEncodedName();
             unit.CreatedById = _userContext.GetCurrentUser()!.Id;
             unit.CreatedTime = DateTime.Now;
-            await _unitRepository.CreateUnit(unit);
+            await _unitRepository.Create(unit);
         }
     }
 }

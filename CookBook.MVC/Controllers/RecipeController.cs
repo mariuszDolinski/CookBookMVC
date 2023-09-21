@@ -316,7 +316,6 @@ namespace CookBook.MVC.Controllers
                 }
             }
 
-            //TempData["searchIng"] = ingridients;
             var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, categoryNames, otherFilters));
             return Ok(result);
         }

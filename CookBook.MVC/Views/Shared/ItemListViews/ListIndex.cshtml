@@ -1,5 +1,8 @@
-﻿@using CookBook.Application.CommonDtos;
-@model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
+﻿@using CookBook.Application.Commons;
+@using CookBook.Application.IngridientUtils;
+@using CookBook.Application.UnitUtils;
+@using CookBook.Application.RecipeUtils;
+@model IEnumerable<CookBook.Application.Commons.IItemListDto>
 
 @{
     ViewData["Title"] = "Składniki";
@@ -7,23 +10,24 @@
     var code = ViewBag.Code;
     string subtitle = "";
     string backToList = "";
-    string backToAction = "";
+    string backToAction = "Index";
+    IItemListDto createModel;
     switch (code)
     {
-        case ItemCodes.INGR:
-            subtitle = "Lista wszystkich dostępnych składników";
-            backToList = "Wróc do listy wszystkich składników";
-            backToAction = "Index";
-            break;
         case ItemCodes.UNIT:
             subtitle = "Lista wszystkich dostępnych jednostek";
             backToList = "Wróc do listy wszystkich jednostek";
-            backToAction = "Index";
+            createModel = new UnitDto();
             break;
         case ItemCodes.CATG:
             subtitle = "Lista wszystkich dostępnych kategorii";
             backToList = "Wróc do listy wszystkich kategorii";
-            backToAction = "GetAllCategories";
+            createModel = new RecipeCategoryDto();
+            break;
+        default: //domyślnie przekazujemy składniki (INGR)
+            subtitle = "Lista wszystkich dostępnych składników";
+            backToList = "Wróc do listy wszystkich składników";
+            createModel = new IngridientDto();
             break;
     }
 }
@@ -33,7 +37,7 @@
 <div class="row">
     <div class="col-12 col-md-3">
         <div class="mb-3">
-            <partial name="ItemListViews/_ItemCreate" model="new ItemListDto()" />
+            <partial name="ItemListViews/_ItemCreate" model="@createModel" />
         </div>
         <div class="mb-1">
             <partial name="ItemListViews/_ItemSearch" model="@pages" />

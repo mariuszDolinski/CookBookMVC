@@ -36,6 +36,7 @@ namespace CookBook.Infrastructure.Extensions
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<IRecipeIngridientRepository, RecipeIngridientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRecipeCategoryRepository, RecipeCategoryRepository>();
             services.AddScoped<ICommonService<Ingridient>, CommonService<Ingridient>>();
             services.AddScoped<ICommonService<Unit>, CommonService<Unit>>();
             services.AddScoped<ICommonService<RecipeCategory>, CommonService<RecipeCategory>>();

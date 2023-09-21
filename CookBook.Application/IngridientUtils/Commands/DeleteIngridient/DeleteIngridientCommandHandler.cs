@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CookBook.Application.IngridientUtils.Commands.DeleteIngridient
 {
-    public class DeleteIngridientCommandHandler : IRequestHandler<DeleteIngridientCommand, int>
+    public class DeleteIngridientCommandHandler : IRequestHandler<DeleteIngridientCommand, string>
     {
         private readonly IUserContext _userContext;
         private readonly IIngridientRepository _ingridientRepository;
@@ -18,39 +18,34 @@ namespace CookBook.Application.IngridientUtils.Commands.DeleteIngridient
             _ingridientRepository = ingridientRepository;
             _riRepository = riRepository;
         }
-        /// <summary>
-        /// return 1 if succeded, 0 if ingridient is a part of at least one recipe ingridient, <0 other error
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<int> Handle(DeleteIngridientCommand request, CancellationToken cancellationToken)
+
+        public async Task<string> Handle(DeleteIngridientCommand request, CancellationToken cancellationToken)
         {
             var user = _userContext.GetCurrentUser();
             if (user == null || (!user.IsInRole("Admin") && !user.IsInRole("Manager")))
             {
-                return -1;
+                return "Brak uprawnień do usunięcia składnika";
             }
 
             if(string.IsNullOrEmpty(request.Name))
             {
-                return -2;
+                return "Wybierz składnik do usunięcia";
             }
 
             var ingridient = await _ingridientRepository.GetByName(request.Name);
             if(ingridient == null)
             {
-                return -3;
+                return "Składnik, który próbujesz usunąć, nie istnieje";
             }
 
             var recipeIng = await _riRepository.GetRecipeIngridientByIngId(ingridient.Id);
             if(recipeIng != null)
             {
-                return 0;
+                return "Nie można usunąć składnika, gdyż jest już częścią jakiegoś przepisu";
             }
 
             await _ingridientRepository.DeleteById(ingridient.Id);
-            return 1;
+            return "";
 
         }
     }

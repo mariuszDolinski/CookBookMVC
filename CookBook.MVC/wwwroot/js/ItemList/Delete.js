@@ -28,7 +28,6 @@ const ExecuteDeleteIngAjax = (name) => {
         success: function () {
             $("#deleteIngridientModal").modal('hide');
             location.reload();
-            toastr["success"]("Sk&#322;adnik zosta&#322; usuni&#281;ty");
         },
         error: function (xhr) {
             toastr.options = {
@@ -46,7 +45,6 @@ const ExecuteDeleteUnitAjax = (name) => {
         success: function () {
             $("#deleteUnitModal").modal('hide');
             location.reload();
-            toastr["success"]("Jednostka zosta&#322;a usuni&#281;ta");
         },
         error: function (xhr) {
             toastr.options = {

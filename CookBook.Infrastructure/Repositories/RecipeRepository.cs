@@ -120,22 +120,5 @@ namespace CookBook.Infrastructure.Repositories
             _dbContext.Recipes.Remove(recipe);
             await _dbContext.SaveChangesAsync();
         }
-
-        public async Task<PaginatedResult<RecipeCategory>> GetAllRecipeCategories(
-            string searchPhrase, string sortOrder, int pageNumber, int pageSize)
-                => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
-        
-
-        public async Task<RecipeCategory> GetCategoryById(int id)
-            => await _dbContext.RecipeCategories.FirstAsync(r => r.CategoryId == id);
-
-        public async Task<RecipeCategory?> GetCategoryByName(string name)
-            => await _dbContext.RecipeCategories.FirstOrDefaultAsync(r => r.Name == name);
-
-        public async Task CreateCategory(RecipeCategory category)
-        {
-            _dbContext.Add(category);
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }

@@ -25,7 +25,7 @@ namespace CookBook.Infrastructure.CommonServices
             var baseQuery = entitySet.Include(ing => ing.CreatedBy)
                 .Where(ing => string.IsNullOrEmpty(searchPhrase) ? true : ing.Name.Contains(searchPhrase));
 
-            var item = new T();//potrzebny obiekt do wyłuskania nazw kolumn
+            var item = new T();//potrzebny obiekt typu T do wyłuskania nazw kolumn
             var columnSelector = new Dictionary<string, Expression<Func<T, object>>>()
             {
                 {nameof(item.Name), ing => ing.Name },

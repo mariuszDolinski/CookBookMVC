@@ -6,6 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using CookBook.Domain.Utils;
+using CookBook.Application.Commons;
+using CookBook.Application.IngridientUtils.Commands.EditIngridient;
+using CookBook.Application.UnitUtils.Commands.EditUnit;
+using CookBook.Application.IngridientUtils.Commands.DeleteIngridient;
 
 namespace CookBook.MVC.Extensions
 {
@@ -16,6 +20,7 @@ namespace CookBook.MVC.Extensions
             var notification = new Notification(type, message);
             controller.TempData["Notification"] = JsonConvert.SerializeObject(notification);
         }
+
         public static void SetViewBagParams(this Controller controller, string? search, string sortOrder, int pageSize)
         {
             controller.ViewBag.NameSortOrder = string.IsNullOrEmpty(sortOrder) ? "desc" : "";
@@ -79,7 +84,9 @@ namespace CookBook.MVC.Extensions
 
             return query;
         }
-        public static RedirectToActionResult CallRedirectToAction(this Controller controller, ParamsQuery query, string action)
+
+        public static RedirectToActionResult CallRedirectToAction(this Controller controller, 
+            ParamsQuery query, string action)
         {
             return controller.RedirectToAction(action,
                    new
@@ -89,9 +96,9 @@ namespace CookBook.MVC.Extensions
                        pageSize = query.PageSize
                    });
         }
-        //metody do zwracania widoku Create dla przepisu z przesyłem listy kategorii przez ViewBag
+
         #region metody do populacji kategorii w widokach
-        public static async Task<IActionResult> ViewWithCategories(this Controller controller, 
+        public static async Task<IActionResult> ViewWithCategories(this Controller controller,
             IMediator mediator, CreateRecipeCommand command)
         {
             var categories = await mediator.Send(new GetAllRecipeCategoriesQuery());
@@ -120,20 +127,51 @@ namespace CookBook.MVC.Extensions
             return controller.View(parameters);
         }
         #endregion
-        //metoda ustawiająca wartości pól w klasie RecipesQueryParams
-        public static RecipesQueryParams SetQueryParams(this Controller controller, string? searchPhrase, int pageNaumber, int pageSize,
-            string[]? ingList, int advancedMode, string category, bool isVege)
+
+        #region metody implementujące wspólne akcje dla widoku ItemList
+        public static async Task<IActionResult> EditItem(this Controller controller, IMediator mediator,
+            IEditItemCommand command, string names)
         {
-            return new RecipesQueryParams()
+            string[] oldNewName = names.Split(';');
+
+            if (oldNewName.Length != 2)
             {
-                SearchPhrase = searchPhrase,
-                PageNumber = pageNaumber,
-                PageSize = pageSize,
-                IngList = ingList,
-                AdvancedSearchMode = advancedMode,
-                Category = category,
-                IsVegetarian = isVege
-            };
+                return controller.BadRequest("Dane nie zostały poprawnie przesłane");
+            }
+
+            command.Name = oldNewName[1];
+            command.OldName = oldNewName[0];
+            var message = (string?)(await mediator.Send(command));
+
+            if(message == null)
+            {
+                return controller.BadRequest("Nieznany błąd.");
+            }
+            if (message.Length > 0)
+            {
+                return controller.BadRequest(message);
+            }
+
+            return controller.Ok();
         }
+        public static async Task<IActionResult> DeleteItem(this Controller controller, IMediator mediator,
+            IItemListDto command, string name)
+        {
+            command.Name = name;
+            var message = (string?)(await mediator.Send(command));
+
+            if (message == null)
+            {
+                return controller.BadRequest("Nieznany błąd.");
+            }
+            if (message.Length > 0)
+            {
+                return controller.BadRequest(message);
+            }
+
+            return controller.Ok();
+        }
+
+        #endregion
     }
 }

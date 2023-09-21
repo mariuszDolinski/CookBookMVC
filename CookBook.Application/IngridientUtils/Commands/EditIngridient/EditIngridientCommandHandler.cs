@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CookBook.Application.IngridientUtils.Commands.EditIngridient
 {
-    public class EditIngridientCommandHandler : IRequestHandler<EditIngridientCommand, int>
+    public class EditIngridientCommandHandler : IRequestHandler<EditIngridientCommand, string>
     {
         private readonly IUserContext _userContext;
         private readonly IMapper _mapper;
@@ -18,14 +18,8 @@ namespace CookBook.Application.IngridientUtils.Commands.EditIngridient
             _mapper = mapper;
             _ingridientRepository = ingridientRepository;
         }
-        /// <summary>
-        /// return 1 if success, 0 if user is not authrized, -1 if new name exists, -2 in other cases
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<int> Handle(EditIngridientCommand request, CancellationToken cancellationToken)
+
+        public async Task<string> Handle(EditIngridientCommand request, CancellationToken cancellationToken)
         {
             var ingridient = await _ingridientRepository.GetByName(request.OldName);
 
@@ -34,19 +28,19 @@ namespace CookBook.Application.IngridientUtils.Commands.EditIngridient
                 var ing = await _ingridientRepository.GetByName(request.Name);
                 if(ing != null)
                 {
-                    return -1;
+                    return "Składnik o podanej nazwie już istnieje";
                 }
             }
 
             if(ingridient == null)
             {
-                return -2;
+                return "Edycja składnika nie powiodła się";
             }
 
             var user = _userContext.GetCurrentUser();
             if (user == null || !(user.IsInRole("Admin") || user.IsInRole("Manager")))
             {
-                return 0;
+                return "Brak uprawnień do edycji składnika";
             }
 
             ingridient.Name = request.Name!;
@@ -54,7 +48,7 @@ namespace CookBook.Application.IngridientUtils.Commands.EditIngridient
             ingridient.LastEdit = DateTime.Now;
 
             await _ingridientRepository.SaveChangesToDb();
-            return 1;
+            return "";
 
         }
     }

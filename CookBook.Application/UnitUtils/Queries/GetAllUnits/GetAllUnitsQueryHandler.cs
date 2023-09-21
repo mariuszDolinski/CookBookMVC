@@ -20,7 +20,7 @@ namespace CookBook.Application.UnitUtils.Queries.GetAllUnits
         {
             request.SortOrder ??= "";
             request.SearchPhrase ??= "";
-            var paginatedUnits = await _unitRepository.GetAllUnits(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
+            var paginatedUnits = await _unitRepository.GetAll(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
             var unitsDto = _mapper.Map<IEnumerable<UnitDto>>(paginatedUnits.Items).ToList();
 
             return new PaginatedResult<UnitDto>(unitsDto, paginatedUnits.TotalItems);

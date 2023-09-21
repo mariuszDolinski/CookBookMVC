@@ -41,7 +41,6 @@ const ExecuteEditIngAjax = (oldName, newName) => {
         success: function () {
             $("#editItemModal").modal('hide');
             location.reload();
-            toastr["success"]("Sk&#322;adnik zosta&#322; zmieniony");
         },
         error: function (xhr) {
             toastr.options = {
@@ -59,13 +58,12 @@ const ExecuteEditUnitAjax = (oldName, newName) => {
         success: function () {
             $("#editItemModal").modal('hide');
             location.reload();
-            toastr["success"]("Jednostka zosta&#322;a zmieniona");
         },
         error: function (xhr) {
             toastr.options = {
                 "closeButton": true
             }
-            toastr["error"](xhr.responseText)
+            toastr["warning"](xhr.responseText)
         }
     })
 }

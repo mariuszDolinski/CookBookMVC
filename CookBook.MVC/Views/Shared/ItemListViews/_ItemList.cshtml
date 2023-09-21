@@ -1,15 +1,8 @@
-﻿@model IEnumerable<CookBook.Application.CommonDtos.ItemListDto>
+﻿@model IEnumerable<CookBook.Application.Commons.IItemListDto>
 
 @{
     var code = ViewBag.Code;
-    string actionName;
-    switch (code)
-    {
-        case ItemCodes.CATG:
-            actionName = "GetAllCategories"; break;
-        default:
-            actionName = "Index"; break;
-    }
+    string actionName = "Index";
 }
 
 <table class="table">

@@ -11,14 +11,14 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory
     public class CreateRecipeCategoryCommandHandler : IRequestHandler<CreateRecipeCategoryCommand>
     {
         private readonly IMapper _mapper;
-        private readonly IRecipeRepository _recipeRepository;
+        private readonly IRecipeCategoryRepository _recipeCategoryRepository;
         private readonly IUserContext _userContext;
 
-        public CreateRecipeCategoryCommandHandler(IMapper mapper, IRecipeRepository recipeRepository, 
+        public CreateRecipeCategoryCommandHandler(IMapper mapper, IRecipeCategoryRepository recipeCategoryRepository, 
             IUserContext userContext)
         {
             _mapper = mapper;
-            _recipeRepository = recipeRepository;
+            _recipeCategoryRepository = recipeCategoryRepository;
             _userContext = userContext;
         }
         public async Task Handle(CreateRecipeCategoryCommand request, CancellationToken cancellationToken)
@@ -26,7 +26,7 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory
             var category = _mapper.Map<RecipeCategory>(request);
             category.CreatedById = _userContext.GetCurrentUser()!.Id;
             category.CreatedTime = DateTime.Now;
-            await _recipeRepository.CreateCategory(category);
+            await _recipeCategoryRepository.Create(category);
         }
     }
 }

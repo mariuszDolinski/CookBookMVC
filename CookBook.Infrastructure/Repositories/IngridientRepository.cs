@@ -18,11 +18,11 @@ namespace CookBook.Infrastructure.Repositories
             _commonService = commonService;
         }
 
-        public async Task<PaginatedResult<Ingridient>> GetAllIngridients(string searchPhrase, 
+        public async Task<PaginatedResult<Ingridient>> GetAll(string searchPhrase, 
             string sortOrder, int pageNumber, int pageSize)
                 => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
 
-        public async Task CreateIngridient(Ingridient ingridient)
+        public async Task Create(Ingridient ingridient)
         {
             ingridient.Name = ingridient.Name.ToLower();
             _dbContext.Add(ingridient);

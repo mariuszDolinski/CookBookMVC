@@ -1,21 +1,18 @@
-﻿@model CookBook.Application.CommonDtos.ItemListDto
+﻿@model CookBook.Application.Commons.IItemListDto
 @{
     string description = "";
-    string actionName = "";
+    string actionName = "Create";
     var code = ViewBag.Code;
     switch (code)
     {
         case ItemCodes.UNIT:
             description = "Dodaj nową jednostkę"; 
-            actionName = "Create";
             break;
         case ItemCodes.INGR:
             description = "Dodaj nowy składnik";
-            actionName = "Create";
             break;
         case ItemCodes.CATG:
             description = "Dodaj nową kategorie";
-            actionName = "CreateRecipeCategory";
             break;
     }
 }

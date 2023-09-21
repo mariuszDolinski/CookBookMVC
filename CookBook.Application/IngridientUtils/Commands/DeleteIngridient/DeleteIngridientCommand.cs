@@ -2,7 +2,7 @@
 
 namespace CookBook.Application.IngridientUtils.Commands.DeleteIngridient
 {
-    public class DeleteIngridientCommand : IngridientDto, IRequest<int>
+    public class DeleteIngridientCommand : IngridientDto, IRequest<string>
     {
     }
 }

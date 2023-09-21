@@ -19,7 +19,7 @@ namespace CookBook.Application.IngridientUtils.Queries.GetAllIngridients
         {
             request.SortOrder ??= "";//jeśli null to wstawiamy pusty string
             request.SearchPhrase ??= "";
-            var paginatedIng = await _ingridientRepository.GetAllIngridients(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
+            var paginatedIng = await _ingridientRepository.GetAll(request.SearchPhrase, request.SortOrder, request.PageNumber, request.PageSize);
             
             var ingridientsDto =  _mapper.Map<IEnumerable<IngridientDto>>(paginatedIng.Items).ToList();
 

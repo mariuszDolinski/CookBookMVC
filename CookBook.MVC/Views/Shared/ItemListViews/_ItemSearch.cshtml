@@ -1,21 +1,18 @@
 ﻿@model Pagination
 @{
     string description = "";
-    string actionName = "";
+    string actionName = "Index";
     var code = ViewBag.Code;
     switch (code)
     {
         case ItemCodes.UNIT:
             description = "Znajdź jednstkę";
-            actionName = "Index";
             break;
         case ItemCodes.INGR:
             description = "Znajdź składnik";
-            actionName = "Index";
             break;
         case ItemCodes.CATG:
             description = "Znajdź kategorię";
-            actionName = "GetAllCategories";
             break;
     }
 }

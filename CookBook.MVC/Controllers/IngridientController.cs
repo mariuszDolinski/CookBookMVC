@@ -6,7 +6,6 @@ using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CookBook.MVC.Controllers
 {
@@ -70,52 +69,14 @@ namespace CookBook.MVC.Controllers
         [Route("ingridient/edit/{names}")]
         public async Task<IActionResult> Edit(string names)
         {
-            string[] oldNewName = names.Split(';');
-
-            if(oldNewName.Length < 2)
-            {
-                return BadRequest("Dane nie zostały poprawnie przesłane");
-            }
-
-            EditIngridientCommand command = new EditIngridientCommand();
-            command.Name = oldNewName[1];
-            command.OldName = oldNewName[0];
-
-            var result = await _mediator.Send(command);
-            if(result == 0)
-            {
-                return BadRequest("Brak uprawnień do edycji składnika");
-            }
-            if(result == -1)
-            {
-                return BadRequest("Składnik o podanej nazwie już istnieje");
-            }
-            if (result == -2)
-            {
-                return BadRequest("Coś poszło nie tak");
-            }
-
-            return Ok();
+            return await this.EditItem(_mediator, new EditIngridientCommand(), names);
         }
 
         [HttpDelete]
         [Route("ingridient/delete/{name}")]
         public async Task<IActionResult> Delete(string name)
         {
-            var result = await _mediator.Send(new DeleteIngridientCommand() { Name = name });
-
-            if(result < 0)
-            {
-                return BadRequest("Coś poszło nie tak");
-            }
-            else if(result == 0)
-            {
-                return BadRequest("Nie mogę usunąć składnika, gdyż jest już elementem jakiegoś przepisu");
-            }
-            else
-            {
-                return Ok();
-            }
+            return await this.DeleteItem(_mediator, new DeleteIngridientCommand(), name);
         }
     }
 }
