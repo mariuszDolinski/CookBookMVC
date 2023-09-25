@@ -241,7 +241,7 @@ namespace CookBook.MVC.Controllers
         #region Advanced search actions
         //widok zaaansowanego wyszukiwania
         [AllowAnonymous]
-        public async Task<IActionResult> AdvancedSearch(string ings, string categories, string others)
+        public async Task<IActionResult> AdvancedSearch(string searchName, string ings, string categories, string others)
         {
             if(ings is null)
             {
@@ -268,10 +268,10 @@ namespace CookBook.MVC.Controllers
                 return BadRequest("Lista składników do wyszukania nie została prawidłowo wczytana.");
             }
 
+            parameters.SearchName = searchName;
             parameters.ChoosenCategories = categories;
             parameters.OtherFilters = others;
 
-            //string[]? ingridients = (string[]?)TempData["searchIng"];
             return await this.SearchViewWithCategories(_mediator, parameters);
         }
 
@@ -295,7 +295,8 @@ namespace CookBook.MVC.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("recipe/search/advanced")]
-        public async Task<IActionResult> SearchByIngridients(string categories, string ings, string others)
+        public async Task<IActionResult> SearchByIngridients(string searchName, string categories, 
+            string ings, string others)
         {
             string[]? categoryNames = categories.IsNullOrEmpty() ? null : categories.Split(";");
 
@@ -316,7 +317,8 @@ namespace CookBook.MVC.Controllers
                 }
             }
 
-            var result = await _mediator.Send(new AdvancedSearchQuery(ingridients, categoryNames, otherFilters));
+            var result = await _mediator.Send(new AdvancedSearchQuery(searchName, ingridients, 
+                categoryNames, otherFilters));
             return Ok(result);
         }
         #endregion

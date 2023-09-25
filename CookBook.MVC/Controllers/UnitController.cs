@@ -54,7 +54,7 @@ namespace CookBook.MVC.Controllers
                     .SelectMany(x => x.Errors)
                     .Select(y => y.ErrorMessage)
                     .ToList();
-                this.SetNotification("error", errors[0]);
+                this.SetNotification("warning", errors[0]);
                 return this.CallRedirectToAction(query, nameof(Index));
             }
 

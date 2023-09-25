@@ -7,8 +7,7 @@ $(document).ready(function () {
     });
     FillData($("#searchlistIngridients"), null, "", "");//populate datalist with ingridients names
 
-    enableInputName();
-    $("#categorySearch").click(enableInputName);
+    searchNameChange();//ustawia eventy on na nameSearch
 
     $("#categoryBadge").attr("hidden", true);
     $("#ingBadge").attr("hidden", true);
@@ -19,10 +18,13 @@ $(document).ready(function () {
     const ingString = $("#ingridientList").val();
     const catString = $("#choosenCategories").val();
     const otherString = $("#otherFilters").val();
+    const searchPhrase = $("#searchPhrase").val();
     if (inSearchMode == "1") {
         if (catString != null && catString.length > 0) setCategorySearch(catString);
         if (ingString != null && ingString.length > 0) recreateIngList(ingString);
         if (otherString != null && otherString.length > 0) setOtherSearch(otherString);
+        if (searchPhrase.length > 0) $("#nameInput").val(searchPhrase).trigger('change');
+        
         const currentMode = $("#searchMode").val();
         switch (currentMode) {
             case "0": $("#allRecipeRadio").attr('checked', true).trigger('change'); break;
@@ -43,14 +45,6 @@ $(document).ready(function () {
         }
     };
 });
-
-function enableInputName() {
-    if (this.checked) {
-        $("#selectedCategories").removeAttr("disabled");
-    } else {
-        $("#selectedCategories").attr("disabled", true);
-    }
-}
 
 //metoda do ukrycia/pokazania przycisku do usuwania wszystkich sk³adnikó z listy
 function hideClearAllButton(b) {
@@ -91,6 +85,10 @@ const addToSearchList = () => {
 
 //metoda wywo³uj¹ca wyszukiwanie
 const searchRecipes = () => {
+    //wyszukiwanie po nazwie
+    var searchPhrase = $("#nameInput").val();
+    searchPhrase = (searchPhrase == null) ? "" : searchPhrase;
+
     var catString = "";
     //zapisujemy do tablicy wszystkie wybrane kategorie i tworzymy z nich string
     const selectedCategories = $.map($('input[name="categories"]:checked'),function (c) { return c.value; });
@@ -123,7 +121,8 @@ const searchRecipes = () => {
     var otherString = "";
     otherString += $('#onlyVege').is(":checked");
 
-    var queryString = "categories=" + catString;
+    var queryString = "searchName=" + searchPhrase;
+    queryString += "&categories=" + catString;
     queryString += "&ings=" + ingString;
     queryString += "&others=" + otherString;
 
@@ -134,7 +133,7 @@ const searchRecipes = () => {
     $.ajax({
         url: `/recipe/search/advanced`,
         type: 'get',
-        data: {'categories': catString, 'ings': ingString, 'others': otherString },
+        data: { 'searchName': searchPhrase, 'categories': catString, 'ings': ingString, 'others': otherString },
         contentType: 'application/json; charset=utf-8',
         dataType: "json",
         success: function (data) {
@@ -174,7 +173,7 @@ const clearIngList = () => {
 //liczy iloœæ zaznaczonych kategorii i uaktualnia badge kategorii
 const categoryCheckChange = () => {
     const checkCount = document.querySelectorAll('input[type="checkbox"][name="categories"]:checked').length;
-    $("#categoryBadge").text(checkCount);
+    $("#categoryBadge").html(`<strong>` + checkCount + `</strong>`);
     $("#categoryBadge").attr("hidden", checkCount == 0);
 }
 
@@ -193,10 +192,22 @@ const changeMode = () => {
     }
 }
 
+//ustawia badge wyszukiania po nazwie, wywo³ywane w document.ready
+const searchNameChange = () => {
+    $("#nameInput").on('change keydown paste input', function () {
+        const searchPhrase = $("#nameInput").val();
+        if (searchPhrase != null && searchPhrase.length > 0) {
+            $("#nameBadge").html(`<i class="bi bi-check-lg"></i>`);
+        } else {
+            $("#nameBadge").html("");
+        }
+    });
+}
+
 //liczy iloœæ zaznaczonych dodatkowych fitrów
 const othersCheckChange = () => {
     const checkCount = document.querySelectorAll('input[type="checkbox"][name="otherFilters"]:checked').length;
-    $("#otherBadge").text(checkCount);
+    $("#otherBadge").html(`<strong>` + checkCount + `</strong>`);
     $("#otherBadge").attr("hidden", checkCount == 0);
 }
 
@@ -206,13 +217,20 @@ const collapseFilters = (container) => {
     if (aid == "heading-ings") {
         $('#categoryCollapse').collapse("hide");
         $('#otherCollapse').collapse("hide");
+        $('#nameCollapse').collapse("hide");
     } else if (aid == "heading-categories") {
         $('#ingCollapse').collapse("hide");
         $('#otherCollapse').collapse("hide");
+        $('#nameCollapse').collapse("hide");
     } else if (aid == "heading-others") {
         $('#ingCollapse').collapse("hide");
         $('#categoryCollapse').collapse("hide");
-    }  
+        $('#nameCollapse').collapse("hide");
+    } else if (aid == "heading-name") {
+        $('#ingCollapse').collapse("hide");
+        $('#categoryCollapse').collapse("hide");
+        $('#otherCollapse').collapse("hide");
+    }
 }
 
 //odtwarzanie listy sk³adników do wyszukania

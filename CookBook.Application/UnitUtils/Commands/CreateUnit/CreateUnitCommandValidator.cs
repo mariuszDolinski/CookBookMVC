@@ -15,6 +15,10 @@ namespace CookBook.Application.UnitUtils.Commands.CreateUnit
                 {
                     if (value is not null)
                     {
+                        if (value.Contains(';'))
+                        {
+                            context.AddFailure("Nazwa jednostki zawiera niedozwolony znak");
+                        }
                         var unit = unitRepository.GetByName(value).Result;
                         if (unit is not null)
                         {

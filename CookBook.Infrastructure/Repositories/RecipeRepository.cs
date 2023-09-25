@@ -54,14 +54,15 @@ namespace CookBook.Infrastructure.Repositories
 
         //wykorzystywane w wynikach zaawansowanego wyszukiwania
         public async Task<IEnumerable<Recipe>> GetAllFilteredRecipes(
-            string[]? ingridients, string[]? categories, bool[] othersFilters)
+            string searchPhrase, string[]? ingridients, string[]? categories, bool[] othersFilters)
         {
             var baseQuery = _dbContext.Recipes
                 .Include(r => r.Category)
-                .Where(r => r.IsHidden == false);
+                .Where(r => r.IsHidden == false)
+                .Where(r => string.IsNullOrEmpty(searchPhrase) ? true : r.Name.Contains(searchPhrase));
 
             //filtrujemy po kategoriach
-            if(categories != null)
+            if (categories != null)
             {
                 baseQuery = baseQuery
                     .Where(r => categories.Contains(r.Category.Name));                   

@@ -14,6 +14,10 @@ namespace CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory
                 {
                     if (value is not null)
                     {
+                        if (value.Contains(';'))
+                        {
+                            context.AddFailure("Nazwa kategorii zawiera niedozwolony znak");
+                        }
                         var category = recipeCategoryRepository.GetByName(value).Result;
                         if (category is not null)
                         {
