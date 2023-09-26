@@ -295,7 +295,7 @@ namespace CookBook.MVC.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("recipe/search/advanced")]
-        public async Task<IActionResult> SearchByIngridients(string searchName, string categories, 
+        public async Task<IActionResult> AdvancedSearchResult(string searchName, string categories, 
             string ings, string others)
         {
             string[]? categoryNames = categories.IsNullOrEmpty() ? null : categories.Split(";");
@@ -319,6 +319,12 @@ namespace CookBook.MVC.Controllers
 
             var result = await _mediator.Send(new AdvancedSearchQuery(searchName, ingridients, 
                 categoryNames, otherFilters));
+
+            if(result.Count() > 500)
+            {
+                result = result.Take(500);
+            }
+
             return Ok(result);
         }
         #endregion

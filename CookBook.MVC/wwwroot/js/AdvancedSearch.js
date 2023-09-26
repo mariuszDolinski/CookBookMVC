@@ -142,6 +142,9 @@ const searchRecipes = () => {
             $("#searchInfo").empty();
             if (data.length == 0) {
                 $("#searchInfo").append(`<div class="btn btn-outline-primary mb-2 disabled col-12">Brak przepis&#243;w spe&#322;niaj&#261;cych podane kryteria</div>`);
+            } else if (data.length == 500) {
+                $("#searchInfo").append(`<div class="btn btn-outline-primary mb-2 disabled col-12">Zbyt wiele przepis&#243;w spe&#322;niaj&#261;cych podane kryteria. Wy&#347;wietlam pierwszych 500.</div>`);
+                RenderRecipeCard(data, container);
             } else {
                 $("#searchInfo").append(`<div class="btn btn-secondary mb-2 disabled col-12" id="searchInfo">Znalezione przepisy: ` + data.length + `</div>`);
                 RenderRecipeCard(data, container);

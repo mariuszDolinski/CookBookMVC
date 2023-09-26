@@ -106,8 +106,7 @@
                             <label class="form-check-label" for="allRecipeRadio">
                                 Wyłączone (szukaj wsród wszystkich przepisów)
                             </label>
-                            @*<button type="button" class="btn btn-sm btn-outline-primary h-50" data-bs-toggle="popover" data-bs-content="szukaj wsród wszystkich przepisów">?</button>*@
-                        </div>
+                            </div>
                         <div class="form-group form-check mb-1">
                             <input class="form-check-input" type="radio" onchange="changeMode()" value="1" name="searchType" id="allRadio">
                             <label class="form-check-label" for="allRadio">
@@ -175,12 +174,7 @@
             </a>
         </div>
         <div class="col-md-7 col-lg-7">
-            <div id="searchInfo"></div>
-            <div class="album bg-body-tertiary">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3" id="advSearchResults">
-
-                </div>
-            </div>
+            <partial name="_AdvancedSearchResults" />
         </div>
      </div>
 </form>
