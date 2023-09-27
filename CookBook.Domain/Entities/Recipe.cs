@@ -16,7 +16,7 @@ public partial class Recipe
     public DateTime CreatedTime { get; set; } = DateTime.Now;
 
     public string AuthorId { get; set; } = default!;
-    public IdentityUser Author { get; set; } = default!;
+    public AppUser Author { get; set; } = default!;
 
     public int CategoryId { get; set; }
     public virtual RecipeCategory Category { get; set; } = default!;

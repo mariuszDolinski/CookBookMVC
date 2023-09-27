@@ -11,9 +11,9 @@ namespace CookBook.Infrastructure.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly CookBookDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserRepository(CookBookDbContext dbContext, UserManager<IdentityUser> userManager)
+        public UserRepository(CookBookDbContext dbContext, UserManager<AppUser> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -21,15 +21,15 @@ namespace CookBook.Infrastructure.Repositories
         public async Task<IEnumerable<Recipe>> GetAllUserRecipe(string id)
             => await _dbContext.Recipes.Where(r => r.AuthorId == id).ToListAsync();
 
-        public async Task<IEnumerable<IdentityUser>> GetAllUsers()
+        public async Task<IEnumerable<AppUser>> GetAllUsers()
             => await _userManager.Users.ToListAsync();
 
-        public async Task<IEnumerable<string>> GetAllUserRoles(IdentityUser user)
+        public async Task<IEnumerable<string>> GetAllUserRoles(AppUser user)
         {
             return await _userManager.GetRolesAsync(user);
         }
 
-        public async Task<IdentityUser?> GetUserByUserName(string username)
+        public async Task<AppUser?> GetUserByUserName(string username)
             => await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
     }
 }

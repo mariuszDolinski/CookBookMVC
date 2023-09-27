@@ -20,7 +20,7 @@ namespace CookBook.Infrastructure.Extensions
             services.AddDbContext<CookBookDbContext>(options => options.UseSqlServer(
                 configuration.GetConnectionString("CookBook")));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<AppUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.Stores.MaxLengthForKeys = 450;

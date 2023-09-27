@@ -9,7 +9,7 @@ public partial class Unit : IEntity
     public string Name { get; set; } = default!;
     public string EncodedName { get; private set; } = default!;
     public string? CreatedById { get; set; }
-    public IdentityUser? CreatedBy { get; set; }
+    public AppUser? CreatedBy { get; set; }
     public DateTime CreatedTime { get; set; } = DateTime.Now;
     public DateTime? LastEdit { get; set; } = DateTime.Now;
 

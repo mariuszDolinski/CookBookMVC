@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CookBook.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace CookBook.Domain.Interfaces
 {
@@ -6,6 +7,6 @@ namespace CookBook.Domain.Interfaces
     {
         string Name { get; set; }
         DateTime CreatedTime { get; set; }
-        IdentityUser? CreatedBy { get; set; }
+        AppUser? CreatedBy { get; set; }
     }
 }

@@ -14,18 +14,25 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using CookBook.Domain.Entities;
+using CookBook.Domain.Interfaces;
 
 namespace CookBook.MVC.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IUserRepository _userRepository;
+        private readonly UserManager<AppUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, 
+            IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -113,6 +120,14 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var userLogged = await _userRepository.GetUserByUserName(Input.UserName);
+                    userLogged.LastLogOnTime = DateTime.Now;
+                    var updateResult = await _userManager.UpdateAsync(userLogged);
+                    if(!updateResult.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "Błąd logowania");
+                        return Page();
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -127,7 +142,7 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Złe dane loggowania");
+                    ModelState.AddModelError(string.Empty, "Złe dane logowania");
                     return Page();
                 }
             }

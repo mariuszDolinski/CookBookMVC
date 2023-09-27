@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookBook.Infrastructure.Persistence
 {
-    public class CookBookDbContext : IdentityDbContext
+    public class CookBookDbContext : IdentityDbContext<AppUser>
     {
         public CookBookDbContext(DbContextOptions<CookBookDbContext> options) : base(options) { }
         

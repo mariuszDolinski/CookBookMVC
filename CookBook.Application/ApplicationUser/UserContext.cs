@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CookBook.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -13,9 +14,9 @@ namespace CookBook.Application.ApplicationUser
     public class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        UserManager<IdentityUser> _user;
+        UserManager<AppUser> _user;
 
-        public UserContext(IHttpContextAccessor httpContext, UserManager<IdentityUser> user)
+        public UserContext(IHttpContextAccessor httpContext, UserManager<AppUser> user)
         {
             _httpContextAccessor = httpContext;
             _user = user;
