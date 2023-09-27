@@ -62,6 +62,9 @@ namespace CookBook.Application.Mappings
             CreateMap<RecipeCategoryDto, RecipeCategory>()
                 .ForMember(rc => rc.Name, opt => opt.MapFrom(
                     src => src.Name));
+
+            CreateMap<IdentityUser, UserDto>()
+                .ForMember(u => u.UserRoles, opt => opt.Ignore());
         }
     }
 }

@@ -21,6 +21,14 @@
                         </a>
                     </li>  
                 }
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a class="dropdown-item" asp-controller="User" asp-action="AllUsers">
+                            Użytkownicy
+                        </a>
+                    </li>
+                }
                 <li>
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
                     Ustawienia konta

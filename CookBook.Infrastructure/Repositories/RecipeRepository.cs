@@ -3,6 +3,7 @@ using CookBook.Domain.Interfaces;
 using CookBook.Domain.Pagination;
 using CookBook.Infrastructure.Persistence;
 using CookBook.Infrastructure.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
@@ -13,14 +14,11 @@ namespace CookBook.Infrastructure.Repositories
     {
         private readonly CookBookDbContext _dbContext;
         private readonly IRepositoryUtils _utils;
-        private readonly ICommonService<RecipeCategory> _commonService;
 
-        public RecipeRepository(CookBookDbContext dbContext, IRepositoryUtils utils, 
-            ICommonService<RecipeCategory> commonService) 
+        public RecipeRepository(CookBookDbContext dbContext, IRepositoryUtils utils) 
         {
             _dbContext = dbContext;
             _utils = utils;
-            _commonService = commonService;
         }
 
         public async Task CreateRecipe(Recipe recipe)

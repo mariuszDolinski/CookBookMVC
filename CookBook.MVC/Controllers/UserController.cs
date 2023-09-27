@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
+using CookBook.Application.ApplicationUser.Queries.GetAllUsers;
 
 namespace CookBook.MVC.Controllers
 {
@@ -30,6 +31,14 @@ namespace CookBook.MVC.Controllers
         {
             var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery());
             return View(userRecipes);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AllUsers()
+        {
+            var allUsers = await _mediator.Send(new GetAllUsersQuery());
+            return View(allUsers);
         }
     }
 }

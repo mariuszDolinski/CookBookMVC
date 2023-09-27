@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CookBook.Application.ApplicationUser.UserDto>
+
+@{
+    ViewData["Title"] = "Wszyscy użytkownicy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string userRoles = "";
+}
+
+<h1>Lista wszstkich użytkowników</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa użytkowika
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Role
+            </th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            @if(userRoles != "")
+            {
+                userRoles = "";
+            }
+            <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                    @foreach(var role in item.UserRoles)
+                    {
+                        userRoles += role;
+                        if(item.UserRoles.Last() != role)
+                        {
+                            userRoles += ", ";
+                        }
+                    }
+                    @userRoles
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
