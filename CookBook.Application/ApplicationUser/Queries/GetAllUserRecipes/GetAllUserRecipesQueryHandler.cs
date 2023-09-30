@@ -22,7 +22,7 @@ namespace CookBook.Application.ApplicationUser.Queries.GetAllUserRecipes
         {
             var userId = _userContext.GetCurrentUser()!.Id;
 
-            var userRecipes = await _userRepository.GetAllUserRecipe(userId);
+            var userRecipes = await _userRepository.GetAllUserRecipes(userId);
             return _mapper.Map<IEnumerable<PreviewRecipeDto>>(userRecipes);
         }
     }

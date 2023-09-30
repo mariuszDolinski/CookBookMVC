@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookBook.Domain.Entities;
 using CookBook.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,8 @@ namespace CookBook.Application.ApplicationUser.Queries.GetAllUsers
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAllUsers();
+            var users = await _userRepository.GetAllUsers(request.RoleName, request.UserName);
+
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
             foreach (var user in usersDto)
             {

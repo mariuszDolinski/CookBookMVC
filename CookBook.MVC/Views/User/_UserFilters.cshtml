@@ -1,0 +1,24 @@
+﻿@model List<string?>
+@{
+    string searchRole = ViewBag.SearchedRole;
+    string searchUser = ViewBag.SearchedUser;
+}
+
+<input value="@searchRole" id="searchRoleInput" type="hidden" />
+
+<form asp-action="AllUsers" method="get">
+    <label class="control-label" for="roleName">Tylko użytkownicy z rolą</label>
+    <select class="form-select mb-2" name="roleName" id="selectedRole">
+        <option value="" selected>Wszystkie role</option>
+        @foreach (var roleName in Model)
+        {
+            <option value="@roleName">@roleName</option>
+        }
+    </select>
+
+    <label class="control-label" for="searchUser">Nazwa użytkownika zawiera</label>
+    <input class="form-control mb-2" type="text" id="searchUser" name="userName" value="@searchUser" placeholder="Wpisz szukaną frazę">
+
+    <div><input type="submit" value="Filtruj" class="btn btn-primary w-100" /></div>
+</form>
+

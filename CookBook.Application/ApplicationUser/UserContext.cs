@@ -26,7 +26,7 @@ namespace CookBook.Application.ApplicationUser
             var user = _httpContextAccessor?.HttpContext?.User;
             if (user == null)
             {
-                throw new InvalidOperationException("User doesn't exists in current context.");
+                throw new InvalidOperationException("Nie znaleziono użytkownika");
             }
 
             if (user.Identity == null || !user.Identity.IsAuthenticated) 

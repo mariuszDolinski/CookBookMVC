@@ -1,0 +1,35 @@
+﻿@model List<string?>
+@{
+    string allRolesString = "";
+    foreach (var role in Model)
+    {
+        allRolesString += role;
+        if (Model.Last() != role)
+            allRolesString += ";";
+    }
+}
+
+<div class="modal fade" id="editRolesModal" tabindex="-1" aria-labelledby="editRolesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editRolesModalLabel">Zmiana ról użytkownika</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="control-label">Wybierz role do przypisania</label>
+                @foreach(var role in Model)
+                {
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" value="@role" name="rolesCheck" id="@("role"+role+"Check")">
+                        <label class="form-check-label" for="@("role"+role+"Check")">@role</label>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <input type="submit" value="Zapisz zmiany" onclick="EditUserRoles('@allRolesString')" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</div>

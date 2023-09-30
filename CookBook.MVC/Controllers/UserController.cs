@@ -8,6 +8,9 @@ using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
 using CookBook.Application.ApplicationUser.Queries.GetAllUsers;
+using CookBook.Application.ApplicationUser.Queries.GetAllRoles;
+using Microsoft.IdentityModel.Tokens;
+using CookBook.Application.ApplicationUser.Commands;
 
 namespace CookBook.MVC.Controllers
 {
@@ -35,10 +38,46 @@ namespace CookBook.MVC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AllUsers()
+        public async Task<IActionResult> AllUsers(string roleName, string userName)
         {
-            var allUsers = await _mediator.Send(new GetAllUsersQuery());
+            var allRoles = await _mediator.Send(new GetAllRolesQuery());
+
+            ViewBag.AllRoles = allRoles;
+
+            roleName ??= "";
+            ViewBag.SearchedRole = roleName;
+
+            userName ??= "";
+            ViewBag.SearchedUser = userName;
+
+            var allUsers = await _mediator.Send(new GetAllUsersQuery(roleName, userName));
             return View(allUsers);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        [Route("user/editRoles/{parameters}")]
+        public async Task<IActionResult> SetRolesForUser(string parameters)
+        {
+            string[] paramArray = parameters.Split(';');
+            string userName = paramArray[0];
+            List<string> newRoles = new List<string>();
+            if (paramArray.Length > 1)
+            {
+                for(int i = 1; i < paramArray.Length; i++)
+                {
+                    newRoles.Add(paramArray[i]);
+                }
+            }
+            var result = await _mediator.Send(new ChangeUserRolesCommand(userName, newRoles));
+            if(result != "")
+            {
+                return BadRequest(result);
+            }
+            else
+            {
+                return Ok("Role użytkownika zostały zmienione");
+            }
         }
     }
 }

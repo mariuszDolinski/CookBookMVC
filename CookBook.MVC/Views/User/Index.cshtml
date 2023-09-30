@@ -7,32 +7,44 @@
 
 <h3>Lista dodanych przez Ciebie przepisów</h3>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nazwa przepisu</th>
-            <th>Ukryty</th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr id="row-@item.Id">
-            <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.Name) 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHidden)
-            </td>
-            <td>
-                <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a> 
-                <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a> 
-                <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.Name')"><i class="bi bi-trash"></i></a>   
-            </td>
-        </tr>
+@if(Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa przepisu</th>
+                <th>Ukryty</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row-@item.Id">
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsHidden)
+                    </td>
+                    <td>
+                        <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a>
+                        <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a>
+                        <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.Name')"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <div>
+        <button type="button" class="btn btn-outline-primary w-100" disabled>
+            Nie dodałeś jeszcze żadnych przepisów
+        </button>
+    </div>
+}
 
 <partial name="_ConfirmDeleteRecipeModal"/>
 

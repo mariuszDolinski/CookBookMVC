@@ -93,6 +93,7 @@ namespace CookBook.Infrastructure.Seeders
 
             return categories;
         }
+
         //private async void CreateDefaultRoles()
         //{
            // string[] roleNames = { "Admin", "Manager", "User" };

@@ -120,6 +120,7 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    //add logon time to AspNetUsers table
                     var userLogged = await _userRepository.GetUserByUserName(Input.UserName);
                     userLogged.LastLogOnTime = DateTime.Now;
                     var updateResult = await _userManager.UpdateAsync(userLogged);
@@ -128,6 +129,7 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, "Błąd logowania");
                         return Page();
                     }
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
