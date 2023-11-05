@@ -62,6 +62,7 @@ namespace CookBook.Infrastructure.Repositories
             {
                 return "Nieznany użytkownik";
             }
+
             var roles = await GetAllRoles();
             foreach(var role in roles)
             {

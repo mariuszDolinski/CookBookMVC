@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 TO_DO.txt
+cookbookDB_backup_091023.sql
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

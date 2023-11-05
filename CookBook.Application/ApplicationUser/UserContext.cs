@@ -9,6 +9,7 @@ namespace CookBook.Application.ApplicationUser
     {
         CurrentUser? GetCurrentUser();
         Task<string?> GetUserNameById(string id);
+        Task<UserDto?> GetCurrentUserDetails();
     }
 
     public class UserContext : IUserContext
@@ -46,6 +47,25 @@ namespace CookBook.Application.ApplicationUser
             var user = await _user.FindByIdAsync(id);
             if (user == null) return null;
             return user.UserName;
+        }
+
+        public async Task<UserDto?> GetCurrentUserDetails()
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser is null)
+                return null;
+            var user = await _user.FindByNameAsync(currentUser.UserName);
+            if (user == null) 
+                return null;
+            UserDto dto = new UserDto()
+            {
+                UserName = currentUser.UserName ??= "",
+                Email = user.Email ??= "",
+                PhoneNumber = user.PhoneNumber ??= "",
+                UserRoles = currentUser.Roles
+            };
+
+            return dto;
         }
     }
 }

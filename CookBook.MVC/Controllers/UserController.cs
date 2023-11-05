@@ -11,6 +11,7 @@ using CookBook.Application.ApplicationUser.Queries.GetAllUsers;
 using CookBook.Application.ApplicationUser.Queries.GetAllRoles;
 using Microsoft.IdentityModel.Tokens;
 using CookBook.Application.ApplicationUser.Commands;
+using CookBook.Application.ApplicationUser;
 
 namespace CookBook.MVC.Controllers
 {
@@ -19,23 +20,46 @@ namespace CookBook.MVC.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IUserContext _userContext;
 
-        public UserController(IMediator mediator, IMapper mapper)
+        public UserController(IMediator mediator, IMapper mapper, IUserContext userContext)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _userContext = userContext;
         }
+
         /// <summary>
-        /// return view with all user's recipes
+        /// return view with user profile
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var user = await _userContext.GetCurrentUserDetails();
+            if (user == null)
+            {
+                return RedirectToAction("NoAccess", "Home");
+            }
+            return View(user!);
+        }
+
+        /// <summary>
+        /// return view with all user's recipes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> AllUserRecipes()
+        {
             var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery());
             return View(userRecipes);
         }
-
+        /// <summary>
+        /// Return all users in role specified as roleName (if given) and name contains search phrase userName (if given)
+        /// </summary>
+        /// <param name="roleName">if given, returns all users in that role</param>
+        /// <param name="userName">if given, returns all users which name contains this string</param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsers(string roleName, string userName)
