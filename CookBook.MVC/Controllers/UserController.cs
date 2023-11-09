@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using CookBook.Application.RecipeUtils.Queries.GetAllRecipeCategories;
 using CookBook.Application.ApplicationUser.Queries.GetAllUserRecipes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CookBook.MVC.Extensions;
-using CookBook.MVC.Models;
-using CookBook.Application.RecipeUtils.Commands.CreateRecipeCategory;
 using CookBook.Application.ApplicationUser.Queries.GetAllUsers;
 using CookBook.Application.ApplicationUser.Queries.GetAllRoles;
 using Microsoft.IdentityModel.Tokens;
 using CookBook.Application.ApplicationUser.Commands;
 using CookBook.Application.ApplicationUser;
+using CookBook.Application.ApplicationUser.Queries.GetUserByName;
 
 namespace CookBook.MVC.Controllers
 {
@@ -19,41 +16,65 @@ namespace CookBook.MVC.Controllers
     public class UserController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         private readonly IUserContext _userContext;
 
-        public UserController(IMediator mediator, IMapper mapper, IUserContext userContext)
+        public UserController(IMediator mediator, IUserContext userContext)
         {
             _mediator = mediator;
-            _mapper = mapper;
+            //_mapper = mapper;
             _userContext = userContext;
         }
 
         /// <summary>
-        /// return view with user profile
+        /// return view with user profile (current logged user if userName is not given)
         /// </summary>
+        /// <param name="userName">user userName (if given)</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
-            var user = await _userContext.GetCurrentUserDetails();
-            if (user == null)
+            var currentUser = _userContext.GetCurrentUser();
+            if (currentUser == null)
             {
                 return RedirectToAction("NoAccess", "Home");
             }
-            return View(user!);
+
+            userName ??= string.Empty;
+            var user = await _mediator.Send(new GetUserByNameQuery(userName));
+
+            if(user.UserName == "nn")
+            {
+                return BadRequest("Użytkownik nie istnieje");
+            }
+
+            ViewBag.IsUserCurrent = (user.UserName == currentUser.UserName) ? "Y" : "N";
+
+            return View(user);
         }
 
         /// <summary>
-        /// return view with all user's recipes
+        /// return all user's recipes with specifies userName
         /// </summary>
+        /// <param name="userName">if empty currentUser userName is used</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> AllUserRecipes()
+        public async Task<IActionResult> AllUserRecipes(string userName)
         {
-            var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery());
+            var currentUser = _userContext.GetCurrentUser();
+            if (currentUser == null)
+            {
+                return RedirectToAction("NoAccess", "Home");
+            }
+
+            userName ??= string.Empty;
+            bool isCurrentUser = userName == currentUser.UserName;
+            ViewBag.IsUserCurrent = isCurrentUser ? "Y" : "N";
+
+            var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery(userName, isCurrentUser));
             return View(userRecipes);
         }
+
         /// <summary>
         /// Return all users in role specified as roleName (if given) and name contains search phrase userName (if given)
         /// </summary>
@@ -80,7 +101,7 @@ namespace CookBook.MVC.Controllers
 
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        [Route("user/editRoles/{parameters}")]
+        [Route("currentUser/editRoles/{parameters}")]
         public async Task<IActionResult> SetRolesForUser(string parameters)
         {
             string[] paramArray = parameters.Split(';');

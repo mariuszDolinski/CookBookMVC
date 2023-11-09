@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Twoje przepisy";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isCurrent = (ViewBag.IsUserCurrent == "Y") ? true : false;
 }
 
 <h3>Lista dodanych przez Ciebie przepisów</h3>
@@ -13,7 +14,10 @@
         <thead>
             <tr>
                 <th>Nazwa przepisu</th>
-                <th>Ukryty</th>
+                @if (isCurrent)
+                {
+                    <th>Ukryty</th>
+                }
                 <th>Akcje</th>
             </tr>
         </thead>
@@ -24,13 +28,23 @@
                     <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
+                    @if (isCurrent)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsHidden)
+                        </td>
+                    }                  
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsHidden)
-                    </td>
-                    <td>
-                        <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a>
-                        <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a>
-                        <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.Name')"><i class="bi bi-trash"></i></a>
+                        @if (isCurrent)
+                        {
+                            <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a>
+                            <a title="Edytuj" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Edit" asp-route-Id="@item.Id"><i class="bi bi-pencil"></i></a>
+                            <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowConfirmDeleteModal(@item.Id, '@item.Name')"><i class="bi bi-trash"></i></a>
+                        }else
+                        {
+                            <a title="Szczegóły" class="btn btn-outline-primary btn-sm" asp-controller="Recipe" asp-action="Details" asp-route-recipeId="@item.Id"><i class="bi bi-eye"></i></a>
+                        }
+                        
                     </td>
                 </tr>
             }

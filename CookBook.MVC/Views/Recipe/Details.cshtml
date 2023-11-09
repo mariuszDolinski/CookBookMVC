@@ -55,6 +55,9 @@
         </div>
     <div> 
     <a class="btn btn-secondary mt-2" onclick="history.go(-1);">Powrót</a>
+            <a asp-controller="User" asp-action="Index" asp-route-userName="@Model.Author" class="btn btn-secondary mt-2">
+                Profil autora przepisu
+            </a>
 </div>
 </div>
 </div>

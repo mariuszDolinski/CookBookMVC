@@ -21,8 +21,15 @@ namespace CookBook.Infrastructure.Repositories
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<IEnumerable<Recipe>> GetAllUserRecipes(string id)
-            => await _dbContext.Recipes.Where(r => r.AuthorId == id).ToListAsync();
+        public async Task<IEnumerable<Recipe>> GetAllUserRecipes(string userName, bool isCurrent)
+            => (isCurrent) 
+                ? await _dbContext.Recipes
+                    .Where(r => r.Author.UserName == userName)
+                    .ToListAsync()
+                : await _dbContext.Recipes
+                    .Where(r => r.Author.UserName == userName)
+                    .Where(r => !r.IsHidden)
+                    .ToListAsync();
 
         public async Task<IEnumerable<AppUser>> GetAllUsers(string roleName, string userName)
         {

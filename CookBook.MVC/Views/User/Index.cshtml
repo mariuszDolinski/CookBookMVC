@@ -1,15 +1,51 @@
-﻿@model CookBook.Application.ApplicationUser.UserDto
+﻿@using CookBook.Application.ApplicationUser;
+@model CookBook.Application.ApplicationUser.UserDto
 
 @{
     ViewData["Title"] = "Profil użytkowika";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var userEmail = (Model.Email.Length > 0) ? Model.Email : "-";
+    bool isCurrent = (ViewBag.IsUserCurrent == "Y") ? true : false;
+    var userEmail = (Model.Email != null && Model.Email.Length > 0) ? Model.Email : "brak";
+    var userPhone = (Model.PhoneNumber != null && Model.PhoneNumber.Length > 0) ? Model.PhoneNumber : "brak";
+    var userCreatedTime = UserDto.GetFormattedTime(Model.CreatedTime);
+    var userLastLogOnTime = UserDto.GetFormattedTime(Model.LastLogOnTime);
 }
 
-<h3>Profil użytownika</h3>
-<h5>@Model.UserName</h5>
-<h5>Email: @userEmail</h5>
+@if (isCurrent)
+{
+    <h3>Mój profil</h3>
+}
+else
+{
+    <h3>Profil użytownika: @Model.UserName</h3>
+}
 
-<a class="btn btn-primary" asp-controller="User" asp-action="AllUserRecipes">
-    Wszystie przepisy użytkownika
-</a>
+<hr />
+
+<div class="row">
+    <div class="col-12 col-md-3">
+        <h6><strong>Nazwa użytkownika:</strong></h6>
+        <h6> @Model.UserName</h6>
+        <h6><strong>Email:</strong></h6>
+        <h6> @userEmail</h6>
+        <h6><strong>Numer telefonu:</strong></h6>
+        <h6> @userPhone</h6>
+        <h6><strong>Data dołączenia:</strong></h6>
+        <h6> @userCreatedTime</h6>
+        <h6><strong>Data ostatniej aktywności:</strong></h6>
+        <h6> @userLastLogOnTime</h6>
+    </div>
+    <div class="col-12 col-md-9">
+        <a class="btn btn-primary" asp-controller="User" asp-action="AllUserRecipes" 
+            asp-route-userName="@Model.UserName">
+            @if (isCurrent)
+            {
+                <text>Moje przepisy</text>
+            }
+            else
+            {
+                <text>Wszystkie przepisy użytkownika</text>
+            }
+        </a>
+    </div>
+</div>
