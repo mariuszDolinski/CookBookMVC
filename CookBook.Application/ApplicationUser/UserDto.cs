@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using CookBook.Application.RecipeUtils;
+using System.Reflection;
 
 namespace CookBook.Application.ApplicationUser
 {
@@ -10,6 +11,8 @@ namespace CookBook.Application.ApplicationUser
         public DateTime? LastLogOnTime { get; set; }
         public DateTime? CreatedTime { get; set; }
         public IEnumerable<string> UserRoles { get; set; } = new List<string>();
+
+        public IEnumerable<PreviewRecipeDto> UserRecipes { get; set; } = new List<PreviewRecipeDto>();
 
         public static string GetFormattedTime(DateTime? time)
         {

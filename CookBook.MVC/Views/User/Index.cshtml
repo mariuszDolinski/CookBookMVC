@@ -24,28 +24,41 @@ else
 
 <div class="row">
     <div class="col-12 col-md-3">
-        <h6><strong>Nazwa użytkownika:</strong></h6>
-        <h6> @Model.UserName</h6>
-        <h6><strong>Email:</strong></h6>
-        <h6> @userEmail</h6>
-        <h6><strong>Numer telefonu:</strong></h6>
-        <h6> @userPhone</h6>
-        <h6><strong>Data dołączenia:</strong></h6>
-        <h6> @userCreatedTime</h6>
-        <h6><strong>Data ostatniej aktywności:</strong></h6>
-        <h6> @userLastLogOnTime</h6>
+        <div class="pt-1 ps-1 mb-1 bg-light">
+            <h6><strong>Nazwa użytkownika:</strong></h6>
+            <h6> @Model.UserName</h6>
+        </div>
+        <div class="pt-1 ps-1 mb-1 bg-light">
+            <h6><strong>Email:</strong></h6>
+            <h6> @userEmail</h6>
+        </div>
+        <div class="pt-1 ps-1 mb-1 bg-light">
+            <h6><strong>Numer telefonu:</strong></h6>
+            <h6> @userPhone</h6>
+        </div>
+        <div class="pt-1 ps-1 mb-1 bg-light">
+            <h6><strong>Data dołączenia:</strong></h6>
+            <h6> @userCreatedTime</h6>
+        </div>
+        <div class="pt-1 ps-1 mb-1 bg-light">
+            <h6><strong>Data ostatniej aktywności:</strong></h6>
+            <h6> @userLastLogOnTime</h6>
+        </div>
     </div>
     <div class="col-12 col-md-9">
-        <a class="btn btn-primary" asp-controller="User" asp-action="AllUserRecipes" 
-            asp-route-userName="@Model.UserName">
-            @if (isCurrent)
-            {
-                <text>Moje przepisy</text>
-            }
-            else
-            {
-                <text>Wszystkie przepisy użytkownika</text>
-            }
-        </a>
+        @if (isCurrent)
+        {
+            <h4>Moje przepisy</h4>
+        }
+        else
+        {
+            <h4>Wszystkie przepisy użytkownika</h4>
+        }
+        <hr />
+        <partial name="_AllUserRecipes" model="@Model.UserRecipes"/>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/Recipe/Delete.js"></script>
+}

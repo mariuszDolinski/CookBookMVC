@@ -1,12 +1,8 @@
 ﻿@model IEnumerable<CookBook.Application.RecipeUtils.PreviewRecipeDto>
 
 @{
-    ViewData["Title"] = "Twoje przepisy";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     bool isCurrent = (ViewBag.IsUserCurrent == "Y") ? true : false;
 }
-
-<h3>Lista dodanych przez Ciebie przepisów</h3>
 
 @if(Model.Count() > 0)
 {
@@ -17,8 +13,12 @@
                 @if (isCurrent)
                 {
                     <th>Ukryty</th>
+                    <th>Akcje</th>
                 }
-                <th>Akcje</th>
+                else
+                {
+                    <th>Zobacz przepis</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -61,7 +61,3 @@ else
 }
 
 <partial name="_ConfirmDeleteRecipeModal"/>
-
-@section Scripts {
-    <script src="~/js/Recipe/Delete.js"></script>
-}

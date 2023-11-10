@@ -27,9 +27,9 @@ namespace CookBook.MVC.Controllers
         }
 
         /// <summary>
-        /// return view with user profile (current logged user if userName is not given)
+        /// return view with user profile (current logged  in user if userName is not given)
         /// </summary>
-        /// <param name="userName">user userName (if given)</param>
+        /// <param name="userName">user userName (optional)</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index(string userName)
@@ -47,32 +47,13 @@ namespace CookBook.MVC.Controllers
             {
                 return BadRequest("Użytkownik nie istnieje");
             }
+            bool isCurrentUser = user.UserName == currentUser.UserName;
+            var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery(user.UserName, isCurrentUser));
+            user.UserRecipes = userRecipes;
 
             ViewBag.IsUserCurrent = (user.UserName == currentUser.UserName) ? "Y" : "N";
 
             return View(user);
-        }
-
-        /// <summary>
-        /// return all user's recipes with specifies userName
-        /// </summary>
-        /// <param name="userName">if empty currentUser userName is used</param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> AllUserRecipes(string userName)
-        {
-            var currentUser = _userContext.GetCurrentUser();
-            if (currentUser == null)
-            {
-                return RedirectToAction("NoAccess", "Home");
-            }
-
-            userName ??= string.Empty;
-            bool isCurrentUser = userName == currentUser.UserName;
-            ViewBag.IsUserCurrent = isCurrentUser ? "Y" : "N";
-
-            var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery(userName, isCurrentUser));
-            return View(userRecipes);
         }
 
         /// <summary>
@@ -99,6 +80,12 @@ namespace CookBook.MVC.Controllers
             return View(allUsers);
         }
 
+        /// <summary>
+        /// Set roles for user
+        /// </summary>
+        /// <param name="parameters">contains userName and new roles separate by semicolon
+        /// ie. userName;role1;role2... </param>
+        /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Admin")]
         [Route("currentUser/editRoles/{parameters}")]
