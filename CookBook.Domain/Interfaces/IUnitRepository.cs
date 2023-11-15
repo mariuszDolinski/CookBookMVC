@@ -6,6 +6,7 @@ namespace CookBook.Domain.Interfaces
     public interface IUnitRepository : IRepository
     {
         Task<PaginatedResult<Unit>> GetAll(string searchPhrase, string sortOrder, int pageNumber, int pageSize);
+        Task<IEnumerable<Unit>> GetAllUserUnits(string userName);
         Task Create(Unit unit);
         Task<Unit?> GetByName(string name);
         Task<Unit?> GetById(int id);

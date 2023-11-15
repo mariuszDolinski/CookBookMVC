@@ -1,5 +1,6 @@
-﻿using CookBook.Application.RecipeUtils;
-using System.Reflection;
+﻿using CookBook.Application.IngridientUtils;
+using CookBook.Application.RecipeUtils;
+using CookBook.Application.UnitUtils;
 
 namespace CookBook.Application.ApplicationUser
 {
@@ -13,6 +14,8 @@ namespace CookBook.Application.ApplicationUser
         public IEnumerable<string> UserRoles { get; set; } = new List<string>();
 
         public IEnumerable<PreviewRecipeDto> UserRecipes { get; set; } = new List<PreviewRecipeDto>();
+        public IEnumerable<IngridientDto> UserIngridients { get; set; } = new List<IngridientDto>();
+        public IEnumerable<UnitDto> UserUnits { get; set; } = new List<UnitDto>();
 
         public static string GetFormattedTime(DateTime? time)
         {

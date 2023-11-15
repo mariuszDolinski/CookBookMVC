@@ -46,19 +46,33 @@ else
         </div>
     </div>
     <div class="col-12 col-md-9">
-        @if (isCurrent)
-        {
-            <h4>Moje przepisy</h4>
-        }
-        else
-        {
-            <h4>Wszystkie przepisy użytkownika</h4>
-        }
-        <hr />
-        <partial name="_AllUserRecipes" model="@Model.UserRecipes"/>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <button class="nav-link active" id="recipes-tab" data-bs-toggle="tab" data-bs-target="#recipes" type="button" role="tab" aria-controls="recipes" aria-active="true">Moje przepisy</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="ingridients-tab" data-bs-toggle="tab" data-bs-target="#ingridients" type="button" role="tab" aria-controls="ingridients" aria-active="true">Moje składniki</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="units-tab" data-bs-toggle="tab" data-bs-target="#units" type="button" role="tab" aria-controls="units" aria-active="true">Moje jednostki</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="recipes" role="tabpanel" aria-labelledby="recipes-tab">
+                <partial name="_AllUserRecipes" model="@Model.UserRecipes" />
+            </div>
+            <div class="tab-pane fade show" id="ingridients" role="tabpanel" aria-labelledby="ingridients-tab">
+                <partial name="ItemListViews/_ItemList" model="@Model.UserIngridients" />
+            </div>
+            <div class="tab-pane fade show" id="units" role="tabpanel" aria-labelledby="units-tab">
+                <partial name="ItemListViews/_ItemList" model="@Model.UserUnits" />
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script src="~/js/Recipe/Delete.js"></script>
+    <script src="~/js/ItemList/Edit.js"></script>
+    <script src="~/js/ItemList/Delete.js"></script>
 }

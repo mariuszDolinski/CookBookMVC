@@ -9,7 +9,7 @@ const EditUserRoles = (allRoles) => {
     const selectedRoles = GetChoosenRoles(allRoles);
     const parameters = userName + ";" + selectedRoles;
     $.ajax({
-        url: `/user/editRoles/${parameters}`,
+        url: `/currentUser/editRoles/${parameters}`,
         type: 'put',
         success: function () {
             $("#editRolesModal").modal('hide');

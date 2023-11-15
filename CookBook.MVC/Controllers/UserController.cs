@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using CookBook.Application.ApplicationUser.Commands;
 using CookBook.Application.ApplicationUser;
 using CookBook.Application.ApplicationUser.Queries.GetUserByName;
+using CookBook.Application.IngridientUtils.Queries.GetAllUserIngridients;
+using CookBook.Application.UnitUtils.Queries.GetAllUserUnits;
 
 namespace CookBook.MVC.Controllers
 {
@@ -49,7 +51,12 @@ namespace CookBook.MVC.Controllers
             }
             bool isCurrentUser = user.UserName == currentUser.UserName;
             var userRecipes = await _mediator.Send(new GetAllUserRecipesQuery(user.UserName, isCurrentUser));
+            var userIngridients = await _mediator.Send(new GetAllUserIngridientsQuery(user.UserName));
+            var userUnits = await _mediator.Send(new GetAllUserUnitsQuery(user.UserName));
             user.UserRecipes = userRecipes;
+            user.UserIngridients = userIngridients;
+            user.UserUnits = userUnits;
+            ViewBag.IsProfile = "Y";
 
             ViewBag.IsUserCurrent = (user.UserName == currentUser.UserName) ? "Y" : "N";
 

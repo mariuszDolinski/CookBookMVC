@@ -2,24 +2,33 @@
 
 @{
     var code = ViewBag.Code;
+    bool isProfile = (ViewBag.IsProfile != null && (string)ViewBag.IsProfile == "Y") ? true : false;
     string actionName = "Index";
 }
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.ActionLink("Nazwa", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
-            </th>
-            <th>
-                @Html.ActionLink("Dodane przez", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
-            </th>
-            <th>
-                @Html.ActionLink("Data dodania", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
-            </th>
+            @if (!isProfile)
+            {
+                <th>
+                    @Html.ActionLink("Nazwa", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.NameSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.NameIconClass})
+                </th>
+                <th>
+                    @Html.ActionLink("Dodane przez", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.AuthorSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.AuthorIconClass})
+                </th>
+                <th>
+                    @Html.ActionLink("Data dodania", actionName, new { search = ViewBag.SearchPhrase, sortOrder = ViewBag.DateSortOrder, pageSize = ViewBag.PageSize}, new {@class = ViewBag.DateIconClass})
+                </th>
+            }
+            else
+            {
+                <th>Nazwa</th>
+                <th>Data dodania</th>
+            }
             @foreach (var item in Model)
             {
-                @if (item.IsEditable)
+                @if (item.IsEditable && !isProfile)
                 {
                     <th>Akcje</th>
                 }
@@ -34,13 +43,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
-                </td>
+                @if (!isProfile)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedTime)
                 </td>
-                @if (item.IsEditable)
+                @if (item.IsEditable && !isProfile)
                 {
                     <td>
                         <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditModal('@item.Name')"><i class="bi bi-pencil"></i></a>

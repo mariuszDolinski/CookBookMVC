@@ -22,6 +22,10 @@ namespace CookBook.Infrastructure.Repositories
             string sortOrder, int pageNumber, int pageSize)
                 => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
 
+        public async Task<IEnumerable<Unit>> GetAllUserUnits(string userName)
+            => await _dbContext.Units
+                .Where(ing => ing.CreatedBy != null && ing.CreatedBy.UserName == userName).ToListAsync();
+
         public async Task Create(Unit unit)
         {
             unit.Name = unit.Name.ToLower();
