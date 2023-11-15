@@ -19,7 +19,8 @@ namespace CookBook.Infrastructure.CommonServices
             _dbContext = dbContext;
         }
 
-        public async Task<PaginatedResult<T>> GetAllItems(string searchPhrase, string sortOrder, int pageNumber, int pageSize)
+        public async Task<PaginatedResult<T>> GetAllItems
+            (string searchPhrase, string sortOrder, int pageNumber, int pageSize)
         {
             var entitySet = _dbContext.Set<T>();
             var baseQuery = entitySet.Include(ing => ing.CreatedBy)
@@ -59,6 +60,14 @@ namespace CookBook.Infrastructure.CommonServices
             }
 
             return new PaginatedResult<T>(items, baseQuery.Count());
+        }
+
+        public async Task<IEnumerable<T>> GetAllUserItems(string userName)
+        {
+            var entitySet = _dbContext.Set<T>();
+            return await entitySet
+                .Where(t => t.CreatedBy != null && t.CreatedBy.UserName == userName)
+                .ToListAsync();
         }
     }
 }

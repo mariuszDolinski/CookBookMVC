@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CookBook.Application.ApplicationUser.Queries.GetAllUsers;
 using CookBook.Application.ApplicationUser.Queries.GetAllRoles;
-using Microsoft.IdentityModel.Tokens;
 using CookBook.Application.ApplicationUser.Commands;
 using CookBook.Application.ApplicationUser;
 using CookBook.Application.ApplicationUser.Queries.GetUserByName;
