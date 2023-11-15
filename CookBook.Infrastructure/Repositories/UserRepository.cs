@@ -25,10 +25,12 @@ namespace CookBook.Infrastructure.Repositories
             => (isCurrent) 
                 ? await _dbContext.Recipes
                     .Where(r => r.Author.UserName == userName)
+                    .OrderByDescending(r => r.CreatedTime)
                     .ToListAsync()
                 : await _dbContext.Recipes
                     .Where(r => r.Author.UserName == userName)
                     .Where(r => !r.IsHidden)
+                    .OrderByDescending(r => r.CreatedTime)
                     .ToListAsync();
 
         public async Task<IEnumerable<AppUser>> GetAllUsers(string roleName, string userName)
