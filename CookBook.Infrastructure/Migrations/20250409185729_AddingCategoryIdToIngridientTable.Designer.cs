@@ -4,6 +4,7 @@ using CookBook.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookBook.Infrastructure.Migrations
 {
     [DbContext(typeof(CookBookDbContext))]
-    partial class CookBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250409185729_AddingCategoryIdToIngridientTable")]
+    partial class AddingCategoryIdToIngridientTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,7 +104,7 @@ namespace CookBook.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedById")
@@ -114,6 +117,9 @@ namespace CookBook.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("IngridientCategoryCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastEdit")
                         .HasColumnType("datetime2");
 
@@ -124,9 +130,9 @@ namespace CookBook.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CreatedById");
+
+                    b.HasIndex("IngridientCategoryCategoryId");
 
                     b.ToTable("Ingridients");
                 });
@@ -453,17 +459,13 @@ namespace CookBook.Infrastructure.Migrations
 
             modelBuilder.Entity("CookBook.Domain.Entities.Ingridient", b =>
                 {
-                    b.HasOne("CookBook.Domain.Entities.IngridientCategory", "Category")
-                        .WithMany("Ingridients")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CookBook.Domain.Entities.AppUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.Navigation("Category");
+                    b.HasOne("CookBook.Domain.Entities.IngridientCategory", null)
+                        .WithMany("Ingridients")
+                        .HasForeignKey("IngridientCategoryCategoryId");
 
                     b.Navigation("CreatedBy");
                 });

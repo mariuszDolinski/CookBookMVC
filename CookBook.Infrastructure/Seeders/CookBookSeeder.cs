@@ -48,6 +48,13 @@ namespace CookBook.Infrastructure.Seeders
                     await _dbContext.SaveChangesAsync();
                 }
 
+                if (!_dbContext.IngridientCategories.Any())
+                {
+                    var categories = GetIngridientCategories();
+                    _dbContext.IngridientCategories.AddRange(categories);
+                    await _dbContext.SaveChangesAsync();
+                }
+
                 //CreateDefaultRoles();
 
                 //await _roleManager.CreateAsync(new IdentityRole("Ban"));
@@ -96,17 +103,36 @@ namespace CookBook.Infrastructure.Seeders
             return categories;
         }
 
+        private IEnumerable<IngridientCategory> GetIngridientCategories()
+        {
+            var categories = new List<IngridientCategory>
+            {
+                new IngridientCategory() { Name = "Przyprawy" },
+                new IngridientCategory() { Name = "Warzywa" },
+                new IngridientCategory() { Name = "Owoce" },
+                new IngridientCategory() { Name = "Inne" }
+
+            };
+            //set default CategoryId value on 4 "Inne"
+            foreach (var ing in _dbContext.Ingridients)
+            {
+                ing.CategoryId = 4;
+            }
+
+            return categories;
+        }
+
         //private async void CreateDefaultRoles()
         //{
-           // string[] roleNames = { "Admin", "Manager", "User" };
-            //foreach (var role in roleNames)
-            //{
-                //var roleExists = await _roleManager.RoleExistsAsync(role);
-                //if (!roleExists)
-                //{
-                  //  await _roleManager.CreateAsync(new IdentityRole(role));
-                //}
-            //}
+        // string[] roleNames = { "Admin", "Manager", "User" };
+        //foreach (var role in roleNames)
+        //{
+        //var roleExists = await _roleManager.RoleExistsAsync(role);
+        //if (!roleExists)
+        //{
+        //  await _roleManager.CreateAsync(new IdentityRole(role));
+        //}
+        //}
         //}
     }
 }

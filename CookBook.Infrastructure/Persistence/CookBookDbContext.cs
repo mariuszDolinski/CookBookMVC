@@ -13,6 +13,7 @@ namespace CookBook.Infrastructure.Persistence
         public DbSet<Ingridient> Ingridients { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<RecipeCategory> RecipeCategories { get; set; }
+        public DbSet<IngridientCategory> IngridientCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,6 +58,15 @@ namespace CookBook.Infrastructure.Persistence
             modelBuilder.Entity<RecipeCategory>()
                .Property(c => c.CreatedTime)
                .HasDefaultValue(new DateTime(2023,1,1,12,0,0));
+
+            modelBuilder.Entity<IngridientCategory>()
+                .Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<IngridientCategory>()
+                .Property(c => c.CreatedTime)
+                .HasDefaultValue(new DateTime(2025, 4, 9, 20, 0, 0));
         }
     }
 }

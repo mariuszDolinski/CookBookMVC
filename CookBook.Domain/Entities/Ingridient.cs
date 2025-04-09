@@ -13,5 +13,10 @@ public partial class Ingridient : IEntity
     public DateTime CreatedTime { get; set; } = DateTime.Now;
     public DateTime? LastEdit { get; set; } = DateTime.Now;
 
+    public int CategoryId { get; set; }
+    public virtual IngridientCategory Category { get; set; } = default!;
+
     public void SetEncodedName() => EncodedName = Name.ToLower().Replace(" ","-");
+
+
 }
