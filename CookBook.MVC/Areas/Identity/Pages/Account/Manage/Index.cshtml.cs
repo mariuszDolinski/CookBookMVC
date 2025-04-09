@@ -68,17 +68,14 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
 
-            if(!roles.Any()) 
-            {
-                Role = "brak przypisanych ról";
-            }
-            else
+            Role = "";
+            if(roles.Any()) 
             {
                 Role = "";
                 foreach (var role in roles)
                 {
                     Role += role;
-                    if(roles.IndexOf(role) != roles.Count - 1)
+                    if (roles.IndexOf(role) != roles.Count - 1)
                     {
                         Role += ", ";
                     }
@@ -125,13 +122,13 @@ namespace CookBook.MVC.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Błąd podczas aktualizacji numeru telefonu. Spróbuj ponownie.";
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Dane zostały zaktualizowane";
             return RedirectToPage();
         }
     }

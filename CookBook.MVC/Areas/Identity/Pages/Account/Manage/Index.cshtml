@@ -4,6 +4,7 @@
     ViewData["Title"] = "Konto";
     ViewData["ActivePage"] = ManageNavPages.Index;
     var roles = Model.Role.Split(',');
+    bool noRoles = roles == null || roles[0] == "";//true if user has no roles
 }
 
 <h3>Dane konta</h3>
@@ -14,9 +15,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
                 <span>Twoje role: </span>
-                @foreach (var role in roles)
+                @if(roles == null ||noRoles)
                 {
-                    <span class="badge bg-primary p-1" style="font-size: 14px;">@role</span>
+                    <span class="p-1" style="font-size: 14px;">brak</span>   
+                }
+                else
+                {
+                    @foreach (var role in roles)
+                    {
+                        <span class="badge bg-primary p-1" style="font-size: 14px;">@role</span>
+                    }
                 }
             </div>
             <div class="form-floating mb-3">
