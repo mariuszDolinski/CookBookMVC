@@ -1,0 +1,36 @@
+﻿@{
+    string description = "";
+    var code = ViewBag.Code;
+    switch (code)
+    {
+        case ItemCodes.UNIT:
+            description = "Szczegóły jednostki"; break;
+        case ItemCodes.INGR:
+            description = "Szczegóły składnika"; break;
+        case ItemCodes.CATG:
+            description = "Szczegóły kategorii przepisu"; break;
+
+    }
+}
+
+<div class="modal fade" id="detailsItemModal" tabindex="-1" aria-labelledby="detailsItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsItemModalLabel">@description</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-2">
+                    <label id="itemName" class="control-label">Nazwa</label>
+                </div>
+                <div class="form-group mb-2">
+                    <label id="itemCreateDate" class="control-label">Data utworzenia</label>
+                </div>
+                <div class="form-group mb-2">
+                    <label id="itemCreateBy" class="control-label">Data utworzenia</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

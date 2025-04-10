@@ -5,7 +5,6 @@
 @model IEnumerable<CookBook.Application.Commons.IItemListDto>
 
 @{
-    ViewData["Title"] = "Składniki";
     Pagination pages = ViewBag.Pages;
     var code = ViewBag.Code;
     string subtitle = "";
@@ -15,16 +14,19 @@
     switch (code)
     {
         case ItemCodes.UNIT:
+            ViewData["Title"] = "Jednostki";
             subtitle = "Lista wszystkich dostępnych jednostek";
             backToList = "Wróc do listy wszystkich jednostek";
             createModel = new UnitDto();
             break;
         case ItemCodes.CATG:
-            subtitle = "Lista wszystkich dostępnych kategorii";
-            backToList = "Wróc do listy wszystkich kategorii";
+            ViewData["Title"] = "Kategorie przepisów";
+            subtitle = "Lista wszystkich dostępnych kategorii przepisów";
+            backToList = "Wróc do listy wszystkich kategorii przepisów";
             createModel = new RecipeCategoryDto();
             break;
         default: //domyślnie przekazujemy składniki (INGR)
+            ViewData["Title"] = "Składniki";
             subtitle = "Lista wszystkich dostępnych składników";
             backToList = "Wróc do listy wszystkich składników";
             createModel = new IngridientDto();
@@ -72,6 +74,7 @@
 
 <partial name="ItemListViews/_EditItemModal" />
 <partial name="ItemListViews/_ConfirmDeleteModal" />
+<partial name="ItemListViews/_DetailsItemModal" />
 
 <input id="currentItemName" type="hidden" />
 
@@ -82,4 +85,5 @@
     <script src="~/js/Pagination/Pages.js"></script>
     <script src="~/js/ItemList/Edit.js"></script>
     <script src="~/js/ItemList/Delete.js"></script>
+    <script src="~/js/ItemList/Details.js"></script>
 }

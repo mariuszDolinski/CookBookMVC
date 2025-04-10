@@ -55,8 +55,9 @@
                 @if (item.IsEditable && !isProfile)
                 {
                     <td>
-                        <a title="to do" class="btn btn-outline-primary btn-sm" onclick="ShowEditModal('@item.Name')"><i class="bi bi-pencil"></i></a>
-                        <a title="to do" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteModal('@item.Name','@code.ToString()')"><i class="bi bi-trash"></i></a>
+                        <a title="Szczegóły" class="btn btn-outline-primary btn-sm" onclick="ShowDetailsModal('@item.Name','@item.CreatedTime','@item.CreatedBy')"><i class="bi bi-eye"></i></a>
+                        <a title="Edytuj" class="btn btn-outline-primary btn-sm" onclick="ShowEditModal('@item.Name')"><i class="bi bi-pencil"></i></a>
+                        <a title="Usuń" class="btn btn-outline-danger btn-sm" onclick="ShowDeleteModal('@item.Name','@code.ToString()')"><i class="bi bi-trash"></i></a>
                     </td>
                 }
             </tr>
