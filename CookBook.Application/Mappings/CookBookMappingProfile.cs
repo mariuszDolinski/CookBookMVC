@@ -65,6 +65,8 @@ namespace CookBook.Application.Mappings
                 .ForMember(rc => rc.Name, opt => opt.MapFrom(
                     src => src.Name));
 
+            CreateMap<IngridientCategory, IngridientCategoryDto>();
+
             CreateMap<AppUser, UserDto>()
                 .ForMember(u => u.UserRoles, opt => opt.Ignore());
         }

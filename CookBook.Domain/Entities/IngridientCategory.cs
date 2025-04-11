@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CookBook.Domain.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CookBook.Domain.Entities
 {
-    public class IngridientCategory
+    public class IngridientCategory : IEntity
     {
         [Key]
         public int CategoryId { get; set; }

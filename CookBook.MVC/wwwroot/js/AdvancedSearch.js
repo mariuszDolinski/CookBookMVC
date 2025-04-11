@@ -5,7 +5,7 @@ $(document).ready(function () {
     $("#searchlistIngridients").select2({
         theme: 'bootstrap-5'
     });
-    FillData($("#searchlistIngridients"), null, "", "");//populate datalist with ingridients names
+    FillData(`/recipe/getDatalists`,$("#searchlistIngridients"), null, "", "");//populate datalist with ingridients names
 
     searchNameChange();//ustawia eventy on na nameSearch
 

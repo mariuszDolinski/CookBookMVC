@@ -1,8 +1,8 @@
 ﻿//populate datalists with ingridients and units names
-const FillData = (iContainer, uContainer, ing, un) => {
+const FillData = (endpoint,iContainer, uContainer, ing, un) => {
 
     $.ajax({
-        url: `/recipe/getDatalists`,
+        url: endpoint,
         type: 'get',
         success: function (data) {
             if (iContainer != null) {

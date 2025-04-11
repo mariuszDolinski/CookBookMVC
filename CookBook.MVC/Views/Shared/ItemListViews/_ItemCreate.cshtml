@@ -25,4 +25,12 @@
         <div class="input-group-append"><input type="submit" value="Dodaj" class="btn btn-primary" /></div>
     </div>
     <span asp-validation-for="Name" class="text-danger"></span>
+    @if(code == ItemCodes.INGR){
+        <div class="input-group">
+            <select class="form-select mt-1" asp-for="AddInfo" id="ingrCategoryList">
+                <option value="0" selected disabled="true">Wybierz kategorię</option>
+            </select>
+        </div>
+        <span asp-validation-for="AddInfo" class="text-danger"></span>
+    }
 </form>
