@@ -7,11 +7,16 @@ const FillData = (src, iContainer, uContainer, ing, un) => {
         endpoint = `/recipe/getDatalists`
     }
 
-    let firstOption = ''
+    let firstOption1 = ''
+    let firstOption2 = ''
+    let firstOptionUnit1 = `<option value="0" selected disabled="true">Wybierz jednostkę</option>`
+    let firstOptionUnit2 = `<option value="0" disabled="true">Wybierz jednostkę</option>`
     if (src == 'CTGR') {
-        firstOption = `<option value="0" selected disabled="true">Wybierz kategorię</option>`
+        firstOption1 = `<option value="0" selected disabled="true">Wybierz kategorię</option>`
+        firstOption2 = `<option value="0" disabled="true">Wybierz kategorię</option>`
     } else {
-        firstOption = `<option value="0" selected disabled="true">Wybierz składnik</option>`
+        firstOption1 = `<option value="0" selected disabled="true">Wybierz składnik</option>`
+        firstOption2 = `<option value="0" disabled="true">Wybierz składnik</option>`
     }
 
     $.ajax({
@@ -19,45 +24,35 @@ const FillData = (src, iContainer, uContainer, ing, un) => {
         type: 'get',
         success: function (data) {
             if (iContainer != null) {
-                iContainer.empty();
-                if (ing == "") {
-                    iContainer.append(firstOption);
-                    for (const item of data.ingridients)
-                        iContainer.append(`<option value="${item}">${item}</option>`);
-                }
-                else {
-                    iContainer.append(`<option value="0" disabled="true">Wybierz składnik</option>`);
-                    for (const item of data.ingridients) {
-                        if (item == ing) {
-                            iContainer.append(`<option value="${item}" selected>${item}</option>`);
-                        } else {
-                            iContainer.append(`<option value="${item}">${item}</option>`);
-                        }
-                    }
-                }
+                RenderItemList(data.firsts, iContainer, ing, firstOption1, firstOption2);
             }              
             if (uContainer != null) {
-                uContainer.empty();
-                if (un == "") {
-                    uContainer.append(`<option value="0" selected disabled="true">Wybierz jednostkę</option>`);
-                    for (const item of data.units)
-                        uContainer.append(`<option value="${item}">${item}</option>`);
-                }
-                else {
-                uContainer.append(`<option value="0" disabled="true">Wybierz jednostkę</option>`);
-                for (const item of data.units)
-                    if (item == un) {
-                        uContainer.append(`<option value="${item}" selected>${item}</option>`);
-                    } else {
-                        uContainer.append(`<option value="${item}">${item}</option>`);
-                    }
-                }
+                RenderItemList(data.seconds, uContainer, un, firstOptionUnit1, firstOptionUnit2);
             }    
         },
         error: function () {
             toastr["error"]("Lista składników lub jednostek nie mogła zostać wczytana")
         }
     })
+}
+
+const RenderItemList = (items, container, currentItem, firstOption1, firstOption2) => {
+    container.empty();
+    if (currentItem == "") {
+        container.append(firstOption1);
+        for (const item of items)
+            container.append(`<option value="${item}">${item}</option>`);
+    }
+    else {
+        container.append(firstOption2);
+        for (const item of items) {
+            if (item == currentItem) {
+                container.append(`<option value="${item}" selected>${item}</option>`);
+            } else {
+                container.append(`<option value="${item}">${item}</option>`);
+            }
+        }
+    }
 }
 
 const RenderRecipeIngridients = (data, container) => {

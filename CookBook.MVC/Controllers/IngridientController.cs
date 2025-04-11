@@ -91,7 +91,7 @@ namespace CookBook.MVC.Controllers
             var categories = await _mediator.Send(new GetAllIngridientsCategoriesQuery());
             DatalistsDto data = new()
             {
-                Ingridients = categories.Items.Select(x => x.Name!).ToList()
+                Firsts = categories.Items.Select(x => x.Name!).ToList()
             };
             return Ok(data);
         }

@@ -201,8 +201,8 @@ namespace CookBook.MVC.Controllers
             var units = await _mediator.Send(new GetAllUnitsQuery());
             DatalistsDto data = new()
             {
-                Ingridients = ingridients.Items.Select(x => x.Name!).ToList(),
-                Units = units.Items.Select(x => x.Name!).ToList()
+                Firsts = ingridients.Items.Select(x => x.Name!).ToList(),
+                Seconds = units.Items.Select(x => x.Name!).ToList()
             };
             return Ok(data);
         }

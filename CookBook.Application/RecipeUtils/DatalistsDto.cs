@@ -2,7 +2,7 @@
 {
     public class DatalistsDto
     {
-        public List<string> Ingridients { get; set; } = new();
-        public List<string> Units { get; set; } = new();
+        public List<string> Firsts { get; set; } = new();
+        public List<string> Seconds { get; set; } = new();
     }
 }
