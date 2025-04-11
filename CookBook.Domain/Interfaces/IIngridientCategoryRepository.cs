@@ -7,5 +7,6 @@ namespace CookBook.Domain.Interfaces
     {
         Task<PaginatedResult<IngridientCategory>> GetAll(string searchPhrase, string sortOrder, int pageNumber, int pageSize);
         Task<IngridientCategory> GetById(int id);
+        Task<IngridientCategory?> GetByName(string name);
     }
 }

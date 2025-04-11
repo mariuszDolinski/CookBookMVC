@@ -26,6 +26,9 @@ namespace CookBook.Application.IngridientUtils.Commands.CreateIngridient
                         }
                     }
                 });
+
+            RuleFor(ing => ing.AddInfo)
+                .NotEmpty().WithMessage("Wybierz kategorię");
         }
     }
 }

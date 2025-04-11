@@ -22,7 +22,7 @@ $(document).ready(function () {
         theme: 'bootstrap-5'
     });
 
-    FillData(`/recipe/getDatalists`,$("#createlistIngridients"), $("#createlistUnits"),"","");
+    FillData("INGR",$("#createlistIngridients"), $("#createlistUnits"),"","");
     LoadRecipeIngridients();
 
     $("#createRecipeIngridientModal form").submit(function (event) {
@@ -98,7 +98,7 @@ const ConfirmDeleteModal = (ingId, ingDesc) => {
 }
 
 const ShowEditModal = (id, desc, amount, ing, unit) => {
-    FillData(`/recipe/getDatalists`,$("#editlistIngridients"), $("#editlistUnits"),ing,unit)
+    FillData("INGR",$("#editlistIngridients"), $("#editlistUnits"),ing,unit)
     $("#ingridientId").val(id);
     $("#amountEdit").val(amount);
     //$("#editlistIngridients").val(ing).trigger('change');

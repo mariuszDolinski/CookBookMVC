@@ -2,9 +2,13 @@
 using CookBook.Application.IngridientUtils.Commands.DeleteIngridient;
 using CookBook.Application.IngridientUtils.Commands.EditIngridient;
 using CookBook.Application.IngridientUtils.Queries.GetAllIngridients;
+using CookBook.Application.IngridientUtils.Queries.GetAllIngridientsCategories;
+using CookBook.Application.RecipeUtils;
+using CookBook.Domain.Entities;
 using CookBook.MVC.Extensions;
 using CookBook.MVC.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookBook.MVC.Controllers
@@ -77,6 +81,19 @@ namespace CookBook.MVC.Controllers
         public async Task<IActionResult> Delete(string name)
         {
             return await this.DeleteItem(_mediator, new DeleteIngridientCommand(), name);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ingridient/GetAllCategories")]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await _mediator.Send(new GetAllIngridientsCategoriesQuery());
+            DatalistsDto data = new()
+            {
+                Ingridients = categories.Items.Select(x => x.Name!).ToList()
+            };
+            return Ok(data);
         }
     }
 }

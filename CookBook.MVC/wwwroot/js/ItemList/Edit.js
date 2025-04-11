@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    FillData("CTGR", $("#ingrCategoryList"), null, "", "");
+});
+
 const ShowEditModal = (name) => {
     $("#currentItemName").val(name);
     $("#newItemName").val(name);

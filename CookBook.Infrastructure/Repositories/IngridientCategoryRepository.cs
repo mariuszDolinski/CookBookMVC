@@ -23,5 +23,8 @@ namespace CookBook.Infrastructure.Repositories
                 => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
         public async Task<IngridientCategory> GetById(int id)
             => await _dbContext.IngridientCategories.FirstAsync(ic => ic.CategoryId == id);
+
+        public async Task<IngridientCategory?> GetByName(string name)
+            => await _dbContext.IngridientCategories.FirstOrDefaultAsync(ic => ic.Name == name);
     }
 }

@@ -1,5 +1,18 @@
 ﻿//populate datalists with ingridients and units names
-const FillData = (endpoint,iContainer, uContainer, ing, un) => {
+const FillData = (src, iContainer, uContainer, ing, un) => {
+    let endpoint = ''
+    if (src == 'CTGR') {
+        endpoint = `/ingridient/GetAllCategories`
+    } else {
+        endpoint = `/recipe/getDatalists`
+    }
+
+    let firstOption = ''
+    if (src == 'CTGR') {
+        firstOption = `<option value="0" selected disabled="true">Wybierz kategorię</option>`
+    } else {
+        firstOption = `<option value="0" selected disabled="true">Wybierz składnik</option>`
+    }
 
     $.ajax({
         url: endpoint,
@@ -8,7 +21,7 @@ const FillData = (endpoint,iContainer, uContainer, ing, un) => {
             if (iContainer != null) {
                 iContainer.empty();
                 if (ing == "") {
-                    iContainer.append(`<option value="0" selected disabled="true">Wybierz składnik</option>`);
+                    iContainer.append(firstOption);
                     for (const item of data.ingridients)
                         iContainer.append(`<option value="${item}">${item}</option>`);
                 }
