@@ -33,7 +33,9 @@ namespace CookBook.Application.Mappings
                 .ForMember(ing => ing.CreatedTime, opt => opt.MapFrom(
                     src => src.CreatedTime.ToString("dd.MM.yyyy, HH:mm")))
                 .ForMember(ing => ing.IsEditable, opt => opt.MapFrom(src =>
-                    user != null && (user.IsInRole("Admin") || user.IsInRole("Manager"))));
+                    user != null && (user.IsInRole("Admin") || user.IsInRole("Manager"))))
+                .ForMember(ing => ing.AddInfo, opt => opt.MapFrom(
+                    src => src.Category.Name));
             CreateMap<IngridientDto, Ingridient>();
 
             CreateMap<Unit, UnitDto>()

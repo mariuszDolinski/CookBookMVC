@@ -11,16 +11,26 @@ namespace CookBook.Infrastructure.Repositories
     {
         private readonly CookBookDbContext _dbContext;
         private readonly ICommonService<Ingridient> _commonService;
+        private readonly IIngridientCategoryRepository _categoryRepository;
 
-        public IngridientRepository(CookBookDbContext dbContext, ICommonService<Ingridient> commonService)
+        public IngridientRepository(CookBookDbContext dbContext, ICommonService<Ingridient> commonService,
+            IIngridientCategoryRepository categoryRepository)
         {
             _dbContext = dbContext;
             _commonService = commonService;
+            _categoryRepository = categoryRepository;
         }
 
-        public async Task<PaginatedResult<Ingridient>> GetAll(string searchPhrase, 
+        public async Task<PaginatedResult<Ingridient>> GetAll(string searchPhrase,
             string sortOrder, int pageNumber, int pageSize)
-                => await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
+        {
+            var results = await _commonService.GetAllItems(searchPhrase, sortOrder, pageNumber, pageSize);
+
+            results.Items.ForEach(ing => {
+                ing.Category = _categoryRepository.GetById(ing.CategoryId).Result;
+            });
+            return results;
+        }
 
         public async Task<IEnumerable<Ingridient>> GetAllUserIngridients(string userName)
             => await _commonService.GetAllUserItems(userName);
